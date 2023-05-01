@@ -16,7 +16,6 @@ class DestinationSeeder extends Seeder
     {
         Destination::factory()
         ->count(5)
-        ->has(Service::factory()->count(4))
         ->create();
     }
 }
