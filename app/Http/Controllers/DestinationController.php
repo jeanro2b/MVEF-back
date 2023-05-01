@@ -28,8 +28,17 @@ class DestinationController extends Controller
             )
             ->get();
 
-        //tester voir la tet de la sortie
-        // ajouter à chaque destination une cle nombre avec le nombre d'hebergements pour id = destination_id
+        foreach ($destinations as $destination) {
+            $nombre_herbegements = 0;
+            foreach ($hebergements as $hebergement) {
+                if ($hebergement->destination_id == $destination->id) {
+                    $nombre_herbegements++;
+                }
+            }
+
+            $destination->nombre = $nombre_herbegements;
+        }
+
 
         return $destinations;
     }
@@ -37,25 +46,55 @@ class DestinationController extends Controller
     public function get_destination($id)
     {
 
-        $hebergement = DB::table('hebergements')
+        $hebergements = DB::table('hebergements')
             ->select(
                 'id',
+                'name'
             )
             ->where('destination_id', $id)
             ->get();
 
-        // compter le nombre 
+        $services = DB::table('destination_has_service')
+            ->select(
+                'id',
+                'destination_id',
+                'service_id'
+            )
+            ->where('destination_id', $id)
+            ->get();
+
+        $service_description = DB::table('services')
+            ->select(
+                'id',
+                'icon',
+                'text'
+            )
+            ->get();
+
+        foreach ($services as $service) {
+            $service_id = $service->service_id;
+
+            foreach ($service_description as $serviced) {
+                if ($serviced->id == $service_id) {
+                    $service->icon = $serviced->icon;
+                    $service->text = $serviced->text;
+                }
+            }
+        };
 
         $destinations = DB::table('destinations')
             ->select(
-                'id',
-                'name',
-                'city',
+                '*'
             )
             ->where('id', $id)
             ->get();
 
-        return $destinations;
+        return response()->json([
+            'message' => 'OK',
+            'destinations' => $destinations,
+            'hebergements' => $hebergements,
+            'services' => $services
+        ], 200);
     }
 
     public function delete_destination($id)
@@ -63,63 +102,100 @@ class DestinationController extends Controller
         $destination = DB::table('destination')
             ->where('id', $id)
             ->delete();
-        return $destination;
+
+        return response()->json([
+            'message' => 'OK',
+            'destination' => $destination
+        ], 200);
+    }
+
+    public function create_destination(Request $req)
+    {
+
+        $destination = Destination::create([
+            'id' => $req->id,
+            'name' => $req->name,
+            'city' => $req->city,
+            'description' => $req->description,
+            'address' => $req->address,
+            'latitude' => $req->latitude,
+            'longitude' => $req->longitude,
+            'phone' => $req->phone,
+            'languages' => $req->languages,
+            'mail' => $req->mail,
+            'reception' => $req->reception,
+            'arrival' => $req->arrival,
+            'departure' => $req->departure,
+            'map' => $req->map,
+            'pImage' => $req->pImage,
+            'sImage' => $req->sImage,
+            'tImage1' => $req->tImage1,
+            'tImage2' => $req->tImage2,
+            'vehicule' => $req->vehicule,
+            'parking' => $req->parking,
+        ]);
+
+        foreach ($req->services as $service) {
+            $insert = DB::table('destination_has_service')
+                ->insert([
+                    'destination_id' => $req->id,
+                    'service_id' => $service->service_id
+                ]);
+        }
+
+        return response()->json([
+            'message' => 'OK',
+            'destination' => $destination
+        ], 200);
     }
 
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function modify_destination(Request $req)
     {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        //Ajouter  services ! d'abord supprimer puis ajouiter
+        $destination = Destination::where('id', $req->id)->update(
+            [
+                'name' => $req->name,
+                'city' => $req->city,
+                'description' => $req->description,
+                'address' => $req->address,
+                'latitude' => $req->latitude,
+                'longitude' => $req->longitude,
+                'phone' => $req->phone,
+                'languages' => $req->languages,
+                'mail' => $req->mail,
+                'reception' => $req->reception,
+                'arrival' => $req->arrival,
+                'departure' => $req->departure,
+                'map' => $req->map,
+                'pImage' => $req->pImage,
+                'sImage' => $req->sImage,
+                'tImage1' => $req->tImage1,
+                'tImage2' => $req->tImage2,
+                'vehicule' => $req->vehicule,
+                'parking' => $req->parking,
+            ]
+        );
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $delete = DB::table('destination_has_service')
+            ->select(
+                '*'
+            )
+            ->where('destination_id', $req->id)
+            ->delete();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Destination $destination)
-    {
-        //
-    }
+        foreach ($req->services as $service) {
+            $insert = DB::table('destination_has_service')
+                ->insert([
+                    'destination_id' => $req->id,
+                    'service_id' => $service->service_id
+                ]);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Destination $destination)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Destination $destination)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Destination $destination)
-    {
-        //
+        return response()->json([
+            'message' => 'OK',
+            'destination' => $destination
+        ], 200);
     }
 }

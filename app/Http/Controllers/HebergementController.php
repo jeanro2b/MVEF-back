@@ -4,62 +4,165 @@ namespace App\Http\Controllers;
 
 use App\Models\Hebergement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use stdClass;
 
 class HebergementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    //get ALL
+
+    public function get_all_hebergements()
     {
-        //
+        $hebergements = DB::table('hebergements')
+            ->select(
+                'id',
+                'name',
+                'city',
+                'destination_id',
+                'type_id'
+            )
+            ->get();
+
+        $destinations = DB::table('destinations')
+            ->select(
+                'id',
+                'name',
+            )
+            ->get();
+
+        $types = DB::table('types')
+            ->select(
+                'id',
+                'type',
+            )
+            ->get();
+
+        foreach ($hebergements as $hebergement) {
+            $dest_id = $hebergement->destination_id;
+            $type_id = $hebergement->type_id;
+            foreach ($destinations as $destination) {
+                if ($dest_id == $destination->id) {
+                    $hebergement->name_destination = $destination->name;
+                }
+            }
+
+            foreach ($types as $type) {
+                if ($type_id == $type->id) {
+                    $hebergement->name_type = $type->type;
+                }
+            }
+        }
+
+        return response()->json([
+            'message' => 'OK',
+            'hebergements' => $hebergements
+        ], 200);
+    }
+
+    // get 1
+
+    public function get_hebergement($id)
+    {
+        $hebergements = DB::table('hebergements')
+            ->select(
+                'id',
+                'name',
+                'city',
+                'destination_id',
+                'type_id'
+            )
+            ->where('id', $id)
+            ->get();
+
+        foreach ($hebergements as $hebergement) {
+            $dest_id = $hebergement->destination_id;
+
+            $destination = DB::table('destinations')
+                ->select(
+                    'id',
+                    'name',
+                )
+                ->where('id', $dest_id)
+                ->get();
+
+            foreach ($destination as $dest) {
+                $hebergement->name_destination = $dest->name;
+            }
+        }
+
+        foreach ($hebergements as $hebergement) {
+            $type_id = $hebergement->type_id;
+
+            $type = DB::table('types')
+                ->select(
+                    'id',
+                    'type',
+                )
+                ->where('id', $type_id)
+                ->get();
+
+            foreach ($type as $typ) {
+                $hebergement->name_type = $typ->type;
+            }
+        }
+
+        return response()->json([
+            'message' => 'OK',
+            'hebergements' => $hebergements
+        ], 200);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create_hebergement(Request $req)
     {
-        //
+        $hebergement = Hebergement::create([
+            'name' => $req->name,
+            'city' => $req->city,
+            'description' => $req->description,
+            'image' => $req->image,
+            'type_id' => $req->type,
+        ]);
+
+        return response()->json([
+            'message' => 'OK',
+            'hebergement' => $hebergement
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Delete
+
+    public function delete_hebergement($id)
     {
-        //
+        $hebergement = DB::table('hebergements')
+            ->where('id', $id)
+            ->delete();
+
+        return response()->json([
+            'message' => 'OK',
+            'hebergement' => $hebergement
+        ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Hebergement $hebergement)
-    {
-        //
-    }
+    // Update
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Hebergement $hebergement)
+    public function modify_hebergement(Request $req)
     {
-        //
-    }
+        $hebergement = Hebergement::where('id', $req->id)->update(
+            [
+                'name' => $req->name,
+                'city' => $req->city,
+                'destination_id' => $req->destination_id,
+                'type_id' => $req->type_id,
+            ]
+        );
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Hebergement $hebergement)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Hebergement $hebergement)
-    {
-        //
+        return response()->json([
+            'message' => 'OK',
+            'hebergement' => $hebergement
+        ], 200);
     }
 }
