@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
             TypeSeeder::class,
             DestinationSeeder::class,
             HebergementSeeder::class,
+            DestinationHasServiceSeeder::class,
+            PlanningSeeder::class,
+            PeriodSeeder::class
         ]);
     }
 }

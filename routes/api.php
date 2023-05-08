@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\HebergementController;
+use App\Http\Controllers\PlanningController;
+use App\Http\Controllers\PeriodController;
 
 
 /*
@@ -31,12 +33,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Gets
 
-Route::get('users-all', [UserController::class, 'get_all_users'])
-    ->name('get_users');
-
-Route::get('user/{id}', [UserController::class, 'get_user'])
-    ->name('get_user');
-
 Route::get('destinations-all', [DestinationController::class, 'get_all_destinations'])
     ->name('get_destinations');
 
@@ -49,10 +45,27 @@ Route::get('hebergements-all', [HebergementController::class, 'get_all_hebergeme
 Route::get('hebergement/{id}', [HebergementController::class, 'get_hebergement'])
     ->name('get_hebergement');
 
+
+Route::get('clients-all', [UserController::class, 'get_all_clients'])
+    ->name('get_clients');
+
+Route::get('client/{id}', [UserController::class, 'get_client'])
+    ->name('get_client');
+
+
+Route::get('plannings-all', [PlanningController::class, 'get_all_plannings'])
+    ->name('get_plannings');
+
+Route::get('planning/{id}', [PlanningController::class, 'get_planning'])
+    ->name('get_planning');
+
+Route::get('planning-periods/{id}', [PeriodController::class, 'get_planning_periods'])
+    ->name('get_planning_periods');
+
 // Posts
 
-Route::post('user', [UserController::class, 'create_user'])
-    ->name('create_user');
+Route::post('client', [UserController::class, 'create_client'])
+    ->name('create_client');
 
 Route::post('destination', [DestinationController::class, 'create_destination'])
     ->name('create_destination');
@@ -60,24 +73,42 @@ Route::post('destination', [DestinationController::class, 'create_destination'])
 Route::post('hebergement', [HebergementController::class, 'create_hebergement'])
     ->name('create_hebergement');
 
+Route::post('planning', [PlanningController::class, 'create_planning'])
+    ->name('create_planning');
+
+Route::post('planning-period/{id}', [PeriodController::class, 'create_planning_period'])
+    ->name('create_planning_period');
+
 // Puts
 
-Route::put('modify-user/{id}', [UserController::class, 'modify_user'])
-    ->name('modify_user');
-
-Route::put('modify-destination/{id}', [DestinationController::class, 'modify_destination'])
+Route::put('modify-destination', [DestinationController::class, 'modify_destination'])
     ->name('modify_destination');
 
-Route::put('modify-hebergement/{id}', [HebergementController::class, 'modify_hebergement'])
+Route::put('modify-hebergement', [HebergementController::class, 'modify_hebergement'])
     ->name('modify_hebergement');
 
-// Deletes
+Route::put('modify-client', [UserController::class, 'modify_client'])
+    ->name('modify_client');
 
-Route::delete('delete-user/{id}', [UserController::class, 'delete_user'])
-    ->name('delete_user');
+Route::put('modify-planning', [PlanningController::class, 'modify_planning'])
+    ->name('modify_planning');
+
+Route::put('modify-planning-period', [PeriodController::class, 'modify_planning_period'])
+    ->name('modify_planning_period');
+
+// Deletes
 
 Route::delete('delete-destination/{id}', [DestinationController::class, 'delete_destination'])
     ->name('delete_destination');
 
 Route::delete('delete-hebergement/{id}', [HebergementController::class, 'delete_hebergement'])
     ->name('delete_hebergement');
+
+Route::delete('delete-client/{id}', [UserController::class, 'delete_client'])
+    ->name('delete_client');
+
+Route::delete('delete-planning/{id}', [PlanningController::class, 'delete_planning'])
+    ->name('delete_planning');
+
+Route::delete('delete-planning-periods/{id}', [PeriodController::class, 'delete_planning_period'])
+    ->name('delete_planning_periods');

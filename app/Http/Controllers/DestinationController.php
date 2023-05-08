@@ -113,7 +113,6 @@ class DestinationController extends Controller
     {
 
         $destination = Destination::create([
-            'id' => $req->id,
             'name' => $req->name,
             'city' => $req->city,
             'description' => $req->description,
@@ -153,7 +152,7 @@ class DestinationController extends Controller
     public function modify_destination(Request $req)
     {
 
-        //Ajouter  services ! d'abord supprimer puis ajouiter
+        //Ajouter  services ! d'abord supprimer puis ajouiter => OK
         $destination = Destination::where('id', $req->id)->update(
             [
                 'name' => $req->name,

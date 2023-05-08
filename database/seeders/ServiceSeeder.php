@@ -15,6 +15,13 @@ class ServiceSeeder extends Seeder
     {
         Service::factory()
         ->count(5)
+        ->sequence(
+            ['text' => 'Promenades à vélo'],
+            ['text' => 'Promenades à cheval'],
+            ['text' => 'Montgolfière'],
+            ['text' => 'Promenades en mer'],
+            ['text' => 'Rando'],
+        )
         ->create();
     }
 }

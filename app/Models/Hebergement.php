@@ -20,4 +20,14 @@ class Hebergement extends Model
     {
         return $this->hasOne(Type::class);
     }
+
+    public function destination()
+    {
+        return $this->hasOne(Destination::class);
+    }
+
+    public function planning()
+    {
+        return $this->hasMany(Planning::class);
+    }
 }

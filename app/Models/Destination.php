@@ -40,4 +40,11 @@ class Destination extends Model
     {
         return $this->hasMany(Retours::class);
     }
+
+    public function hebergement()
+    {
+        return $this->hasMany(Hebergement::class);
+    }
+
+    
 }

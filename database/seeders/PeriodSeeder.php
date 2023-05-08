@@ -2,23 +2,25 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Period;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class PeriodSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        User::factory()
-        ->count(3)
+        Period::factory()
+        ->count(5)
         ->sequence(
-            ['role' => 'ce'],
-            ['role' => 'admin'],
-            ['role' => 'user'],
+            ['planning_id' => 1],
+            ['planning_id' => 2],
+            ['planning_id' => 3],
+            ['planning_id' => 1],
+            ['planning_id' => 2],
         )
         ->create();
     }
