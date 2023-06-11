@@ -17,7 +17,8 @@ class RetoursFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'text' => 'Super!',
+            'destination_id' => 1
         ];
     }
 }

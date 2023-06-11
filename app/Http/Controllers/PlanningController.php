@@ -30,10 +30,13 @@ class PlanningController extends Controller
 
         $plannings = DB::table('plannings')
             ->select(
+                'id',
                 'object',
                 'code',
                 'status',
-                'options',
+                'lit',
+                'toilette',
+                'menage',
                 'user_id',
                 'hebergement_id'
             )
@@ -87,7 +90,9 @@ class PlanningController extends Controller
                 'object',
                 'code',
                 'status',
-                'options',
+                'lit',
+                'toilette',
+                'menage',
                 'user_id',
                 'hebergement_id'
             )
@@ -140,7 +145,9 @@ class PlanningController extends Controller
             'object' => $req->object,
             'code' => $req->code,
             'status' => $req->status,
-            'options' => $req->options,
+            'lit' => $req->lit,
+            'toilette' => $req->lit,
+            'menage' => $req->lit,
             'hebergement_id' => $req->hebergement_id,
             'user_id' => $req->user_id,
 
@@ -160,7 +167,9 @@ class PlanningController extends Controller
                 'object' => $req->object,
                 'code' => $req->code,
                 'status' => $req->status,
-                'options' => $req->options,
+                'lit' => $req->lit,
+                'toilette' => $req->lit,
+                'menage' => $req->lit,
                 'hebergement_id' => $req->hebergement_id,
                 'user_id' => $req->user_id,
             ]

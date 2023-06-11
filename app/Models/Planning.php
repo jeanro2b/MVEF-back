@@ -13,7 +13,11 @@ class Planning extends Model
         'object',
         'code',
         'status',
-        'options'
+        'lit',
+        'menage',
+        'toilette',
+        'hebergement_id',
+        'user_id'
     ];
 
     public function hebergement()

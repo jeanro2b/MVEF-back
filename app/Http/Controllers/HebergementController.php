@@ -21,7 +21,10 @@ class HebergementController extends Controller
                 'name',
                 'city',
                 'destination_id',
-                'type_id'
+                'type_id',
+                'code',
+                'description',
+                'image'
             )
             ->get();
 
@@ -71,7 +74,10 @@ class HebergementController extends Controller
                 'name',
                 'city',
                 'destination_id',
-                'type_id'
+                'type_id',
+                'code',
+                'description',
+                'image'
             )
             ->where('id', $id)
             ->get();
@@ -125,6 +131,8 @@ class HebergementController extends Controller
             'description' => $req->description,
             'image' => $req->image,
             'type_id' => $req->type,
+            'code' => $req->code,
+            'destination_id' => $req->destination_id
         ]);
 
         return response()->json([
@@ -137,6 +145,24 @@ class HebergementController extends Controller
 
     public function delete_hebergement($id)
     {
+
+        $plannings = DB::table('plannings')
+             ->select('id')
+             ->where('hebergement_id', $id)
+             ->get();
+
+        foreach($plannings as $planning) {
+
+            $planning_id = $planning->id;
+            $period = DB::table('periods')
+            ->where('planning_id', $planning_id)
+            ->delete();
+        }
+
+        $plan = DB::table('plannings')
+            ->where('hebergement_id', $id)
+            ->delete();
+
         $hebergement = DB::table('hebergements')
             ->where('id', $id)
             ->delete();
@@ -157,6 +183,7 @@ class HebergementController extends Controller
                 'city' => $req->city,
                 'destination_id' => $req->destination_id,
                 'type_id' => $req->type_id,
+                'code' => $req->code
             ]
         );
 

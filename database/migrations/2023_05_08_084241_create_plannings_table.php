@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('object');
             $table->string('code');
             $table->string('status');
-            $table->string('options');
+            $table->boolean('lit');
+            $table->boolean('toilette');
+            $table->boolean('menage');
 
             $table->unsignedBigInteger('hebergement_id');
             $table->foreign('hebergement_id')->references('id')->on('hebergements');

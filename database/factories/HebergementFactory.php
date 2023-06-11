@@ -21,6 +21,7 @@ class HebergementFactory extends Factory
             'name' => fake()->name(),
             'city' => Str::random(10),
             'description' => Str::random(35),
+            'code' => Str::random(10),
             'image' => 'images/destination.png',
 
             'destination_id' => 1,

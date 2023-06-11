@@ -15,7 +15,8 @@ class Period extends Model
         'mail',
         'phone',
         'name',
-        'number'
+        'number',
+        'planning_id'
     ];
 
     public function planning()

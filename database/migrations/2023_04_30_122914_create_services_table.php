@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('icon');
+            $table->unsignedBigInteger('destination_id');
+            $table->foreign('destination_id')->references('id')->on('destinations');
+
+            $table->string('icon')->nullable();
             $table->text('text');
         });
     }

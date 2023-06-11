@@ -11,7 +11,8 @@ class Service extends Model
 
     protected $fillable = [
         'icon',
-        'text'
+        'text',
+        'destination_id'
     ];
 
     public function destination()

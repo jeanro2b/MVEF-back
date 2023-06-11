@@ -31,8 +31,8 @@ return new class extends Migration
             $table->string('sImage');
             $table->string('tImage1');
             $table->string('tImage2');
-            $table->boolean('vehicule');
-            $table->boolean('parking');
+            $table->string('vehicule');
+            $table->string('parking');
         });
     }
 

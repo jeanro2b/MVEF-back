@@ -18,10 +18,10 @@ return new class extends Migration
             $table->dateTime('start');
             $table->dateTime('end');
 
-            $table->string('name');
-            $table->string('phone');
-            $table->string('mail');
-            $table->string('number');
+            $table->string('name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('mail')->nullable();
+            $table->string('number')->nullable();
 
             $table->unsignedBigInteger('planning_id');
             $table->foreign('planning_id')->references('id')->on('plannings');

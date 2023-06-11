@@ -62,6 +62,9 @@ Route::get('planning/{id}', [PlanningController::class, 'get_planning'])
 Route::get('planning-periods/{id}', [PeriodController::class, 'get_planning_periods'])
     ->name('get_planning_periods');
 
+Route::get('planning-periods-all', [PeriodController::class, 'get_planning_periods_all'])
+    ->name('get_planning_periods_all');
+
 // Posts
 
 Route::post('client', [UserController::class, 'create_client'])

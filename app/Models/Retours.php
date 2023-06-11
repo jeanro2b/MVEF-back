@@ -10,7 +10,8 @@ class Retours extends Model
     use HasFactory;
 
     protected $fillable = [
-        'text'
+        'text',
+        'destination_id'
     ];
 
     public function destination()

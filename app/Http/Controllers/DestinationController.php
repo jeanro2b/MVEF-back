@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
+use App\Models\Retours;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -54,33 +56,23 @@ class DestinationController extends Controller
             ->where('destination_id', $id)
             ->get();
 
-        $services = DB::table('destination_has_service')
+        $services = DB::table('services')
             ->select(
                 'id',
                 'destination_id',
-                'service_id'
+                'text'
             )
             ->where('destination_id', $id)
             ->get();
 
-        $service_description = DB::table('services')
+        $retours = DB::table('retours')
             ->select(
                 'id',
-                'icon',
+                'destination_id',
                 'text'
             )
+            ->where('destination_id', $id)
             ->get();
-
-        foreach ($services as $service) {
-            $service_id = $service->service_id;
-
-            foreach ($service_description as $serviced) {
-                if ($serviced->id == $service_id) {
-                    $service->icon = $serviced->icon;
-                    $service->text = $serviced->text;
-                }
-            }
-        };
 
         $destinations = DB::table('destinations')
             ->select(
@@ -93,13 +85,14 @@ class DestinationController extends Controller
             'message' => 'OK',
             'destinations' => $destinations,
             'hebergements' => $hebergements,
-            'services' => $services
+            'services' => $services,
+            'retours' => $retours
         ], 200);
     }
 
     public function delete_destination($id)
     {
-        $destination = DB::table('destination')
+        $destination = DB::table('destinations')
             ->where('id', $id)
             ->delete();
 
@@ -134,13 +127,21 @@ class DestinationController extends Controller
             'parking' => $req->parking,
         ]);
 
+
         foreach ($req->services as $service) {
-            $insert = DB::table('destination_has_service')
-                ->insert([
-                    'destination_id' => $req->id,
-                    'service_id' => $service->service_id
-                ]);
+            Service::create([
+                'text' => $service,
+                'destination_id' => $destination->id
+            ]);
         }
+
+        foreach ($req->retours as $retour) {
+            Retours::create([
+                'text' => $retour,
+                'destination_id' => $destination->id
+            ]);
+        }
+
 
         return response()->json([
             'message' => 'OK',

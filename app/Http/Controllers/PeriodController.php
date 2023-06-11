@@ -31,6 +31,27 @@ class PeriodController extends Controller
         ], 200);
     }
 
+    public function get_planning_periods_all()
+    {
+
+        $periods = DB::table('periods')
+            ->select(
+                'id',
+                'start',
+                'end',
+                'name',
+                'phone',
+                'mail',
+                'number'
+            )
+            ->get();
+
+        return response()->json([
+            'message' => 'OK',
+            'periods' => $periods
+        ], 200);
+    }
+
 
     public function delete_planning_period($id)
     {

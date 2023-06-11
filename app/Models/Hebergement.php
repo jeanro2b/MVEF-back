@@ -14,6 +14,9 @@ class Hebergement extends Model
         'city',
         'description',
         'image',
+        'code',
+        'destination_id',
+        'type_id'
     ];
 
     public function type()
