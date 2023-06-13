@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('reception');
             $table->string('arrival');
             $table->string('departure');
-            $table->string('map');
+            $table->string('carte');
             $table->string('pImage');
             $table->string('sImage');
             $table->string('tImage1');

@@ -153,7 +153,6 @@ class DestinationController extends Controller
     public function modify_destination(Request $req)
     {
 
-        //Ajouter  services ! d'abord supprimer puis ajouiter => OK
         $destination = Destination::where('id', $req->id)->update(
             [
                 'name' => $req->name,
@@ -177,21 +176,25 @@ class DestinationController extends Controller
                 'parking' => $req->parking,
             ]
         );
-
-        $delete = DB::table('destination_has_service')
-            ->select(
-                '*'
-            )
-            ->where('destination_id', $req->id)
-            ->delete();
+        
+        Service::where('destination_id', $req->id)->delete();
+        Retours::where('destination_id', $req->id)->delete();
 
         foreach ($req->services as $service) {
-            $insert = DB::table('destination_has_service')
-                ->insert([
-                    'destination_id' => $req->id,
-                    'service_id' => $service->service_id
-                ]);
+            Service::create([
+                'text' => $service,
+                'destination_id' => $req->id
+            ]);
         }
+
+        foreach ($req->retours as $retour) {
+            Retours::create([
+                'text' => $retour,
+                'destination_id' => $req->id
+            ]);
+        }
+
+
 
         return response()->json([
             'message' => 'OK',

@@ -31,7 +31,7 @@ class DestinationFactory extends Factory
             'reception' => Str::random(20),
             'arrival' => '10:00',
             'departure' => '18:00',
-            'map' => Str::random(35),
+            'carte' => Str::random(35),
             'pImage' => '../images/presentation-image.jpeg',
             'sImage' => '../images/presentation-image.jpeg',
             'tImage1' => '../images/presentation-image.jpeg',

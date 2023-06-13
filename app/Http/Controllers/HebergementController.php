@@ -183,7 +183,8 @@ class HebergementController extends Controller
                 'city' => $req->city,
                 'destination_id' => $req->destination_id,
                 'type_id' => $req->type_id,
-                'code' => $req->code
+                'description' => $req->description,
+                'image' => $req->image,
             ]
         );
 
