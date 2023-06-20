@@ -37,7 +37,8 @@ class DestinationFactory extends Factory
             'tImage1' => '../images/presentation-image.jpeg',
             'tImage2' => '../images/presentation-image.jpeg',
             'vehicule' => True,
-            'parking' => True
+            'parking' => True,
+            'favorite' => true,
         ];
     }
 }

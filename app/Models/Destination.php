@@ -22,13 +22,14 @@ class Destination extends Model
         'reception',
         'arrival',
         'departure',
-        'map',
+        'carte',
         'pImage',
         'sImage',
         'tImage1',
         'tImage2',
         'vehicule',
         'parking',
+        'favorite'
     ];
 
     public function service()

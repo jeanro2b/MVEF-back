@@ -6,6 +6,7 @@ use App\Models\Hebergement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use stdClass;
 
 class HebergementController extends Controller
@@ -96,6 +97,8 @@ class HebergementController extends Controller
             foreach ($destination as $dest) {
                 $hebergement->name_destination = $dest->name;
             }
+
+            $image = Storage::disk('s3')->url($hebergement->image);
         }
 
         foreach ($hebergements as $hebergement) {
@@ -116,7 +119,8 @@ class HebergementController extends Controller
 
         return response()->json([
             'message' => 'OK',
-            'hebergements' => $hebergements
+            'hebergements' => $hebergements,
+            'image' => $image
         ], 200);
     }
 
@@ -125,14 +129,19 @@ class HebergementController extends Controller
      */
     public function create_hebergement(Request $req)
     {
+
+        $image = Storage::disk('s3')->put('images', $req->image);
+
+        $requete = json_decode($req->hebergement);
+
         $hebergement = Hebergement::create([
-            'name' => $req->name,
-            'city' => $req->city,
-            'description' => $req->description,
-            'image' => $req->image,
-            'type_id' => $req->type,
-            'code' => $req->code,
-            'destination_id' => $req->destination_id
+            'name' => $requete->name,
+            'city' => $requete->city,
+            'description' => $requete->description,
+            'image' => $image,
+            'type_id' => $requete->type,
+            'code' => $requete->code,
+            'destination_id' => $requete->destination_id
         ]);
 
         return response()->json([
@@ -177,14 +186,19 @@ class HebergementController extends Controller
 
     public function modify_hebergement(Request $req)
     {
-        $hebergement = Hebergement::where('id', $req->id)->update(
+
+        $image = Storage::disk('s3')->put('images', $req->image);
+
+        $requete = json_decode($req->hebergement);
+
+        $hebergement = Hebergement::where('id', $requete->id)->update(
             [
-                'name' => $req->name,
-                'city' => $req->city,
-                'destination_id' => $req->destination_id,
-                'type_id' => $req->type_id,
-                'description' => $req->description,
-                'image' => $req->image,
+                'name' => $requete->name,
+                'city' => $requete->city,
+                'destination_id' => $requete->destination_id,
+                'type_id' => $requete->type_id,
+                'description' => $requete->description,
+                'image' => $image,
             ]
         );
 

@@ -2,11 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\HebergementController;
-use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\PeriodController;
+use App\Http\Controllers\PlanningController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -15,12 +17,12 @@ use App\Http\Controllers\PeriodController;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -33,7 +35,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Gets
 
-Route::get('destinations-all', [DestinationController::class, 'get_all_destinations'])
+Route::get('/destinations-all', [DestinationController::class, 'get_all_destinations'])
     ->name('get_destinations');
 
 Route::get('destination/{id}', [DestinationController::class, 'get_destination'])
@@ -55,6 +57,9 @@ Route::get('client/{id}', [UserController::class, 'get_client'])
 
 Route::get('plannings-all', [PlanningController::class, 'get_all_plannings'])
     ->name('get_plannings');
+
+Route::get('plannings-client/{id}', [PlanningController::class, 'get_planning_client'])
+    ->name('get_planning_client');
 
 Route::get('planning/{id}', [PlanningController::class, 'get_planning'])
     ->name('get_planning');
@@ -84,10 +89,10 @@ Route::post('planning-period/{id}', [PeriodController::class, 'create_planning_p
 
 // Puts
 
-Route::put('modify-destination', [DestinationController::class, 'modify_destination'])
+Route::post('modify-destination', [DestinationController::class, 'modify_destination'])
     ->name('modify_destination');
 
-Route::put('modify-hebergement', [HebergementController::class, 'modify_hebergement'])
+Route::post('modify-hebergement', [HebergementController::class, 'modify_hebergement'])
     ->name('modify_hebergement');
 
 Route::put('modify-client', [UserController::class, 'modify_client'])
@@ -101,7 +106,7 @@ Route::put('modify-planning-period', [PeriodController::class, 'modify_planning_
 
 // Deletes
 
-Route::delete('delete-destination/{id}', [DestinationController::class, 'delete_destination'])
+Route::delete('/delete-destination/{id}', [DestinationController::class, 'delete_destination'])
     ->name('delete_destination');
 
 Route::delete('delete-hebergement/{id}', [HebergementController::class, 'delete_hebergement'])

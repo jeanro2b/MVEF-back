@@ -68,6 +68,61 @@ class PlanningController extends Controller
         ], 200);
     }
 
+    public function get_planning_client($id)
+    {
+
+        $hebergements = DB::table('hebergements')
+            ->select(
+                'id',
+                'name',
+            )
+            ->get();
+
+        $users = DB::table('users')
+            ->select(
+                'id',
+                'name',
+            )
+            ->get();
+
+        $plannings = DB::table('plannings')
+            ->select(
+                'id',
+                'object',
+                'code',
+                'status',
+                'lit',
+                'toilette',
+                'menage',
+                'user_id',
+                'hebergement_id'
+            )
+            ->where('user_id', $id)
+            ->get();
+
+        foreach($plannings as $planning) {
+            $user_id = $planning->user_id;
+            $hebergement_id = $planning->hebergement_id;
+
+            foreach($hebergements as $hebergement) {
+                if ($hebergement->id == $hebergement_id) {
+                    $planning->hebergement_name = $hebergement->name;
+                }
+            }
+
+            foreach($users as $user) {
+                if ($user->id == $user_id) {
+                    $planning->user_name = $user->name;
+                }
+            }
+        }
+
+        return response()->json([
+            'message' => 'OK',
+            'plannings' => $plannings
+        ], 200);
+    }
+
     public function get_planning($id)
     {
 

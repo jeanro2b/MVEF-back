@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('tImage2');
             $table->string('vehicule');
             $table->string('parking');
+            $table->boolean('favorite');
         });
     }
 

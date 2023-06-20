@@ -23,6 +23,7 @@ class HebergementFactory extends Factory
             'description' => Str::random(35),
             'code' => Str::random(10),
             'image' => 'images/destination.png',
+            'price' => fake()->numberBetween(50, 200),
 
             'destination_id' => 1,
             'type_id' => 1,
