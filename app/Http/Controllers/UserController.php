@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+use Illuminate\Auth\Events\Registered;
+
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -101,21 +107,76 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function create_client(Request $req)
+    public function create_client(Request $request)
     {
+        // $user = User::create([
+        //     'name' => $req->name,
+        //     'city' => $req->city,
+        //     'email' => $req->email,
+        //     'address' => $req->address,
+        //     'phone' => $req->phone,
+        //     'role' => $req->role,
+        //     'password' => $req->password
+        // ]);
+
+        // return response()->json([
+        //     'message' => 'OK',
+        //     'user' => $user
+        // ], 200);
+
+        // $request->validate([
+        //     'name' => ['required', 'string', 'max:255'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+        //     'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        // ]);
+
         $user = User::create([
-            'name' => $req->name,
-            'city' => $req->city,
-            'email' => $req->email,
-            'address' => $req->address,
-            'phone' => $req->phone,
-            'role' => $req->role,
-            'password' => $req->password
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'city' => $request->city,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'role' => $request->role,
         ]);
 
-        return response()->json([
-            'message' => 'OK',
-            'user' => $user
-        ], 200);
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return response()->noContent();
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = $request->user();
+            $token = $user->createToken('api_token')->plainTextToken;
+
+            return response()->json(['token' => $token], 200);
+        } else {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'User logged out successfully'], 200);
+    }
+
+    public function getUser(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json(['id' => $user->id]);
     }
 }

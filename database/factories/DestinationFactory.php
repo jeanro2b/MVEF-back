@@ -39,6 +39,7 @@ class DestinationFactory extends Factory
             'vehicule' => True,
             'parking' => True,
             'favorite' => true,
+            'location' => 'Corse'
         ];
     }
 }

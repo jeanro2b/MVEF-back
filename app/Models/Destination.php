@@ -29,7 +29,8 @@ class Destination extends Model
         'tImage2',
         'vehicule',
         'parking',
-        'favorite'
+        'favorite',
+        'location'
     ];
 
     public function service()

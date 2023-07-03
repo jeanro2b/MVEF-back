@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DestinationController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HebergementController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\PlanningController;
@@ -25,10 +27,6 @@ use App\Http\Controllers\UserController;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
-
-// TODO créer les fonctions dans les controlleurs
-// Fonctions users a faire quand au point sur le planning
-
 
 // TODO ajouter le middleware admin aux routes admin après les 1ers tests
 // ->middleware('admin')
@@ -70,10 +68,22 @@ Route::get('planning-periods/{id}', [PeriodController::class, 'get_planning_peri
 Route::get('planning-periods-all', [PeriodController::class, 'get_planning_periods_all'])
     ->name('get_planning_periods_all');
 
+
+Route::get('files-client/{id}', [DocumentController::class, 'get_files_client'])
+    ->name('get_files_client');
+
+
+Route::get('download/{path}', [DocumentController::class, 'download_file'])
+    ->name('download_file');
+
 // Posts
 
 Route::post('client', [UserController::class, 'create_client'])
     ->name('create_client');
+
+Route::post('client-files/{id}', [DocumentController::class, 'post_client_files'])
+    ->name('post_client_files');
+
 
 Route::post('destination', [DestinationController::class, 'create_destination'])
     ->name('create_destination');
@@ -86,6 +96,10 @@ Route::post('planning', [PlanningController::class, 'create_planning'])
 
 Route::post('planning-period/{id}', [PeriodController::class, 'create_planning_period'])
     ->name('create_planning_period');
+
+
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+    ->name('login');
 
 // Puts
 
@@ -104,6 +118,10 @@ Route::put('modify-planning', [PlanningController::class, 'modify_planning'])
 Route::put('modify-planning-period', [PeriodController::class, 'modify_planning_period'])
     ->name('modify_planning_period');
 
+
+Route::put('admin-modify-planning-period', [PeriodController::class, 'admin_modify_planning_period'])
+    ->name('admin_modify_planning_period');
+
 // Deletes
 
 Route::delete('/delete-destination/{id}', [DestinationController::class, 'delete_destination'])
@@ -120,3 +138,16 @@ Route::delete('delete-planning/{id}', [PlanningController::class, 'delete_planni
 
 Route::delete('delete-planning-periods/{id}', [PeriodController::class, 'delete_planning_period'])
     ->name('delete_planning_periods');
+
+Route::delete('delete-file-client/{fileId}/{id}', [DocumentController::class, 'delete_file_client'])
+    ->name('delete_file_client');
+
+
+
+Route::post('/login', [UserController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    // Route protégée nécessitant une authentification
+    Route::post('/logout', [UserController::class, 'logout']);
+    Route::get('/user', [UserController::class, 'getUser']);
+});

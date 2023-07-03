@@ -15,12 +15,16 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
+            $table->text('long_title');
             $table->string('city');
             $table->text('description');
             $table->string('code');
             $table->integer('price');
+            $table->integer('couchage');
         
-            $table->string('image');
+            $table->string('pImage');
+            $table->string('sImage');
+            $table->string('tImage');
 
             $table->unsignedBigInteger('destination_id');
             $table->foreign('destination_id')->references('id')->on('destinations');

@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Period;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class PeriodController extends Controller
 {
 
     public function get_planning_periods($id)
     {
-
         $periods = DB::table('periods')
             ->select(
                 'id',
@@ -24,6 +25,14 @@ class PeriodController extends Controller
             )
             ->where('planning_id', $id)
             ->get();
+
+        foreach($periods as $period) {
+            $formattedDateStart = Carbon::parse($period->start)->format('d/m/Y');
+            $formattedDateEnd = Carbon::parse($period->end)->format('d/m/Y');
+
+            $period->start = $formattedDateStart;
+            $period->end = $formattedDateEnd;
+        }
 
         return response()->json([
             'message' => 'OK',
@@ -94,6 +103,25 @@ class PeriodController extends Controller
                 'phone' => $req->phone,
                 'mail' => $req->mail,
                 'number' => $req->number,
+            ]
+        );
+
+        return response()->json([
+            'message' => 'OK',
+            'period' => $period
+        ], 200);
+    }
+
+    public function admin_modify_planning_period(Request $req)
+    {
+
+        $start = Carbon::createFromFormat('d/m/Y', $req->input('start'));
+        $end = Carbon::createFromFormat('d/m/Y', $req->input('end'));
+
+        $period = Period::where('id', $req->id)->update(
+            [
+                'start' => $start,
+                'end' => $end,
             ]
         );
 

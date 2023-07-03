@@ -11,13 +11,17 @@ class Hebergement extends Model
 
     protected $fillable = [
         'name',
+        'long_title',
         'city',
         'description',
-        'image',
+        'pImage',
+        'sImage',
+        'tImage',
         'code',
         'destination_id',
         'type_id',
-        'price'
+        'price',
+        'couchage'
     ];
 
     public function type()

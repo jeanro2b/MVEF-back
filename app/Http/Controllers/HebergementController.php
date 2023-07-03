@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Equipements;
 use App\Models\Hebergement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,12 +21,25 @@ class HebergementController extends Controller
             ->select(
                 'id',
                 'name',
+                'long_title',
                 'city',
                 'destination_id',
                 'type_id',
                 'code',
                 'description',
-                'image'
+                'pImage',
+                'sImage',
+                'tImage',
+                'price',
+                'couchage'
+            )
+            ->get();
+
+        $equipements = DB::table('equipements')
+            ->select(
+                'id',
+                'text',
+                'hebergement_id'
             )
             ->get();
 
@@ -46,6 +60,8 @@ class HebergementController extends Controller
         foreach ($hebergements as $hebergement) {
             $dest_id = $hebergement->destination_id;
             $type_id = $hebergement->type_id;
+            $equips = [];
+
             foreach ($destinations as $destination) {
                 if ($dest_id == $destination->id) {
                     $hebergement->name_destination = $destination->name;
@@ -57,6 +73,14 @@ class HebergementController extends Controller
                     $hebergement->name_type = $type->type;
                 }
             }
+
+            foreach ($equipements as $equipement) {
+                if ($equipement->hebergement_id == $hebergement->id) {
+                    array_push($equips, $equipement);
+                }
+            }
+
+            $hebergement->equipements = $equips;
         }
 
         return response()->json([
@@ -73,18 +97,38 @@ class HebergementController extends Controller
             ->select(
                 'id',
                 'name',
+                'long_title',
                 'city',
                 'destination_id',
                 'type_id',
                 'code',
                 'description',
-                'image'
+                'pImage',
+                'sImage',
+                'tImage',
+                'price',
+                'couchage'
             )
             ->where('id', $id)
             ->get();
 
+        $equipements = DB::table('equipements')
+            ->select(
+                'id',
+                'text',
+                'hebergement_id'
+            )
+            ->get();
+
         foreach ($hebergements as $hebergement) {
             $dest_id = $hebergement->destination_id;
+            $equips = [];
+            foreach ($equipements as $equipement) {
+                if ($equipement->hebergement_id == $hebergement->id) {
+                    array_push($equips, $equipement);
+                }
+            }
+            $hebergement->equipements = $equips;
 
             $destination = DB::table('destinations')
                 ->select(
@@ -98,7 +142,9 @@ class HebergementController extends Controller
                 $hebergement->name_destination = $dest->name;
             }
 
-            $image = Storage::disk('s3')->url($hebergement->image);
+            $pImage = Storage::disk('s3')->url($hebergement->pImage);
+            $sImage = Storage::disk('s3')->url($hebergement->sImage);
+            $tImage = Storage::disk('s3')->url($hebergement->tImage);
         }
 
         foreach ($hebergements as $hebergement) {
@@ -120,7 +166,9 @@ class HebergementController extends Controller
         return response()->json([
             'message' => 'OK',
             'hebergements' => $hebergements,
-            'image' => $image
+            'pImage' => $pImage ? $pImage : '',
+            'sImage' => $sImage ? $sImage : '',
+            'tImage' => $tImage ? $tImage : ''
         ], 200);
     }
 
@@ -130,19 +178,33 @@ class HebergementController extends Controller
     public function create_hebergement(Request $req)
     {
 
-        $image = Storage::disk('s3')->put('images', $req->image);
+        $pImage = Storage::disk('s3')->put('pImages', $req->pImage);
+        $sImage = Storage::disk('s3')->put('sImages', $req->sImage);
+        $tImage = Storage::disk('s3')->put('tImages', $req->tImage);
 
         $requete = json_decode($req->hebergement);
 
         $hebergement = Hebergement::create([
             'name' => $requete->name,
+            'long_title' => $requete->longTitle,
             'city' => $requete->city,
             'description' => $requete->description,
-            'image' => $image,
+            'pImage' => $pImage,
+            'sImage' => $sImage,
+            'tImage' => $tImage,
             'type_id' => $requete->type,
             'code' => $requete->code,
-            'destination_id' => $requete->destination_id
+            'destination_id' => $requete->destination_id,
+            'price' => $requete->price,
+            'couchage' => $requete->couchage
         ]);
+
+        foreach ($requete->equipements as $equipement) {
+            Equipements::create([
+                'text' => $equipement,
+                'hebergement_id' => $hebergement->id
+            ]);
+        }
 
         return response()->json([
             'message' => 'OK',
@@ -155,17 +217,19 @@ class HebergementController extends Controller
     public function delete_hebergement($id)
     {
 
-        $plannings = DB::table('plannings')
-             ->select('id')
-             ->where('hebergement_id', $id)
-             ->get();
+        Equipements::where('hebergement_id', $id)->delete();
 
-        foreach($plannings as $planning) {
+        $plannings = DB::table('plannings')
+            ->select('id')
+            ->where('hebergement_id', $id)
+            ->get();
+
+        foreach ($plannings as $planning) {
 
             $planning_id = $planning->id;
             $period = DB::table('periods')
-            ->where('planning_id', $planning_id)
-            ->delete();
+                ->where('planning_id', $planning_id)
+                ->delete();
         }
 
         $plan = DB::table('plannings')
@@ -187,18 +251,34 @@ class HebergementController extends Controller
     public function modify_hebergement(Request $req)
     {
 
-        $image = Storage::disk('s3')->put('images', $req->image);
+        $pImage = Storage::disk('s3')->put('pImages', $req->pImage);
+        $sImage = Storage::disk('s3')->put('sImages', $req->sImage);
+        $tImage = Storage::disk('s3')->put('tImages', $req->tImage);
 
         $requete = json_decode($req->hebergement);
+
+        Equipements::where('hebergement_id', $requete->id)->delete();
+
+        foreach ($requete->equipements as $equipement) {
+            Equipements::create([
+                'text' => $equipement,
+                'hebergement_id' => $requete->id
+            ]);
+        }
 
         $hebergement = Hebergement::where('id', $requete->id)->update(
             [
                 'name' => $requete->name,
+                'long_title' => $requete->longTitle,
                 'city' => $requete->city,
                 'destination_id' => $requete->destination_id,
                 'type_id' => $requete->type_id,
                 'description' => $requete->description,
-                'image' => $image,
+                'price' => $requete->price,
+                'couchage' => $requete->couchage,
+                'pImage' => $pImage,
+                'sImage' => $sImage,
+                'tImage' => $tImage,
             ]
         );
 

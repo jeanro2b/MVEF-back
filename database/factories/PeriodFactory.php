@@ -19,8 +19,8 @@ class PeriodFactory extends Factory
     public function definition(): array
     {
         return [
-            'start' => '2023-05-12 10:00:00',
-            'end' => '2023-05-19 18:00:00',
+            'start' => '2023-05-12',
+            'end' => '2023-05-19',
             'name' => Str::random(5),
             'mail' => fake()->unique()->safeEmail(),
             'phone' => '06 06 06 06 06',

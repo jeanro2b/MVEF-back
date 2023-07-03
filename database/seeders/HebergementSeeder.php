@@ -20,6 +20,14 @@ class HebergementSeeder extends Seeder
             ['destination_id' => 2],
             ['destination_id' => 3],
         )
+        ->sequence(
+            ['couchage' => 1],
+            ['couchage' => 2],
+            ['couchage' => 3],
+            ['couchage' => 4],
+            ['couchage' => 5],
+            ['couchage' => 6],
+        )
         ->create();
     }
 }

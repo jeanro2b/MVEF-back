@@ -219,9 +219,8 @@ class PlanningController extends Controller
 
         $planning = Planning::where('id', $req->id)->update(
             [
-                'object' => $req->object,
+                'object' => $req->name,
                 'code' => $req->code,
-                'status' => $req->status,
                 'lit' => $req->lit,
                 'toilette' => $req->lit,
                 'menage' => $req->lit,

@@ -19,12 +19,16 @@ class HebergementFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'long_title' => Str::random(35),
             'city' => Str::random(10),
             'description' => Str::random(35),
             'code' => Str::random(10),
-            'image' => 'images/destination.png',
+            'pImage' => 'images/destination.png',
+            'sImage' => 'images/destination.png',
+            'tImage' => 'images/destination.png',
             'price' => fake()->numberBetween(50, 200),
 
+            'couchage' => 1,
             'destination_id' => 1,
             'type_id' => 1,
         ];

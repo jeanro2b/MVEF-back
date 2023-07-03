@@ -13,15 +13,15 @@ class ServiceSeeder extends Seeder
      */
     public function run(): void
     {
-        // Service::factory()
-        // ->count(5)
-        // ->sequence(
-        //     ['text' => 'Promenades à vélo'],
-        //     ['text' => 'Promenades à cheval'],
-        //     ['text' => 'Montgolfière'],
-        //     ['text' => 'Promenades en mer'],
-        //     ['text' => 'Rando'],
-        // )
-        // ->create();
+        Service::factory()
+        ->count(5)
+        ->sequence(
+            ['text' => 'Promenades à vélo'],
+            ['text' => 'Promenades à cheval'],
+            ['text' => 'Montgolfière'],
+            ['text' => 'Promenades en mer'],
+            ['text' => 'Rando'],
+        )
+        ->create();
     }
 }

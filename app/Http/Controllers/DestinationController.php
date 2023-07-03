@@ -14,13 +14,15 @@ use Illuminate\Support\Facades\Storage;
 class DestinationController extends Controller
 {
 
-    public function get_all_destinations()
+    public function get_all_destinations(Request $req)
     {
         $hebergements = DB::table('hebergements')
             ->select(
                 'id',
                 'destination_id',
-                'price'
+                'price',
+                'type_id',
+                'couchage'
             )
             ->get();
 
@@ -31,25 +33,95 @@ class DestinationController extends Controller
                 'name',
                 'city',
                 'favorite',
-                'description'
+                'description',
+                'pImage',
+                'location',
+            )
+            ->get();
+
+        $plannings = DB::table('plannings')
+            ->select(
+                'id',
+                'hebergement_id',
+            )
+            ->get();
+
+        $periods = DB::table('periods')
+            ->select(
+                'id',
+                'start',
+                'end',
+                'planning_id'
             )
             ->get();
 
         foreach ($destinations as $destination) {
             $nombre_herbegements = 0;
             $min_price = 0;
+            $appartement = false;
+            $mobil_home = false;
+            $villa = false;
+            $types = [];
+            $couchages = [];
+
 
             foreach ($hebergements as $hebergement) {
                 if ($hebergement->destination_id == $destination->id) {
                     $nombre_herbegements++;
+                    array_push($couchages, strval($hebergement->couchage));
+                    if ($hebergement->type_id == 1) {
+                        $appartement = true;
+                    }
+                    if ($hebergement->type_id == 2) {
+                        $mobil_home = true;
+                    }
+                    if ($hebergement->type_id == 3) {
+                        $villa = true;
+                    }
                 }
                 if ($hebergement->destination_id == $destination->id && $hebergement->price > $min_price) {
                     $min_price = $hebergement->price;
                 }
             }
 
+            if ($appartement == true) {
+                array_push($types, 'Appartement');
+            }
+            if ($mobil_home == true) {
+                array_push($types, 'MobilHome');
+            }
+            if ($villa == true) {
+                array_push($types, 'Villa');
+            }
+
             $destination->min_price = $min_price;
             $destination->nombre = $nombre_herbegements;
+            $destination->types = $types;
+            $destination->couchage = $couchages;
+        }
+
+        if ($req->start_date) {
+            //faire les filtres dates
+
+
+            foreach ($destinations as $destination) {
+                $dispo = true;
+                foreach ($hebergements as $hebergement) {
+                    if ($hebergement->destination_id == $destination->id) {
+                        foreach ($plannings as $planning) {
+                            if ($planning->hebergement_id == $hebergement->id) {
+                                foreach ($periods as $period) {
+                                    if ($period->start <= $req->start_date && $period->end >= $req->end_date) {
+                                        $dispo = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $destination->dispo = $dispo;
+            }
         }
 
 
@@ -63,9 +135,23 @@ class DestinationController extends Controller
             ->select(
                 'id',
                 'name',
-                'price'
+                'price',
+                'pImage',
+                'sImage',
+                'tImage',
+                'description',
+                'couchage',
+                'long_title'
             )
             ->where('destination_id', $id)
+            ->get();
+
+        $equipements = DB::table('equipements')
+            ->select(
+                'id',
+                'text',
+                'hebergement_id'
+            )
             ->get();
 
         $services = DB::table('services')
@@ -90,8 +176,26 @@ class DestinationController extends Controller
             ->where('id', $id)
             ->get();
 
+        foreach ($hebergements as $hebergement) {
+            $equips = [];
+            foreach ($equipements as $equipement) {
+                if ($equipement->hebergement_id == $hebergement->id) {
+                    array_push($equips, $equipement);
+                }
+            }
+            $hebergement->equipements = $equips;
 
-        foreach($destinations as $dest) {
+            $hp_Image = Storage::disk('s3')->url($hebergement->pImage);
+            $hs_Image = Storage::disk('s3')->url($hebergement->sImage);
+            $ht_Image = Storage::disk('s3')->url($hebergement->tImage);
+
+            $hebergement->pImage = $hp_Image;
+            $hebergement->sImage = $hs_Image;
+            $hebergement->tImage = $ht_Image;
+        }
+
+
+        foreach ($destinations as $dest) {
             $p_Image = Storage::disk('s3')->url($dest->pImage);
             $s_Image = Storage::disk('s3')->url($dest->sImage);
             $t1_Image = Storage::disk('s3')->url($dest->tImage1);
@@ -119,8 +223,6 @@ class DestinationController extends Controller
                 'retours' => $retours,
             ], 400);
         }
-
-       
     }
 
     public function delete_destination($id)
@@ -169,6 +271,8 @@ class DestinationController extends Controller
             'tImage2' => $tImage2,
             'vehicule' => $requete->vehicule,
             'parking' => $requete->parking,
+            'favorite' => $requete->favorite,
+            'location' => $requete->location,
         ]);
 
 
@@ -225,6 +329,8 @@ class DestinationController extends Controller
                 'tImage2' => $tImage2,
                 'vehicule' => $requete->vehicule,
                 'parking' => $requete->parking,
+                'favorite' => $requete->favorite,
+                'location' => $requete->location,
             ]
         );
 

@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Document extends Model
+class Equipements extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'file_name',
-        'file_path',
-        'user_id'
+        'text',
+        'hebergement_id'
     ];
 
-    public function user()
+    public function destination()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsToMany(Hebergement::class);
     }
 }
