@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Period;
 use App\Models\Planning;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,34 +30,22 @@ class PlanningController extends Controller
             )
             ->get();
 
-        $plannings = DB::table('plannings')
-            ->select(
-                'id',
-                'object',
-                'code',
-                'status',
-                'lit',
-                'toilette',
-                'menage',
-                'user_id',
-                'hebergement_id'
-            )
-            ->get();
+        $plannings = Planning::all();
 
 
 
 
-        foreach($plannings as $planning) {
+        foreach ($plannings as $planning) {
             $user_id = $planning->user_id;
             $hebergement_id = $planning->hebergement_id;
 
-            foreach($hebergements as $hebergement) {
+            foreach ($hebergements as $hebergement) {
                 if ($hebergement->id == $hebergement_id) {
                     $planning->hebergement_name = $hebergement->name;
                 }
             }
 
-            foreach($users as $user) {
+            foreach ($users as $user) {
                 if ($user->id == $user_id) {
                     $planning->user_name = $user->name;
                 }
@@ -100,17 +90,17 @@ class PlanningController extends Controller
             ->where('user_id', $id)
             ->get();
 
-        foreach($plannings as $planning) {
+        foreach ($plannings as $planning) {
             $user_id = $planning->user_id;
             $hebergement_id = $planning->hebergement_id;
 
-            foreach($hebergements as $hebergement) {
+            foreach ($hebergements as $hebergement) {
                 if ($hebergement->id == $hebergement_id) {
                     $planning->hebergement_name = $hebergement->name;
                 }
             }
 
-            foreach($users as $user) {
+            foreach ($users as $user) {
                 if ($user->id == $user_id) {
                     $planning->user_name = $user->name;
                 }
@@ -157,17 +147,17 @@ class PlanningController extends Controller
 
 
 
-        foreach($plannings as $planning) {
+        foreach ($plannings as $planning) {
             $user_id = $planning->user_id;
             $hebergement_id = $planning->hebergement_id;
 
-            foreach($hebergements as $hebergement) {
+            foreach ($hebergements as $hebergement) {
                 if ($hebergement->id == $hebergement_id) {
                     $planning->hebergement_name = $hebergement->name;
                 }
             }
 
-            foreach($users as $user) {
+            foreach ($users as $user) {
                 if ($user->id == $user_id) {
                     $planning->user_name = $user->name;
                 }
@@ -183,9 +173,12 @@ class PlanningController extends Controller
 
     public function delete_planning($id)
     {
-        $planning = DB::table('plannings')
-            ->where('id', $id)
-            ->delete();
+
+        $plannings = Planning::where('id', $id)->get();
+        foreach ($plannings as $planning) {
+            Period::where('planning_id', $planning->id)->delete();
+        }
+        Planning::where('id', $id)->delete();
 
         return response()->json([
             'message' => 'OK',
@@ -199,10 +192,10 @@ class PlanningController extends Controller
         $planning = Planning::create([
             'object' => $req->object,
             'code' => $req->code,
-            'status' => $req->status,
+            'status' => 'En cours',
             'lit' => $req->lit,
-            'toilette' => $req->lit,
-            'menage' => $req->lit,
+            'toilette' => $req->toilette,
+            'menage' => $req->menage,
             'hebergement_id' => $req->hebergement_id,
             'user_id' => $req->user_id,
 
@@ -222,10 +215,11 @@ class PlanningController extends Controller
                 'object' => $req->name,
                 'code' => $req->code,
                 'lit' => $req->lit,
-                'toilette' => $req->lit,
-                'menage' => $req->lit,
+                'toilette' => $req->toilette,
+                'menage' => $req->menage,
                 'hebergement_id' => $req->hebergement_id,
                 'user_id' => $req->user_id,
+                'status' => $req->status,
             ]
         );
 

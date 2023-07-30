@@ -3,13 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
+use App\Models\Equipements;
+use App\Models\Hebergement;
+use App\Models\Period;
+use App\Models\Planning;
 use App\Models\Retours;
 use App\Models\Service;
-use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Mockery\Undefined;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\IReadFilter;
 
 class DestinationController extends Controller
 {
@@ -230,6 +238,17 @@ class DestinationController extends Controller
 
         Service::where('destination_id', $id)->delete();
         Retours::where('destination_id', $id)->delete();
+        $hebergements = Hebergement::where('destination_id', $id)->get();
+        foreach ($hebergements as $hebergement) {
+            Equipements::where('hebergement_id', $hebergement->id)->delete();
+
+            $plannings = Planning::where('hebergement_id', $hebergement->id)->get();
+            foreach ($plannings as $planning) {
+                Period::where('planning_id', $planning->id)->delete();
+            }
+            Planning::where('hebergement_id', $hebergement->id)->delete();
+        }
+        Hebergement::where('destination_id', $id)->delete();
 
         $destination = DB::table('destinations')
             ->where('id', $id)
@@ -273,6 +292,7 @@ class DestinationController extends Controller
             'parking' => $requete->parking,
             'favorite' => $requete->favorite,
             'location' => $requete->location,
+            'site' => $requete->site
         ]);
 
 
@@ -301,12 +321,34 @@ class DestinationController extends Controller
 
     public function modify_destination(Request $req)
     {
-        $pImage = Storage::disk('s3')->put('images', $req->pImage);
-        $sImage = Storage::disk('s3')->put('images', $req->sImage);
-        $tImage1 = Storage::disk('s3')->put('images', $req->tImage1);
-        $tImage2 = Storage::disk('s3')->put('images', $req->tImage2);
-
         $requete = json_decode($req->destination);
+
+        $destinationTemp = Destination::find($requete->id);
+
+        $pImageTemp = $destinationTemp->pImage;
+        $sImageTemp = $destinationTemp->sImage;
+        $tImage1Temp = $destinationTemp->tImage1;
+        $tImage2Temp = $destinationTemp->tImage2;
+
+        if ($req->pImage != "undefined") {
+            $pImage = Storage::disk('s3')->put('images', $req->pImage);
+            $pImageTemp = $pImage;
+        }
+
+        if ($req->sImage != "undefined") {
+            $sImage = Storage::disk('s3')->put('images', $req->sImage);
+            $sImageTemp = $sImage;
+        }
+
+        if ($req->tImage1 != "undefined") {
+            $tImage1 = Storage::disk('s3')->put('images', $req->tImage1);
+            $tImage1Temp = $tImage1;
+        }
+
+        if ($req->tImage2 != "undefined") {
+            $tImage2 = Storage::disk('s3')->put('images', $req->tImage2);
+            $tImage2Temp = $tImage2;
+        }
 
         $destination = Destination::where('id', $requete->id)->update(
             [
@@ -323,14 +365,15 @@ class DestinationController extends Controller
                 'arrival' => $requete->arrival,
                 'departure' => $requete->departure,
                 'carte' => $requete->carte,
-                'pImage' => $pImage,
-                'sImage' => $sImage,
-                'tImage1' => $tImage1,
-                'tImage2' => $tImage2,
+                'pImage' => $pImageTemp,
+                'sImage' => $sImageTemp,
+                'tImage1' => $tImage1Temp,
+                'tImage2' => $tImage2Temp,
                 'vehicule' => $requete->vehicule,
                 'parking' => $requete->parking,
                 'favorite' => $requete->favorite,
                 'location' => $requete->location,
+                'site' => $requete->site
             ]
         );
 
@@ -351,15 +394,136 @@ class DestinationController extends Controller
             ]);
         }
 
-
-
         return response()->json([
             'message' => 'OK',
             'destination' => $destination,
-            'pImage' => $pImage,
-            'sImage' => $sImage,
-            'tImage1' => $tImage1,
-            'tImage2' => $tImage2,
+            'pImage' => $pImageTemp,
+            'sImage' => $sImageTemp,
+            'tImage1' => $tImage1Temp,
+            'tImage2' => $tImage2Temp,
         ], 200);
+    }
+
+
+    public function importerDestinations(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Vérifiez si le fichier est valide, par exemple, vérifiez l'extension ou le type MIME
+            if ($file->isValid()) {
+                // Chemin temporaire pour le stockage du fichier
+                $temporaryPath = $file->getRealPath();
+
+                try {
+
+
+                    // Chargement du fichier Numbers avec PhpSpreadsheet
+                    $spreadsheet = IOFactory::load($temporaryPath);
+                    $sheet = $spreadsheet->getActiveSheet();
+
+                    $data = [];
+                    $rowIterator = $sheet->getRowIterator();
+                    $counter = 0;
+                    foreach ($rowIterator as $row) {
+                        if ($counter > 0) {
+                            $name = $sheet->getCell('B' . $row->getRowIndex())->getValue();
+                            $description = $sheet->getCell('G' . $row->getRowIndex())->getValue();
+                            $localisation = $sheet->getCell('D' . $row->getRowIndex())->getValue();
+                            $city = $sheet->getCell('E' . $row->getRowIndex())->getValue();
+                            $address = nl2br($sheet->getCell('H' . $row->getRowIndex())->getValue());
+                            $site = $sheet->getCell('I' . $row->getRowIndex())->getValue();
+                            $phone = $sheet->getCell('J' . $row->getRowIndex())->getValue();
+                            $mail = $sheet->getCell('K' . $row->getRowIndex())->getValue();
+                            $latitude = $sheet->getCell('L' . $row->getRowIndex())->getValue();
+                            $longitude = $sheet->getCell('M' . $row->getRowIndex())->getValue();
+
+                            $reception= nl2br($sheet->getCell('Q' . $row->getRowIndex())->getValue());
+                            $map = $sheet->getCell('R' . $row->getRowIndex())->getValue();
+                            $language = nl2br($sheet->getCell('S' . $row->getRowIndex())->getValue());
+                            $parking = $sheet->getCell('T' . $row->getRowIndex())->getValue();
+                            $vehicule = $sheet->getCell('U' . $row->getRowIndex())->getValue();
+                            $arrive = $sheet->getCell('V' . $row->getRowIndex())->getValue();
+                            $depart = $sheet->getCell('W' . $row->getRowIndex())->getValue();
+                            $favorite = $sheet->getCell('Y' . $row->getRowIndex())->getValue();
+
+                            $retours = $sheet->getCell('X' . $row->getRowIndex())->getValue();
+
+                            $data = [
+                                'name' => $name,
+                                'city' => $city,
+                                'description' => $description,
+                                'address' => $address,
+                                'latitude' => $latitude,
+                                'longitude' => $longitude,
+                                'phone' => $phone,
+                                'mail' => $mail,
+                                'location' => $localisation,
+                                'site' => $site,
+                                'reception' => $reception,
+                                'arrival' => $arrive.'h',
+                                'departure' => $depart.'h',
+                                'carte' => $map,
+                                'pImage' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
+                                'sImage' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
+                                'tImage1' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
+                                'tImage2' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
+                                'languages' => $language,
+                                'vehicule' => $vehicule,
+                                'parking' => $parking,
+                                'favorite' => $favorite,
+                            ];
+
+                            Destination::create($data);
+
+                            $id = $sheet->getCell('P' . $row->getRowIndex())->getValue();
+
+                            $adores = explode("\n",$sheet->getCell('Z' . $row->getRowIndex())->getValue());
+                            $services = explode("\n",$sheet->getCell('AA' . $row->getRowIndex())->getValue());
+
+                            if (count($adores) != 1) {
+                                foreach ($adores as $adore) {
+                                    if ($adore != '') {
+                                        $dataAdores = [
+                                            'text' => $adore,
+                                            'destination_id' => $id
+                                        ];
+
+                                        Retours::create($dataAdores);
+                                    }
+                                }
+                            }
+
+
+                            if (count($services) != 1) {
+                                foreach ($services as $service) {
+                                    if ($service != '') {
+                                        $dataServices = [
+                                            'text' => $service,
+                                            'destination_id' => $id
+                                        ];
+
+                                        Service::create($dataServices);
+                                    }
+                                }
+                            }
+                        }
+                        $counter++;
+                    }
+
+                    // Retournez une réponse appropriée
+                    return response()->json(['message' => 'Importation des destinations réussie']);
+                } catch (\Exception $e) {
+                    // Une erreur s'est produite lors du traitement du fichier
+                    return response()->json(['message' => 'Une erreur s\'est produite lors du traitement du fichier', 'error' => $e->getMessage()], 500);
+                }
+            } else {
+                // Le fichier est invalide ou a une extension incorrecte
+                return response()->json(['message' => 'Le fichier est invalide ou a une extension incorrecte'], 400);
+            }
+        } else {
+            // Aucun fichier n'a été envoyé
+            return response()->json(['message' => 'Aucun fichier n\'a été envoyé'], 400);
+        }
     }
 }

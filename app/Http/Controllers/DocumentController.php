@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\FileEmail;
 
 class DocumentController extends Controller
 {
@@ -27,6 +30,16 @@ class DocumentController extends Controller
                 ]);
             }
         }
+
+        $client = User::find($id);
+
+        // Récupérer les données du client depuis la requête
+        $clientName = $client->name;
+        $clientEmail = $client->email;
+        // Autres informations sur le client
+
+        // Envoyer l'e-mail
+        Mail::to($clientEmail)->send(new FileEmail($clientName));
 
         return response()->json(['files' => $uploadedFiles]);
     }

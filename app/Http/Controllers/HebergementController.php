@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use stdClass;
 
 class HebergementController extends Controller
@@ -250,12 +251,28 @@ class HebergementController extends Controller
 
     public function modify_hebergement(Request $req)
     {
-
-        $pImage = Storage::disk('s3')->put('pImages', $req->pImage);
-        $sImage = Storage::disk('s3')->put('sImages', $req->sImage);
-        $tImage = Storage::disk('s3')->put('tImages', $req->tImage);
-
         $requete = json_decode($req->hebergement);
+
+        $hebergementTemp = Hebergement::find($requete->id);
+
+        $pImageTemp = $hebergementTemp->pImage;
+        $sImageTemp = $hebergementTemp->sImage;
+        $tImageTemp = $hebergementTemp->tImage;
+
+        if ($req->pImage != "undefined") {
+            $pImage = Storage::disk('s3')->put('pImages', $req->pImage);
+            $pImageTemp = $pImage;
+        }
+
+        if ($req->sImage != "undefined") {
+            $sImage = Storage::disk('s3')->put('sImages', $req->sImage);
+            $sImageTemp = $sImage;
+        }
+
+        if ($req->tImage != "undefined") {
+            $tImage = Storage::disk('s3')->put('tImages', $req->tImage);
+            $tImageTemp = $tImage;
+        }
 
         Equipements::where('hebergement_id', $requete->id)->delete();
 
@@ -276,9 +293,9 @@ class HebergementController extends Controller
                 'description' => $requete->description,
                 'price' => $requete->price,
                 'couchage' => $requete->couchage,
-                'pImage' => $pImage,
-                'sImage' => $sImage,
-                'tImage' => $tImage,
+                'pImage' => $pImageTemp,
+                'sImage' => $sImageTemp,
+                'tImage' => $tImageTemp,
             ]
         );
 
@@ -286,5 +303,106 @@ class HebergementController extends Controller
             'message' => 'OK',
             'hebergement' => $hebergement
         ], 200);
+    }
+
+    public function importerHebergements(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // Vérifiez si le fichier est valide, par exemple, vérifiez l'extension ou le type MIME
+            if ($file->isValid()) {
+                // Chemin temporaire pour le stockage du fichier
+                $temporaryPath = $file->getRealPath();
+
+                try {
+
+
+                    // Chargement du fichier Numbers avec PhpSpreadsheet
+                    $spreadsheet = IOFactory::load($temporaryPath);
+                    $sheet = $spreadsheet->getActiveSheet();
+
+                    $rowIterator = $sheet->getRowIterator();
+                    $counter = 0;
+                    foreach ($rowIterator as $row) {
+                        if ($counter > 0) {
+                            $name = $sheet->getCell('F' . $row->getRowIndex())->getValue();
+                            if (isset($name) && $name != '') {
+                                $longTitle = $sheet->getCell('P' . $row->getRowIndex())->getValue();
+                                $city = $sheet->getCell('C' . $row->getRowIndex())->getValue();
+                                $description = nl2br($sheet->getCell('M' . $row->getRowIndex())->getValue());
+                                $type = $sheet->getCell('H' . $row->getRowIndex())->getValue();
+
+                                if ($type === 'Appartement') {
+                                    $typeId = 1;
+                                } else if ($type === 'Mobil home') {
+                                    $typeId = 2;
+                                } else if ($type === 'Villa') {
+                                    $typeId = 3;
+                                } else if ($type === 'Chalet') {
+                                    $typeId = 4;
+                                } else if ($type === 'Hébergement insolite') {
+                                    $typeId = 5;
+                                }
+                                $code = $sheet->getCell('A' . $row->getRowIndex())->getValue();
+                                $destination_id = $sheet->getCell('Q' . $row->getRowIndex())->getValue();
+                                $couchage = $sheet->getCell('J' . $row->getRowIndex())->getValue();
+
+                                $data = [
+                                    'name' => $name,
+                                    'long_title' => $longTitle,
+                                    'city' => $city,
+                                    'description' => $description,
+                                    'type_id' => $typeId,
+                                    'code' => $code,
+                                    'destination_id' => $destination_id,
+                                    'couchage' => $couchage,
+
+                                    'price' => '150',
+                                    'pImage' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
+                                    'sImage' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
+                                    'tImage' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
+                                ];
+
+                                Hebergement::create($data);
+
+                                $id = $sheet->getCell('R' . $row->getRowIndex())->getValue();
+
+                                $equipements = explode("\n", $sheet->getCell('N' . $row->getRowIndex())->getValue());
+
+                                if (count($equipements) != 1) {
+                                    foreach ($equipements as $equipement) {
+                                        $equipementVerif = str_replace([' ', "\n", "\r", "\t"], '', $equipement);
+                                        if ($equipementVerif != '') {
+                                            $dataEquipements = [
+                                                'text' => $equipement,
+                                                'hebergement_id' => $id
+                                            ];
+
+                                            Equipements::create($dataEquipements);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        $counter++;
+                    }
+
+
+                    // Retournez une réponse appropriée
+                    return response()->json(['message' => 'Importation des hebergements réussie']);
+                } catch (\Exception $e) {
+                    // Une erreur s'est produite lors du traitement du fichier
+                    return response()->json(['message' => 'Une erreur s\'est produite lors du traitement du fichier', 'error' => $e->getMessage()], 500);
+                }
+            } else {
+                // Le fichier est invalide ou a une extension incorrecte
+                return response()->json(['message' => 'Le fichier est invalide ou a une extension incorrecte'], 400);
+            }
+        } else {
+            // Aucun fichier n'a été envoyé
+            return response()->json(['message' => 'Aucun fichier n\'a été envoyé'], 400);
+        }
     }
 }

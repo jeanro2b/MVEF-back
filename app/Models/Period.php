@@ -21,6 +21,6 @@ class Period extends Model
 
     public function planning()
     {
-        return $this->hasOne(Planning::class);
+        return $this->belongsTo(Planning::class);
     }
 }

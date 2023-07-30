@@ -76,6 +76,10 @@ Route::get('files-client/{id}', [DocumentController::class, 'get_files_client'])
 Route::get('download/{path}', [DocumentController::class, 'download_file'])
     ->name('download_file');
 
+
+Route::post('download-bon', [PeriodController::class, 'download_pdf'])
+    ->name('download_pdf');
+
 // Posts
 
 Route::post('client', [UserController::class, 'create_client'])
@@ -98,6 +102,10 @@ Route::post('planning-period/{id}', [PeriodController::class, 'create_planning_p
     ->name('create_planning_period');
 
 
+Route::post('send-period', [PeriodController::class, 'send_period'])
+    ->name('send_period');
+
+
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->name('login');
 
@@ -112,10 +120,13 @@ Route::post('modify-hebergement', [HebergementController::class, 'modify_heberge
 Route::put('modify-client', [UserController::class, 'modify_client'])
     ->name('modify_client');
 
+Route::put('send-client-info', [UserController::class, 'send_client_info'])
+    ->name('send_client_info');
+
 Route::put('modify-planning', [PlanningController::class, 'modify_planning'])
     ->name('modify_planning');
 
-Route::put('modify-planning-period', [PeriodController::class, 'modify_planning_period'])
+Route::put('modify-planning-period/{id}', [PeriodController::class, 'modify_planning_period'])
     ->name('modify_planning_period');
 
 
@@ -144,6 +155,7 @@ Route::delete('delete-file-client/{fileId}/{id}', [DocumentController::class, 'd
 
 
 
+
 Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -151,3 +163,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
     Route::get('/user', [UserController::class, 'getUser']);
 });
+
+
+
+Route::post('/import-destinations', [DestinationController::class, 'importerDestinations'])
+    ->name('importerDestinations');
+
+Route::post('/import-hebergements', [HebergementController::class, 'importerHebergements'])
+    ->name('importerHebergements');

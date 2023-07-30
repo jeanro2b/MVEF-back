@@ -2,11 +2,25 @@
 
 namespace App\Http\Controllers;
 
+require_once __DIR__ . '/../../../vendor/autoload.php';
+
 use App\Models\Period;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Expr\Cast\Object_;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ModifyPeriodEmail;
+use App\Mail\ReservationMail;
+use App\Models\Destination;
+use App\Models\Hebergement;
+use App\Models\Planning;
+use App\Models\Service;
+use App\Models\User;
+use Illuminate\Http\Response;
+use Dompdf\Dompdf;
+use Illuminate\Support\Facades\View;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf as PdfDompdf;
 
 class PeriodController extends Controller
 {
@@ -26,7 +40,7 @@ class PeriodController extends Controller
             ->where('planning_id', $id)
             ->get();
 
-        foreach($periods as $period) {
+        foreach ($periods as $period) {
             $formattedDateStart = Carbon::parse($period->start)->format('d/m/Y');
             $formattedDateEnd = Carbon::parse($period->end)->format('d/m/Y');
 
@@ -94,22 +108,162 @@ class PeriodController extends Controller
         ], 200);
     }
 
-    public function modify_planning_period(Request $req)
+    public function modify_planning_period(Request $req, $id)
     {
 
-        $period = Period::where('id', $req->id)->update(
-            [
-                'name' => $req->name,
-                'phone' => $req->phone,
-                'mail' => $req->mail,
-                'number' => $req->number,
-            ]
-        );
+        $periods = $req->modify;
+
+        $planningInfo = Planning::find($id);
+
+        $hebergementInfo = Hebergement::find($planningInfo->hebergement_id);
+
+        $destinationInfo = Destination::find($hebergementInfo->destination_id);
+
+        $clientInfo = User::find($planningInfo->user_id);
+
+        $clientMail = $clientInfo->email;
+        $clientName = $clientInfo->name;
+        $libellePlanning = $planningInfo->object;
+        $destinationName = $destinationInfo->name;
+
+        $baseArray = (array) $req->base;
+        $modifyArray = (array) $req->modify;
+
+        foreach ($periods as $period) {
+            Period::where('id', $period['id'])->update(
+                [
+                    'name' => $period['name'],
+                    'phone' => $period['phone'],
+                    'mail' => $period['mail'],
+                    'number' => $period['number'],
+                ]
+            );
+        }
+
+        Mail::to('jeanromaingabet@gmail.com')->send(new ModifyPeriodEmail($clientName, $libellePlanning, $destinationName, $baseArray, $modifyArray));
 
         return response()->json([
             'message' => 'OK',
-            'period' => $period
+            'planning' => $periods
         ], 200);
+    }
+
+    public function send_period(Request $req)
+    {
+        $periodInfo = Period::find($req->id);
+        $planningInfo = Planning::find($periodInfo->planning_id);
+        $hebergementInfo = Hebergement::find($planningInfo->hebergement_id);
+        $destinationInfo = Destination::find($hebergementInfo->destination_id);
+        $clientInfo = User::find($planningInfo->user_id);
+
+        $services = Service::where('destination_id', $destinationInfo->id)->get();
+
+        $libellePlanning = $planningInfo->object;
+        $nomClient = $clientInfo->name;
+        $nomDestination = $destinationInfo->name;
+        $heureArrive = $destinationInfo->arrival;
+        $heureDepart = $destinationInfo->departure;
+        $descriptionHebergement = $hebergementInfo->description;
+        $dateArrive = Carbon::createFromFormat('Y-m-d', $periodInfo->start)->format('d/m/Y');
+        $dateDepart = Carbon::createFromFormat('Y-m-d', $periodInfo->end)->format('d/m/Y');
+        $address = $destinationInfo->address;
+        $mail = $destinationInfo->mail;
+        $phone = $destinationInfo->phone;
+        $latitude = $destinationInfo->latitude;
+        $longitude = $destinationInfo->longitude;
+
+        $logoPath = "https://mvef.s3.eu-west-3.amazonaws.com/base_logo_transparent_background.png";
+        $logoData = base64_encode(file_get_contents($logoPath));
+
+        $destPath = "https://mvef.s3.eu-west-3.amazonaws.com/icone-de-localisation-noire.png";
+        $destData = base64_encode(file_get_contents($destPath));
+
+        $calPath = "https://mvef.s3.eu-west-3.amazonaws.com/2370264.png";
+        $calData = base64_encode(file_get_contents($calPath));
+
+        $dompdf = new Dompdf();
+
+        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'address', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData'))->render();
+
+        // Chargement du contenu HTML dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Rendu du PDF
+        $dompdf->render();
+
+        $output = $dompdf->output();
+
+        $filename = 'pdf_bon_sejour.pdf';
+
+        // Envoi du PDF par e-mail avec pièce jointe
+        $mailData = [
+            'email' => $req->mail,
+            'attachmentData' => $output,
+            'attachmentName' => $filename
+        ];
+
+        Mail::to($mailData['email'])->send(new ReservationMail($mailData));
+
+        return 'Le PDF a été généré et envoyé par e-mail.';
+    }
+
+    public function download_pdf(Request $req)
+    {
+        Log::debug($req);
+        $periodInfo = Period::find($req->id);
+        $planningInfo = Planning::find($periodInfo->planning_id);
+        $hebergementInfo = Hebergement::find($planningInfo->hebergement_id);
+        $destinationInfo = Destination::find($hebergementInfo->destination_id);
+        $clientInfo = User::find($planningInfo->user_id);
+
+        $services = Service::where('destination_id', $destinationInfo->id)->get();
+
+        $libellePlanning = $planningInfo->object;
+        $nomClient = $clientInfo->name;
+        $nomDestination = $destinationInfo->name;
+        $heureArrive = $destinationInfo->arrival;
+        $heureDepart = $destinationInfo->departure;
+        $descriptionHebergement = $hebergementInfo->description;
+        $dateArrive = Carbon::createFromFormat('Y-m-d', $periodInfo->start)->format('d/m/Y');
+        $dateDepart = Carbon::createFromFormat('Y-m-d', $periodInfo->end)->format('d/m/Y');
+        $address = $destinationInfo->address;
+        $mail = $destinationInfo->mail;
+        $phone = $destinationInfo->phone;
+        $latitude = $destinationInfo->latitude;
+        $longitude = $destinationInfo->longitude;
+
+        $logoPath = "https://mvef.s3.eu-west-3.amazonaws.com/base_logo_transparent_background.png";
+        $logoData = base64_encode(file_get_contents($logoPath));
+
+        $destPath = "https://mvef.s3.eu-west-3.amazonaws.com/icone-de-localisation-noire.png";
+        $destData = base64_encode(file_get_contents($destPath));
+
+        $calPath = "https://mvef.s3.eu-west-3.amazonaws.com/2370264.png";
+        $calData = base64_encode(file_get_contents($calPath));
+
+        $dompdf = new Dompdf();
+
+        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'address', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData'))->render();
+
+        // Chargement du contenu HTML dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Rendu du PDF
+        $dompdf->render();
+
+        $output = $dompdf->output();
+
+        $filename = 'pdf_bon_sejour.pdf';
+
+        $contentType = 'application/pdf';
+
+        // Création de la réponse HTTP avec le contenu du PDF
+        $response = new Response($output, 200, [
+            'Content-Type' => $contentType,
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+
+        return $response;
     }
 
     public function admin_modify_planning_period(Request $req)

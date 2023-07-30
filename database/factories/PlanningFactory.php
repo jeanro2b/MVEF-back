@@ -21,9 +21,9 @@ class PlanningFactory extends Factory
             'object' => Str::random(10),
             'code' => Str::random(5),
             'status' => 'En cours',
-            'lit' => true,
-            'toilette' => true,
-            'menage' => false,
+            'lit' => 'Oui',
+            'toilette' => 'Oui',
+            'menage' => 'Oui',
 
             'hebergement_id' => 1,
             'user_id' => 1,

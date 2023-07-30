@@ -14,22 +14,22 @@ return new class extends Migration
         Schema::create('hebergements', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name');
-            $table->text('long_title');
-            $table->string('city');
-            $table->text('description');
-            $table->string('code');
-            $table->integer('price');
-            $table->integer('couchage');
+            $table->string('name')->nullable();
+            $table->text('long_title')->nullable();
+            $table->string('city')->nullable();
+            $table->text('description')->nullable();
+            $table->string('code')->nullable();
+            $table->integer('price')->nullable();
+            $table->integer('couchage')->nullable();
         
-            $table->string('pImage');
-            $table->string('sImage');
-            $table->string('tImage');
+            $table->string('pImage')->nullable();
+            $table->string('sImage')->nullable();
+            $table->string('tImage')->nullable();
 
-            $table->unsignedBigInteger('destination_id');
+            $table->unsignedBigInteger('destination_id')->nullable();
             $table->foreign('destination_id')->references('id')->on('destinations');
 
-            $table->unsignedBigInteger('type_id');
+            $table->unsignedBigInteger('type_id')->nullable();
             $table->foreign('type_id')->references('id')->on('types');
         });
     }

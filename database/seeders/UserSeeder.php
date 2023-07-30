@@ -19,6 +19,9 @@ class UserSeeder extends Seeder
             ['role' => 'ce'],
             ['role' => 'admin'],
             ['role' => 'user'],
+            ['email' => 'ce@ce.com'],
+            ['email' => 'admin@admin.com'],
+            ['email' => 'user@user.com'],
         )
         ->create();
     }

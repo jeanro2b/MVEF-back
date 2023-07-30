@@ -30,7 +30,8 @@ class Destination extends Model
         'vehicule',
         'parking',
         'favorite',
-        'location'
+        'location',
+        'site'
     ];
 
     public function service()

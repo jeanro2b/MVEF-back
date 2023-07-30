@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserInfoEmail;
 
 use Illuminate\Support\Facades\Log;
 
@@ -90,6 +92,48 @@ class UserController extends Controller
 
     public function modify_client(Request $req)
     {
+
+        if($req->password != "") {
+            $user = User::where('id', $req->id)->update(
+                [
+                    'name' => $req->name,
+                    'city' => $req->city,
+                    'email' => $req->email,
+                    'address' => $req->address,
+                    'phone' => $req->phone,
+                    'role' => $req->role,
+                    'password' => Hash::make($req->password),
+                ]
+            );
+        } else {
+            $user = User::where('id', $req->id)->update(
+                [
+                    'name' => $req->name,
+                    'city' => $req->city,
+                    'email' => $req->email,
+                    'address' => $req->address,
+                    'phone' => $req->phone,
+                    'role' => $req->role,
+                ]
+            );
+        }
+        
+
+        return response()->json([
+            'message' => 'OK',
+            'user' => $user
+        ], 200);
+    }
+
+    public function send_client_info(Request $req) {
+        $clientName = $req->name;
+        $clientEmail = $req->email;
+        $clientPassword = $req->password;
+        // Autres informations sur le client
+
+        // Envoyer l'e-mail
+        Mail::to($clientEmail)->send(new UserInfoEmail($clientName, $clientEmail, $clientPassword));
+
         $user = User::where('id', $req->id)->update(
             [
                 'name' => $req->name,
@@ -98,6 +142,7 @@ class UserController extends Controller
                 'address' => $req->address,
                 'phone' => $req->phone,
                 'role' => $req->role,
+                'password' => Hash::make($req->password),
             ]
         );
 
@@ -137,8 +182,16 @@ class UserController extends Controller
             'city' => $request->city,
             'address' => $request->address,
             'phone' => $request->phone,
-            'role' => $request->role,
+            'role' => 'ce',
         ]);
+
+        $clientName = $request->name;
+        $clientEmail = $request->email;
+        $clientPassword = $request->password;
+        // Autres informations sur le client
+
+        // Envoyer l'e-mail
+        Mail::to($clientEmail)->send(new UserInfoEmail($clientName, $clientEmail, $clientPassword));
 
         event(new Registered($user));
 
@@ -160,7 +213,7 @@ class UserController extends Controller
             $user = $request->user();
             $token = $user->createToken('api_token')->plainTextToken;
 
-            return response()->json(['token' => $token], 200);
+            return response()->json(['token' => $token, 'user' => $user], 200);
         } else {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
@@ -177,6 +230,6 @@ class UserController extends Controller
     {
         $user = $request->user();
 
-        return response()->json(['id' => $user->id]);
+        return response()->json(['id' => $user->id, 'role' => $user->role]);
     }
 }

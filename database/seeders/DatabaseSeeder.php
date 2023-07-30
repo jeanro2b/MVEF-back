@@ -15,13 +15,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             TypeSeeder::class,
-            DestinationSeeder::class,
-            HebergementSeeder::class,
-            DestinationHasServiceSeeder::class,
-            PlanningSeeder::class,
-            PeriodSeeder::class,
-            EquipementsSeeder::class,
-            ServiceSeeder::class,
+            // DestinationSeeder::class,
+            // HebergementSeeder::class,
+            // DestinationHasServiceSeeder::class,
+            // PlanningSeeder::class,
+            // PeriodSeeder::class,
+            // EquipementsSeeder::class,
+            // ServiceSeeder::class,
         ]);
     }
 }

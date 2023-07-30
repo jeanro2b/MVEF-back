@@ -14,11 +14,13 @@ class TypeSeeder extends Seeder
     public function run(): void
     {
         Type::factory()
-        ->count(3)
+        ->count(5)
         ->sequence(
             ['type' => 'Appartement'],
             ['type' => 'Mobil Home'],
             ['type' => 'Villa'],
+            ['type' => 'Chalet'],
+            ['type' => 'Hébergement insolite'],
         )
         ->create();
     }
