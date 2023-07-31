@@ -27,6 +27,8 @@ class Destination extends Model
         'sImage',
         'tImage1',
         'tImage2',
+        'tImage3',
+        'tImage4',
         'vehicule',
         'parking',
         'favorite',

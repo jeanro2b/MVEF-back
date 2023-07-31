@@ -208,9 +208,11 @@ class DestinationController extends Controller
             $s_Image = Storage::disk('s3')->url($dest->sImage);
             $t1_Image = Storage::disk('s3')->url($dest->tImage1);
             $t2_Image = Storage::disk('s3')->url($dest->tImage2);
+            $t3_Image = Storage::disk('s3')->url($dest->tImage3);
+            $t4_Image = Storage::disk('s3')->url($dest->tImage4);
         }
 
-        if (isset($p_Image) && isset($s_Image) && isset($t1_Image) && isset($t2_Image)) {
+        if (isset($p_Image) && isset($s_Image) && isset($t1_Image) && isset($t2_Image) && isset($t3_Image) && isset($t4_Image)) {
             return response()->json([
                 'message' => 'OK',
                 'destinations' => $destinations,
@@ -220,7 +222,9 @@ class DestinationController extends Controller
                 'pImage' => $p_Image ? $p_Image : '',
                 'sImage' => $s_Image ? $s_Image : '',
                 'tImage1' => $t1_Image ? $t1_Image : '',
-                'tImage2' => $t2_Image ? $t2_Image : ''
+                'tImage2' => $t2_Image ? $t2_Image : '',
+                'tImage3' => $t3_Image ? $t3_Image : '',
+                'tImage4' => $t4_Image ? $t4_Image : '',
             ], 200);
         } else {
             return response()->json([
@@ -267,6 +271,8 @@ class DestinationController extends Controller
         $sImage = Storage::disk('s3')->put('images', $req->sImage);
         $tImage1 = Storage::disk('s3')->put('images', $req->tImage1);
         $tImage2 = Storage::disk('s3')->put('images', $req->tImage2);
+        $tImage3 = Storage::disk('s3')->put('images', $req->tImage3);
+        $tImage4 = Storage::disk('s3')->put('images', $req->tImage4);
 
         $requete = json_decode($req->destination);
 
@@ -288,6 +294,8 @@ class DestinationController extends Controller
             'sImage' => $sImage,
             'tImage1' => $tImage1,
             'tImage2' => $tImage2,
+            'tImage3' => $tImage3,
+            'tImage4' => $tImage4,
             'vehicule' => $requete->vehicule,
             'parking' => $requete->parking,
             'favorite' => $requete->favorite,
@@ -329,6 +337,8 @@ class DestinationController extends Controller
         $sImageTemp = $destinationTemp->sImage;
         $tImage1Temp = $destinationTemp->tImage1;
         $tImage2Temp = $destinationTemp->tImage2;
+        $tImage3Temp = $destinationTemp->tImage3;
+        $tImage4Temp = $destinationTemp->tImage4;
 
         if ($req->pImage != "undefined") {
             $pImage = Storage::disk('s3')->put('images', $req->pImage);
@@ -350,6 +360,16 @@ class DestinationController extends Controller
             $tImage2Temp = $tImage2;
         }
 
+        if ($req->tImage3 != "undefined") {
+            $tImage3 = Storage::disk('s3')->put('images', $req->tImage3);
+            $tImage3Temp = $tImage3;
+        }
+
+        if ($req->tImage4 != "undefined") {
+            $tImage4 = Storage::disk('s3')->put('images', $req->tImage4);
+            $tImage4Temp = $tImage4;
+        }
+
         $destination = Destination::where('id', $requete->id)->update(
             [
                 'name' => $requete->name,
@@ -369,6 +389,8 @@ class DestinationController extends Controller
                 'sImage' => $sImageTemp,
                 'tImage1' => $tImage1Temp,
                 'tImage2' => $tImage2Temp,
+                'tImage3' => $tImage3Temp,
+                'tImage4' => $tImage4Temp,
                 'vehicule' => $requete->vehicule,
                 'parking' => $requete->parking,
                 'favorite' => $requete->favorite,
@@ -401,6 +423,8 @@ class DestinationController extends Controller
             'sImage' => $sImageTemp,
             'tImage1' => $tImage1Temp,
             'tImage2' => $tImage2Temp,
+            'tImage3' => $tImage3Temp,
+            'tImage4' => $tImage4Temp,
         ], 200);
     }
 
@@ -468,6 +492,8 @@ class DestinationController extends Controller
                                 'sImage' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
                                 'tImage1' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
                                 'tImage2' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
+                                'tImage3' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
+                                'tImage4' => 'images/sDZjT0LJZxqphDutXyGDJuelL1R8saLLOhLuhvUF.jpg',
                                 'languages' => $language,
                                 'vehicule' => $vehicule,
                                 'parking' => $parking,

@@ -372,7 +372,7 @@ class HebergementController extends Controller
 
                                 if (count($equipements) != 1) {
                                     foreach ($equipements as $equipement) {
-                                        $equipementVerif = str_replace([' ', "\n", "\r", "\t"], '', $equipement);
+                                        $equipementVerif = str_replace([' ', "\n", "\r", "\t", '  '], '', $equipement);
                                         if ($equipementVerif != '') {
                                             $dataEquipements = [
                                                 'text' => $equipement,

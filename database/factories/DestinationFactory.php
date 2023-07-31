@@ -36,6 +36,8 @@ class DestinationFactory extends Factory
             'sImage' => '../images/presentation-image.jpeg',
             'tImage1' => '../images/presentation-image.jpeg',
             'tImage2' => '../images/presentation-image.jpeg',
+            'tImage3' => '../images/presentation-image.jpeg',
+            'tImage4' => '../images/presentation-image.jpeg',
             'vehicule' => True,
             'parking' => True,
             'favorite' => true,

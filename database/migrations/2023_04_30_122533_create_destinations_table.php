@@ -31,6 +31,8 @@ return new class extends Migration
             $table->string('sImage')->nullable();
             $table->string('tImage1')->nullable();
             $table->string('tImage2')->nullable();
+            $table->string('tImage3')->nullable();
+            $table->string('tImage4')->nullable();
             $table->string('vehicule')->nullable();
             $table->string('parking')->nullable();
             $table->string('favorite')->nullable();
