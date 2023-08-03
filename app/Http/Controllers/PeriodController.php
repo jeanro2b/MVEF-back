@@ -140,7 +140,7 @@ class PeriodController extends Controller
             );
         }
 
-        Mail::to('jeanromaingabet@gmail.com')->send(new ModifyPeriodEmail($clientName, $libellePlanning, $destinationName, $baseArray, $modifyArray));
+        Mail::to('admin@mesvacancesenfamille.com')->send(new ModifyPeriodEmail($clientName, $libellePlanning, $destinationName, $baseArray, $modifyArray));
 
         return response()->json([
             'message' => 'OK',
