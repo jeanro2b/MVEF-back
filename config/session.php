@@ -155,7 +155,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN'),
+    'domain' => '.main--magical-travesseiro-dcefcb.netlify.app',
 
     /*
     |--------------------------------------------------------------------------
