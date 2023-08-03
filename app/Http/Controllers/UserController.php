@@ -152,6 +152,22 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function send_admin_form(Request $req) {
+        $clientName = $req->name;
+        $clientEmail = $req->mail;
+        $clientMessage = $req->message;
+        // Autres informations sur le client
+        $adminMail = 'contact@mesvacancesenfamille.com';
+
+        // Envoyer l'e-mail
+        Mail::to($adminMail)->send(new AdminContactEmail($clientName, $clientEmail, $clientMessage));
+
+
+        return response()->json([
+            'message' => 'Mail bien envoyé',
+        ], 200);
+    }
+
     public function create_client(Request $request)
     {
         // $user = User::create([
