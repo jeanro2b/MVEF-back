@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
-
+// namespace App\Http\Controllers;
 use App\Models\Period;
 use App\Models\Planning;
 use App\Models\Hebergement;
@@ -10,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
 
 class PlanningController extends Controller
 {
