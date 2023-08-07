@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
+use App\Http\Controllers\Controller;
 use App\Models\Period;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Destination;
 use App\Models\Equipements;
 use App\Models\Hebergement;
