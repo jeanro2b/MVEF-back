@@ -250,6 +250,9 @@ class PlanningController extends Controller
                     foreach($hebergement as $heb) {
                         $destination_id = $heb->destination_id;
                         $destination = Destination::where('id', $destination_id)->get();
+                        foreach($destination as $dest) {
+                            $services = Services::where('destination_id', $dest->id);
+                        }
                     }
                     
                 }
@@ -258,7 +261,8 @@ class PlanningController extends Controller
 
         return response()->json([
             'message' => 'OK',
-            'destination' => $destination
+            'destination' => $destination,
+            'services' => $services
         ], 200);
     }
 }
