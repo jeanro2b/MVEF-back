@@ -242,13 +242,17 @@ class PlanningController extends Controller
 
 
         if ($planning) {
-            $hebergement_id = $planning->hebergement_id;
-            // Faites ce que vous devez faire avec $hebergement_id
-            $hebergement = Hebergement::where('id', $hebergement_id)->get();
-
-            if ($hebergement) {
-                $destination_id = $hebergement->destination_id;
-                $destination = Destination::where('id', $hebergement->destination_id)->get();
+            foreach($planning as $plan) {
+                $hebergement_id = $plan->hebergement_id;
+                // Faites ce que vous devez faire avec $hebergement_id
+                $hebergement = Hebergement::where('id', $hebergement_id)->get();
+                if ($hebergement) {
+                    foreach($hebergement as $heb) {
+                        $destination_id = $heb->destination_id;
+                        $destination = Destination::where('id', $destination_id)->get();
+                    }
+                    
+                }
             }
         }
 
