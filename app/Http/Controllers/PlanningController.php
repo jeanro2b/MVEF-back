@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Period;
 use App\Models\Planning;
+use App\Models\Hebergement;
+use App\Models\Destination;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PlanningController extends Controller
 {
@@ -232,6 +235,8 @@ class PlanningController extends Controller
     public function get_planningId_dest($id) {
 
         $planning = Planning::where('id', $id)->get();
+
+        Log::debug($planning);
 
         $hebergement = Hebergement::where('id', $planning->hebergement_id)->get();
 
