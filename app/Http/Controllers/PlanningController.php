@@ -238,7 +238,7 @@ class PlanningController extends Controller
 
         Log::debug($planning);
 
-        $hebergement = Hebergement::where('id', $planning->hebergement_id)->get();
+        $hebergement = Hebergement::where('id', '1')->get();
 
         $destination = Destination::where('id', $hebergement->destination_id)->get();
 
