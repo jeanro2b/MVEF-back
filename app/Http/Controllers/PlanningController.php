@@ -228,4 +228,18 @@ class PlanningController extends Controller
             'planning' => $planning
         ], 200);
     }
+
+    public function get_planningId_dest($id) {
+
+        $planning = Planning::where('id', $id)->get();
+
+        $hebergement = Hebergement::where('id', $planning->hebergement_id)->get();
+
+        $destination = Destination::where('id', $hebergement->destination_id)->get();
+
+        return response()->json([
+            'message' => 'OK',
+            'destination' => $destination
+        ], 200);
+    }
 }

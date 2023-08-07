@@ -62,6 +62,9 @@ Route::get('plannings-client/{id}', [PlanningController::class, 'get_planning_cl
 Route::get('planning/{id}', [PlanningController::class, 'get_planning'])
     ->name('get_planning');
 
+Route::get('planningId-destination/{id}', [PlanningController::class, 'get_planningId_dest'])
+    ->name('get_planningId_dest');
+
 Route::get('planning-periods/{id}', [PeriodController::class, 'get_planning_periods'])
     ->name('get_planning_periods');
 
