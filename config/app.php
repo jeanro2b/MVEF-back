@@ -57,9 +57,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'frontend_url' => env('FRONTEND_URL', 'https://main--magical-travesseiro-dcefcb.netlify.app'),
+    'frontend_url' => env('FRONTEND_URL', 'https://main--magical-travesseiro-dcefcb.netlify.app', 'http://localhost:3000'),
 
-    'frontend_url' => env('FRONTEND_URL', 'https://main--magical-travesseiro-dcefcb.netlify.app'),
+    'frontend_url' => env('FRONTEND_URL', 'https://main--magical-travesseiro-dcefcb.netlify.app', 'http://localhost:3000'),
 
     'asset_url' => env('ASSET_URL'),
 

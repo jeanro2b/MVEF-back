@@ -163,7 +163,6 @@ Route::get('/csrf-token', function () {
         return Response::json(['csrf_token' => csrf_token()]);
     });
 
-Route::post('/login', [UserController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     // Route protégée nécessitant une authentification
@@ -178,3 +177,5 @@ Route::post('/import-destinations', [DestinationController::class, 'importerDest
 
 Route::post('/import-hebergements', [HebergementController::class, 'importerHebergements'])
     ->name('importerHebergements');
+
+    Route::post('/login', [UserController::class, 'login']);
