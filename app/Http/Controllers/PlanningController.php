@@ -1,6 +1,6 @@
 <?php
 
-// namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 use App\Models\Period;
 use App\Models\Planning;
 use App\Models\Hebergement;
@@ -238,9 +238,17 @@ class PlanningController extends Controller
 
         Log::debug($planning);
 
-        $hebergement = Hebergement::where('id', '1')->get();
 
-        $destination = Destination::where('id', $hebergement->destination_id)->get();
+        if ($planning) {
+            $hebergement_id = $planning->hebergement_id;
+            // Faites ce que vous devez faire avec $hebergement_id
+            $hebergement = Hebergement::where('id', $hebergement_id)->get();
+
+            if ($hebergement) {
+                $destination_id = $hebergement->destination_id;
+                $destination = Destination::where('id', $hebergement->destination_id)->get();
+            }
+        }
 
         return response()->json([
             'message' => 'OK',
