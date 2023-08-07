@@ -1,6 +1,8 @@
 <?php
 
-// namespace App\Http\Controllers;
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
 use App\Models\Period;
 use App\Models\Planning;
 use App\Models\Hebergement;
