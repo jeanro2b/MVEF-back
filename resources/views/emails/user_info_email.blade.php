@@ -43,12 +43,12 @@
         <ul>
             <li>De gérer les plannings relatifs à vos différentes destination.</li>
             <li>Consulter les informations de vos destination.</li>
-            <li>Transmettre les bons de s/jour à vos ayants droit.</li>
-            <li>Consulter vos documents 2 contrats, factures...</li>
+            <li>Transmettre les bons de séjour à vos ayants droit.</li>
+            <li>Consulter vos documents : contrats, factures...</li>
         </ul>
         <br />Cordialement,<br />L'équipe de « MES VACANCES EN FAMILLE »
         </p>
-        <p class="auto">cet email est envoyé automatiquement, veuilliez ne pas y répondre s'il vous plaît</p>
+        <p class="auto">Cet email est envoyé automatiquement, veuillez ne pas y répondre s'il vous plaît</p>
     </div>
 
 </body>

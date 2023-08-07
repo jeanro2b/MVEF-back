@@ -39,7 +39,7 @@
         <p>{{ $clientName }}</p>
         <h4>Message :</h4>
         <p>{{ $clientMessage }}</p>
-        <p class="auto">cet email est envoyé automatiquement, veuilliez ne pas y répondre s'il vous plaît</p>
+        <p class="auto">Cet email est envoyé automatiquement, veuillez ne pas y répondre s'il vous plaît</p>
     </div>
 
 </body>

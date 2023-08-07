@@ -41,7 +41,7 @@
             mieux.<br />En espérant que ce séjour sera à la hauteur de vos espérances.
             <br />Sincèrement,<br />L'équipe de « MES VACANCES EN FAMILLE »
         </p>
-        <p class="auto">cet email est envoyé automatiquement, veuilliez ne pas y répondre s'il vous plaît</p>
+        <p class="auto">Cet email est envoyé automatiquement, veuillez ne pas y répondre s'il vous plaît</p>
     </div>
 
 </body>

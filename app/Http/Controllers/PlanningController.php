@@ -7,6 +7,7 @@ use App\Models\Period;
 use App\Models\Planning;
 use App\Models\Hebergement;
 use App\Models\Destination;
+use App\Models\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -251,7 +252,7 @@ class PlanningController extends Controller
                         $destination_id = $heb->destination_id;
                         $destination = Destination::where('id', $destination_id)->get();
                         foreach($destination as $dest) {
-                            $services = Services::where('destination_id', $dest->id);
+                            $services = Service::where('destination_id', $dest->id);
                         }
                     }
                     

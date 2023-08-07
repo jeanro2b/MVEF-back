@@ -40,7 +40,7 @@
             client {{ $clientName }}. <br />Nous vous invitons à en prendre connaissance dans les plus brefs délais.<br />Accéder à l’espace client : https://mesvacancesenfamille.com , cliquez sur connexion en haut à droite et rentrez vos informations de connexion.
             <br />Cordialement,<br />L'équipe de « MES VACANCES EN FAMILLE »
         </p>
-        <p class="auto">cet email est envoyé automatiquement, veuilliez ne pas y répondre s'il vous plaît</p>
+        <p class="auto">Cet email est envoyé automatiquement, veuillez ne pas y répondre s'il vous plaît</p>
     </div>
 
 

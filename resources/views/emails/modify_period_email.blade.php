@@ -63,7 +63,7 @@
                 @endforeach
             </tbody>
         </table>
-        <p class="auto">cet email est envoyé automatiquement, veuilliez ne pas y répondre s'il vous plaît</p>
+        <p class="auto">Cet email est envoyé automatiquement, veuillez ne pas y répondre s'il vous plaît</p>
     </div>
 
 </body>
