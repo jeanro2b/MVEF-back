@@ -252,7 +252,7 @@ class PlanningController extends Controller
                         $destination_id = $heb->destination_id;
                         $destination = Destination::where('id', $destination_id)->get();
                         foreach($destination as $dest) {
-                            $services = Service::where('destination_id', $dest->id);
+                            $services = Service::where('destination_id', $dest->id)->get();
                         }
                     }
                     
