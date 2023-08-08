@@ -272,11 +272,19 @@ class PeriodController extends Controller
 
         $start = Carbon::createFromFormat('d/m/Y', $req->input('start'));
         $end = Carbon::createFromFormat('d/m/Y', $req->input('end'));
+        $name = $req->input('name');
+        $phone = $req->input('phone');
+        $mail = $req->input('mail');
+        $number = $req->input('number');
 
         $period = Period::where('id', $req->id)->update(
             [
                 'start' => $start,
                 'end' => $end,
+                'mail' => $mail,
+                'phone' => $phone,
+                'name' => $name,
+                'number' => $number,
             ]
         );
 
