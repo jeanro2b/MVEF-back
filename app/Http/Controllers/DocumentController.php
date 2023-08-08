@@ -39,7 +39,7 @@ class DocumentController extends Controller
         $clientEmail = $client->email;
         // Autres informations sur le client
 
-        Logg::debug($clientEmail);
+        Log::debug($clientEmail);
 
         // Envoyer l'e-mail
         Mail::to($clientEmail)->send(new FileEmail($clientName));
