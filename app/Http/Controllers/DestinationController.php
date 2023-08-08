@@ -70,6 +70,8 @@ class DestinationController extends Controller
             $appartement = false;
             $mobil_home = false;
             $villa = false;
+            $chalet = false;
+            $insolite = false;
             $types = [];
             $couchages = [];
 
@@ -87,6 +89,12 @@ class DestinationController extends Controller
                     if ($hebergement->type_id == 3) {
                         $villa = true;
                     }
+                    if ($hebergement->type_id == 4) {
+                        $chalet = true;
+                    }
+                    if ($hebergement->type_id == 5) {
+                        $insolite = true;
+                    }
                 }
                 if ($hebergement->destination_id == $destination->id && $hebergement->price > $min_price) {
                     $min_price = $hebergement->price;
@@ -101,6 +109,12 @@ class DestinationController extends Controller
             }
             if ($villa == true) {
                 array_push($types, 'Villa');
+            }
+            if ($chalet == true) {
+                array_push($types, 'Chalet');
+            }
+            if ($insolite == true) {
+                array_push($types, 'Hébergement insolite');
             }
 
             $destination->min_price = $min_price;
