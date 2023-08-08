@@ -137,17 +137,30 @@ class UserController extends Controller
         // Envoyer l'e-mail
         Mail::to($clientEmail)->send(new UserInfoEmail($clientName, $clientEmail, $clientPassword));
 
-        $user = User::where('id', $req->id)->update(
-            [
-                'name' => $req->name,
-                'city' => $req->city,
-                'email' => $req->email,
-                'address' => $req->address,
-                'phone' => $req->phone,
-                'role' => $req->role,
-                'password' => Hash::make($req->password),
-            ]
-        );
+        if($clientPassword != "") {
+            $user = User::where('id', $req->id)->update(
+                [
+                    'name' => $req->name,
+                    'city' => $req->city,
+                    'email' => $req->email,
+                    'address' => $req->address,
+                    'phone' => $req->phone,
+                    'role' => $req->role,
+                    'password' => Hash::make($req->password),
+                ]
+            );
+        } else {
+            $user = User::where('id', $req->id)->update(
+                [
+                    'name' => $req->name,
+                    'city' => $req->city,
+                    'email' => $req->email,
+                    'address' => $req->address,
+                    'phone' => $req->phone,
+                    'role' => $req->role,
+                ]
+            );
+        }
 
         return response()->json([
             'message' => 'OK',
