@@ -136,7 +136,7 @@
         position: absolute;
         top: -18px;
         left: 350px;
-        width: 50%;
+        width: 600px;
 
         }
 
