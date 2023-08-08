@@ -367,8 +367,6 @@ class HebergementController extends Controller
 
                                 Hebergement::create($data);
 
-                                usleep(10000);
-
                                 $id = $sheet->getCell('R' . $row->getRowIndex())->getValue();
 
                                 $equipements = explode("\n", $sheet->getCell('N' . $row->getRowIndex())->getValue());
