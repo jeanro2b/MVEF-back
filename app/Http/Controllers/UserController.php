@@ -13,6 +13,8 @@ use Illuminate\Validation\Rules;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\UserInfoEmail;
+use App\Mail\AdminContactEmail;
+use App\Mail\AdminContactCEEmail;
 
 use Illuminate\Support\Facades\Log;
 
@@ -157,11 +159,35 @@ class UserController extends Controller
         $clientName = $req->name;
         $clientEmail = $req->mail;
         $clientMessage = $req->message;
+        $clientPhone = $req->phone;
+        $clientHebergement = $req->hebergement;
+        $clientFirstName = $req->firstName;
+
         // Autres informations sur le client
         $adminMail = 'contact@mesvacancesenfamille.com';
 
         // Envoyer l'e-mail
-        Mail::to($adminMail)->send(new AdminContactEmail($clientName, $clientEmail, $clientMessage));
+        Mail::to($adminMail)->send(new AdminContactEmail($clientName, $clientEmail, $clientMessage, $clientPhone, $clientHebergement, $clientFirstName));
+
+
+        return response()->json([
+            'message' => 'Mail bien envoyé',
+        ], 200);
+    }
+
+    public function send_admin_ce_form(Request $req) {
+        $clientName = $req->name;
+        $clientEmail = $req->mail;
+        $clientMessage = $req->message;
+        $clientPhone = $req->phone;
+        $clientSociety = $req->society;
+        $clientFirstName = $req->firstName;
+
+        // Autres informations sur le client
+        $adminMail = 'contact@mesvacancesenfamille.com';
+
+        // Envoyer l'e-mail
+        Mail::to($adminMail)->send(new AdminContactCEEmail($clientName, $clientEmail, $clientMessage, $clientPhone, $clientSociety, $clientFirstName));
 
 
         return response()->json([

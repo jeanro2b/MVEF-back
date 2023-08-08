@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class AdminContactEmail extends Mailable
+class AdminContactCEEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -15,7 +15,7 @@ class AdminContactEmail extends Mailable
     public $clientEmail;
     public $clientMessage;
     public $clientPhone;
-    public $clientHebergement;
+    public $clientSociety;
     public $clientFirstName;
 
     /**
@@ -26,13 +26,13 @@ class AdminContactEmail extends Mailable
      * @param  string  $clientMessage
      * @return void
      */
-    public function __construct($clientName, $clientEmail, $clientMessage, $clientPhone, $clientHebergement, $clientFirstName)
+    public function __construct($clientName, $clientEmail, $clientMessage, $clientPhone, $clientSociety, $clientFirstName)
     {
         $this->clientName = $clientName;
         $this->clientEmail = $clientEmail;
         $this->clientMessage = $clientMessage;
         $this->clientPhone = $clientPhone;
-        $this->clientHebergement = $clientHebergement;
+        $this->clientSociety = $clientSociety;
         $this->clientFirstName = $clientFirstName;
 
 
@@ -45,14 +45,14 @@ class AdminContactEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.admin_contact_email')
-            ->subject('Nouvelle demande de contact')
+        return $this->view('emails.admin_contact_ce_email')
+            ->subject('Nouvelle demande de contact CE')
             ->with([
                 'clientName' => $this->clientName,
                 'clientEmail' => $this->clientEmail,
                 'clientMessage' => $this->clientMessage,
                 'clientPhone' => $this->clientPhone,
-                'clientHebergement' => $this->clientHebergement,
+                'clientSociety' => $this->clientSociety,
                 'clientFirstName' => $this->clientFirstName,
             ]);
     }
