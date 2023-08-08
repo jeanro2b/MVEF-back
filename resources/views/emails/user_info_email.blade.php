@@ -37,7 +37,7 @@
             Nous sommes ravi de vous compter parmi nos clients et de vous accompagner vers
             nos plus belles destinations !<br />Vous trouverez ci-dessous vos identifiants de connexion à notre extranet client :<br />
             Identifiant : {{ $clientEmail }}<br />
-            Mot de passe :  {!! $clientPassword ? $clientPassword : "Mot de passe inchangé" !!}
+            Mot de passe :  {!! $clientPassword ? $clientPassword : "inchangé" !!}
             <br />Accéder à l’espace client : https://mesvacancesenfamille.com , cliquez sur connexion en haut à droite et rentrez vos informations de connexion.<br />
             Pour rappel, cet extranet vous permet :
         <ul>
