@@ -239,9 +239,6 @@ class PlanningController extends Controller
 
         $planning = Planning::where('id', $id)->get();
 
-        Log::debug($planning);
-
-
         if ($planning) {
             foreach($planning as $plan) {
                 $hebergement_id = $plan->hebergement_id;

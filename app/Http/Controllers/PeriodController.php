@@ -210,7 +210,6 @@ class PeriodController extends Controller
 
     public function download_pdf(Request $req)
     {
-        Log::debug($req);
         $periodInfo = Period::find($req->id);
         $planningInfo = Planning::find($periodInfo->planning_id);
         $hebergementInfo = Hebergement::find($planningInfo->hebergement_id);
