@@ -41,7 +41,9 @@
             Un planning a été modifié depuis l’intranet client !<br />
             Client : {{ $clientName }}<br />
             Libellé planning : {{ $libellePlanning}}<br />
-            Destination : {{ $destinationName }}
+            Destination : {{ $destinationName }}<br />
+            Nom de l'hébergement : {{ $hebergementName }}<br />
+            Code de l'hébergement : {{ $hebergementCode }}
             <br />Veuillez trouver ci-dessous les modifications apportées :
         </p>
 

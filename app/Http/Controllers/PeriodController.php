@@ -122,6 +122,8 @@ class PeriodController extends Controller
 
         $clientInfo = User::find($planningInfo->user_id);
 
+        $hebergementCode = $hebergementInfo->code;
+        $hebergementName = $hebergementInfo->name;
         $clientMail = $clientInfo->email;
         $clientName = $clientInfo->name;
         $libellePlanning = $planningInfo->object;
@@ -141,7 +143,7 @@ class PeriodController extends Controller
             );
         }
 
-        Mail::to('admin@mesvacancesenfamille.com')->send(new ModifyPeriodEmail($clientName, $libellePlanning, $destinationName, $baseArray, $modifyArray));
+        Mail::to('admin@mesvacancesenfamille.com')->send(new ModifyPeriodEmail($clientName, $libellePlanning, $destinationName, $baseArray, $modifyArray, $hebergementCode, $hebergementName));
 
         return response()->json([
             'message' => 'OK',
@@ -167,7 +169,7 @@ class PeriodController extends Controller
         $descriptionHebergement = $hebergementInfo->description;
         $dateArrive = Carbon::createFromFormat('Y-m-d', $periodInfo->start)->format('d/m/Y');
         $dateDepart = Carbon::createFromFormat('Y-m-d', $periodInfo->end)->format('d/m/Y');
-        $address = $destinationInfo->address;
+        $addressBetter = str_replace("<br/>", "", $destinationInfo->address);
         $mail = $destinationInfo->mail;
         $phone = $destinationInfo->phone;
         $latitude = $destinationInfo->latitude;
@@ -184,7 +186,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'address', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData'))->render();
+        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
@@ -194,7 +196,7 @@ class PeriodController extends Controller
 
         $output = $dompdf->output();
 
-        $filename = 'pdf_bon_sejour.pdf';
+        $filename = "PDF_bon_sejour_$nomClient.pdf";
 
         // Envoi du PDF par e-mail avec pièce jointe
         $mailData = [
