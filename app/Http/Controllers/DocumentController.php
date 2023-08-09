@@ -35,12 +35,15 @@ class DocumentController extends Controller
         $client = User::find($id);
 
         // Récupérer les données du client depuis la requête
+        $clientName = $client->name;
+        $clientEmail = $client->email;
+        // Autres informations sur le client
 
-        foreach($client as $cli) {
-            $clientName = $cli->name;
-            $clientEmail = $cli->email;
-        }
+        Log::debug($client);
 
+        Log::debug($clientEmail);
+
+        // Envoyer l'e-mail
         Mail::to($clientEmail)->send(new FileEmail($clientName));
 
         return response()->json(['files' => $uploadedFiles]);
