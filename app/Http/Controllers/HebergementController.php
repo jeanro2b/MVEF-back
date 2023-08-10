@@ -186,7 +186,7 @@ class HebergementController extends Controller
 
         $requete = json_decode($req->hebergement);
 
-        if ($requete->price == '') {
+        if ($requete->price = '') {
             $price = 150;
         } else {
             $price = $requete->price;
