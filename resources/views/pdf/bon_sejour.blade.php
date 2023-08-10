@@ -93,7 +93,7 @@
             width: 45%;
             position: absolute;
             right: 10px;
-            top: 415px;
+            top: 430px;
         }
 
         .logo {
