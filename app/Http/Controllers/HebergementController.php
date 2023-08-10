@@ -186,6 +186,12 @@ class HebergementController extends Controller
 
         $requete = json_decode($req->hebergement);
 
+        if ($requete->price == '') {
+            $price = 150;
+        } else {
+            $price = $requete->price;
+        }
+
         $hebergement = Hebergement::create([
             'name' => $requete->name,
             'long_title' => $requete->longTitle,
@@ -197,7 +203,7 @@ class HebergementController extends Controller
             'type_id' => $requete->type,
             'code' => $requete->code,
             'destination_id' => $requete->destination_id,
-            'price' => $requete->price,
+            'price' => $price,
             'couchage' => $requete->couchage
         ]);
 
