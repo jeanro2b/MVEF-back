@@ -161,6 +161,7 @@ class PeriodController extends Controller
 
         $services = Service::where('destination_id', $destinationInfo->id)->get();
 
+        $nomVoyageur = $req->name;
         $libellePlanning = $planningInfo->object;
         $nomClient = $clientInfo->name;
         $nomDestination = $destinationInfo->name;
@@ -186,7 +187,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData'))->render();
+        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'nomVoyageur'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
@@ -196,7 +197,7 @@ class PeriodController extends Controller
 
         $output = $dompdf->output();
 
-        $filename = "PDF_bon_sejour_$nomClient.pdf";
+        $filename = "PDF_bon_sejour_$nomVoyageur.pdf";
 
         // Envoi du PDF par e-mail avec pièce jointe
         $mailData = [
@@ -220,6 +221,7 @@ class PeriodController extends Controller
 
         $services = Service::where('destination_id', $destinationInfo->id)->get();
 
+        $nomVoyageur = $req->name;
         $libellePlanning = $planningInfo->object;
         $nomClient = $clientInfo->name;
         $nomDestination = $destinationInfo->name;
@@ -228,7 +230,7 @@ class PeriodController extends Controller
         $descriptionHebergement = $hebergementInfo->description;
         $dateArrive = Carbon::createFromFormat('Y-m-d', $periodInfo->start)->format('d/m/Y');
         $dateDepart = Carbon::createFromFormat('Y-m-d', $periodInfo->end)->format('d/m/Y');
-        $address = $destinationInfo->address;
+        $addressBetter = str_replace("<br/>", "", $destinationInfo->address);
         $mail = $destinationInfo->mail;
         $phone = $destinationInfo->phone;
         $latitude = $destinationInfo->latitude;
@@ -245,7 +247,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'address', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData'))->render();
+        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'nomVoyageur'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
@@ -255,7 +257,7 @@ class PeriodController extends Controller
 
         $output = $dompdf->output();
 
-        $filename = 'pdf_bon_sejour.pdf';
+        $filename = "PDF_bon_sejour_$nomVoyageur.pdf";
 
         $contentType = 'application/pdf';
 

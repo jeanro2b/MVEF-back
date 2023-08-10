@@ -158,6 +158,7 @@
     <div class="first-section">
         <h2>Carnet de voyage - {{ $libellePlanning }}</h2>
         <h2>Client - {{ $nomClient }}</h2>
+        <h2>Voyageur - {{ $nomVoyageur }}</h2>
     </div>
     <div class="sejour">
         Votre séjour
