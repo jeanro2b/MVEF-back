@@ -207,7 +207,7 @@
             @endforeach
             </ul>
         </div>
-        <p>{{ $address }}</p>
+        <p>{{ $addressBetter }}</p>
         <p>{{ $mail }}</p>
         <p>{{ $phone }}</p>
         <p>{{ $latitude }}</p>
