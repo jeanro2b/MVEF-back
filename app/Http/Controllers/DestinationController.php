@@ -208,9 +208,23 @@ class DestinationController extends Controller
             }
             $hebergement->equipements = $equips;
 
-            $hp_Image = Storage::disk('s3')->url($hebergement->pImage);
-            $hs_Image = Storage::disk('s3')->url($hebergement->sImage);
-            $ht_Image = Storage::disk('s3')->url($hebergement->tImage);
+            if (!empty($hebergement->pImage)) {
+                $hp_Image = Storage::disk('s3')->url($hebergement->pImage);
+            } else {
+                $hp_Image = '';
+            }
+
+            if (!empty($hebergement->sImage)) {
+                $hs_Image = Storage::disk('s3')->url($hebergement->sImage);
+            } else {
+                $hs_Image = '';
+            }
+
+            if (!empty($hebergement->tImage)) {
+                $ht_Image = Storage::disk('s3')->url($hebergement->tImage);
+            } else {
+                $ht_Image = '';
+            }
 
             $hebergement->pImage = $hp_Image;
             $hebergement->sImage = $hs_Image;
@@ -219,12 +233,31 @@ class DestinationController extends Controller
 
 
         foreach ($destinations as $dest) {
-            $p_Image = Storage::disk('s3')->url($dest->pImage);
-            $s_Image = Storage::disk('s3')->url($dest->sImage);
-            $t1_Image = Storage::disk('s3')->url($dest->tImage1);
-            $t2_Image = Storage::disk('s3')->url($dest->tImage2);
-            $t3_Image = Storage::disk('s3')->url($dest->tImage3);
-            $t4_Image = Storage::disk('s3')->url($dest->tImage4);
+
+            if (!empty($dest->pImage)) {
+                $p_Image = Storage::disk('s3')->url($dest->pImage);
+            }
+
+            if (!empty($dest->sImage)) {
+                $s_Image = Storage::disk('s3')->url($dest->sImage);
+            }
+
+            if (!empty($dest->tImage1)) {
+                $t1_Image = Storage::disk('s3')->url($dest->tImage1);
+            }
+
+            if (!empty($dest->tImage2)) {
+                $t2_Image = Storage::disk('s3')->url($dest->tImage2);
+            }
+
+            if (!empty($dest->tImage3)) {
+                $t3_Image = Storage::disk('s3')->url($dest->tImage3);
+            }
+
+            if (!empty($dest->tImage4)) {
+                $t4_Image = Storage::disk('s3')->url($dest->tImage4);
+            }
+        
         }
 
         if (isset($p_Image) && isset($s_Image) && isset($t1_Image) && isset($t2_Image) && isset($t3_Image) && isset($t4_Image)) {
