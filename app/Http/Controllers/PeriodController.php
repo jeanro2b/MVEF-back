@@ -170,7 +170,7 @@ class PeriodController extends Controller
         $descriptionHebergement = $hebergementInfo->description;
         $dateArrive = Carbon::createFromFormat('Y-m-d', $periodInfo->start)->format('d/m/Y');
         $dateDepart = Carbon::createFromFormat('Y-m-d', $periodInfo->end)->format('d/m/Y');
-        $addressBetter = str_replace("<br/>", "", $destinationInfo->address);
+        $addressBetter = str_replace("<br />", "", $destinationInfo->address);
         $mail = $destinationInfo->mail;
         $phone = $destinationInfo->phone;
         $latitude = $destinationInfo->latitude;

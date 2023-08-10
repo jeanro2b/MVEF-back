@@ -42,7 +42,7 @@
             Pour rappel, cet extranet vous permet :
         <ul>
             <li>De gérer les plannings relatifs à vos différentes destinations.</li>
-            <li>Consulter les informations de vos destination.</li>
+            <li>Consulter les informations de vos destinations.</li>
             <li>Transmettre les bons de séjour à vos ayants droit.</li>
             <li>Consulter vos documents : contrats, factures...</li>
         </ul>
