@@ -177,7 +177,7 @@ class UserController extends Controller
         $clientFirstName = $req->firstName;
 
         // Autres informations sur le client
-        $adminMail = 'contact@mesvacancesenfamille.com';
+        $adminMail = 'Contact@mesvacancesenfamille.com';
 
         // Envoyer l'e-mail
         Mail::to($adminMail)->send(new AdminContactEmail($clientName, $clientEmail, $clientMessage, $clientPhone, $clientHebergement, $clientFirstName));
@@ -200,8 +200,17 @@ class UserController extends Controller
         $adminMail = 'contact@mesvacancesenfamille.com';
 
         // Envoyer l'e-mail
-        Mail::to($adminMail)->send(new AdminContactCEEmail($clientName, $clientEmail, $clientMessage, $clientPhone, $clientSociety, $clientFirstName));
-
+        try {
+            Mail::to($adminMail)->send(new AdminContactCEEmail($clientName, $clientEmail, $clientMessage, $clientPhone, $clientSociety, $clientFirstName));
+        } catch (\Exception $e) {
+            // Capturer l'exception en cas d'erreur lors de l'envoi de l'e-mail.
+            // Vous pouvez gérer l'erreur ici en fonction de vos besoins.
+            // Par exemple, vous pourriez enregistrer le message d'erreur dans un fichier de journal.
+            // Vous pourriez également afficher un message d'erreur à l'utilisateur, etc.
+            $errorMessage = "Une erreur est survenue lors de l'envoi de l'e-mail : " . $e->getMessage();
+            // Faites quelque chose avec l'erreur, comme l'enregistrer dans un journal.
+            Log::error($errorMessage);
+        }
 
         return response()->json([
             'message' => 'Mail bien envoyé',
