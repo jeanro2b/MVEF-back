@@ -140,6 +140,9 @@ Route::put('admin-modify-planning-period', [PeriodController::class, 'admin_modi
 Route::put('send-admin-form', [UserController::class, 'send_admin_form'])
     ->name('send_admin_form');
 
+Route::put('send-admin-form', [UserController::class, 'send_admin_ce_form'])
+    ->name('send_admin_form');
+
 // Deletes
 
 Route::delete('/delete-destination/{id}', [DestinationController::class, 'delete_destination'])
