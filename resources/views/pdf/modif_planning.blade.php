@@ -66,7 +66,7 @@
     </div>
     <div class="first-section">
         <h2>Nom de la destination - {{ $destinationName }}</h2>
-        <h2>Client - {{ $nomClient }}</h2>
+        <h2>Client - {{ $clientName }}</h2>
         <h2>Libellé de l'hébergement - {{ $hebergementTitle }}</h2>
     </div>
     <div class="sejour">
