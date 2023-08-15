@@ -142,9 +142,10 @@ class PeriodController extends Controller
             'number' => 'Nombre',
         ];
     
-        // Transformer les noms de propriétés en utilisant le tableau de correspondance
+        // Copie modifiée du tableau avec les noms de propriétés traduits
         $modifiedBaseArray = [];
-    
+        $originalBaseArray = [];
+
         foreach ($baseArray[0] as $property => $value) {
             if (isset($propertyTranslations[$property])) {
                 $translatedProperty = $propertyTranslations[$property];
@@ -152,8 +153,9 @@ class PeriodController extends Controller
                 // Si la propriété n'a pas de traduction, utilisez le nom d'origine
                 $translatedProperty = $property;
             }
-    
+
             $modifiedBaseArray[$translatedProperty] = $value;
+            $originalBaseArray[$property] = $value;
         }
 
         foreach ($periods as $period) {
@@ -175,7 +177,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.modif_planning', compact('logoData', 'clientName', 'libellePlanning', 'destinationName', 'modifiedBaseArray', 'modifyArray', 'hebergementCode', 'hebergementName', 'hebergementTitle', 'formatDate'))->render();
+        $html = View::make('pdf.modif_planning', compact('logoData', 'clientName', 'libellePlanning', 'destinationName', 'modifiedBaseArray', 'modifyArray', 'hebergementCode', 'hebergementName', 'hebergementTitle', 'formatDate', 'originalBaseArray'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);

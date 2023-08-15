@@ -82,7 +82,7 @@
                 @foreach ($modifyArray as $index => $modifyObject)
                 <tr>
                     @foreach ($modifyObject as $property => $value)
-                    <td class="{{ $modifiedBaseArray[$loop->index][$property] !== $value ? 'highlight' : '' }}">{{ $value }}</td>
+                    <td class="{{ $originalBaseArray[$index][$property] !== $value ? 'highlight' : '' }}">{{ $value }}</td>
                     @endforeach
                 </tr>
                 @endforeach
