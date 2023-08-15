@@ -21,6 +21,13 @@ class ModifyPeriodEmail extends Mailable
     public function __construct(array $mailData)
     {
         $this->mailData = $mailData;
+        $this->clientName = $clientName;
+        $this->libellePlanning = $libellePlanning;
+        $this->destinationName = $destinationName;
+        $this->hebergementCode = $hebergementCode;
+        $this->hebergementName = $hebergementName;
+        $this->hebergementTitle = $hebergementTitle;
+        $this->formatDate = $formatDate;
     }
 
     /**
@@ -32,6 +39,15 @@ class ModifyPeriodEmail extends Mailable
     {
         return $this->subject("Modification d'un planning")
         ->view('emails.modify_period_email')
+        ->with([
+            'clientName' => $this->clientName,
+            'libellePlanning' => $this->libellePlanning,
+            'destinationName' => $this->destinationName,
+            'hebergementCode' => $this->hebergementCode,
+            'hebergementName' => $this->hebergementName,
+            'hebergementTitle' => $this->hebergementTitle,
+            'formatDate' => $this->formatDate,
+        ])
         ->attachData($this->mailData['attachmentData'], $this->mailData['attachmentName']);
     }
 }
