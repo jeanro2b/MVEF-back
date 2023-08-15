@@ -177,7 +177,7 @@ class UserController extends Controller
         $clientFirstName = $req->firstName;
 
         // Autres informations sur le client
-        $adminMail = 'jrgabet@hotmail.fr';
+        $adminMail = 'contact@mesvacancesenfamille.com';
 
         // Envoyer l'e-mail
         Mail::to($adminMail)->send(new AdminContactEmail($clientName, $clientEmail, $clientMessage, $clientPhone, $clientHebergement, $clientFirstName));
@@ -197,7 +197,7 @@ class UserController extends Controller
         $clientFirstName = $req->firstName;
 
         // Autres informations sur le client
-        $adminMail = 'jrgabet@hotmail.fr';
+        $adminMail = 'contact@mesvacancesenfamille.com';
 
         // Envoyer l'e-mail
         try {

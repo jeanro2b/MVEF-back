@@ -44,27 +44,9 @@
             Destination : {{ $destinationName }}<br />
             Nom de l'hébergement : {{ $hebergementName }}<br />
             Code de l'hébergement : {{ $hebergementCode }}
-            <br />Veuillez trouver ci-dessous les modifications apportées :
+            <br />Veuillez trouver ci-joint les modifications apportées
         </p>
-
-        <table>
-            <thead>
-                <tr>
-                    @foreach ($baseArray[0] as $property => $value)
-                    <th>{{ $property }}</th>
-                    @endforeach
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($modifyArray as $index => $modifyObject)
-                <tr>
-                    @foreach ($modifyObject as $property => $value)
-                    <td class="{{ $baseArray[$index][$property] !== $value ? 'highlight' : '' }}">{{ $value }}</td>
-                    @endforeach
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        
         <p class="auto">Cet email est envoyé automatiquement, veuillez ne pas y répondre s'il vous plaît</p>
     </div>
 

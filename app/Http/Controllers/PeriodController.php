@@ -124,6 +124,7 @@ class PeriodController extends Controller
 
         $hebergementCode = $hebergementInfo->code;
         $hebergementName = $hebergementInfo->name;
+        $hebergementTitle = $hebergementInfo->long_title;
         $clientMail = $clientInfo->email;
         $clientName = $clientInfo->name;
         $libellePlanning = $planningInfo->object;
@@ -131,6 +132,29 @@ class PeriodController extends Controller
 
         $baseArray = (array) $req->base;
         $modifyArray = (array) $req->modify;
+
+        $propertyTranslations = [
+            'start' => 'Début',
+            'end' => 'Fin',
+            'name' => 'Nom',
+            'phone' => 'Téléphone',
+            'mail' => 'Mail',
+            'number' => 'Nombre',
+        ];
+    
+        // Transformer les noms de propriétés en utilisant le tableau de correspondance
+        $modifiedBaseArray = [];
+    
+        foreach ($baseArray[0] as $property => $value) {
+            if (isset($propertyTranslations[$property])) {
+                $translatedProperty = $propertyTranslations[$property];
+            } else {
+                // Si la propriété n'a pas de traduction, utilisez le nom d'origine
+                $translatedProperty = $property;
+            }
+    
+            $modifiedBaseArray[$translatedProperty] = $value;
+        }
 
         foreach ($periods as $period) {
             Period::where('id', $period['id'])->update(
@@ -142,8 +166,37 @@ class PeriodController extends Controller
                 ]
             );
         }
+        $dateDuJour = Carbon::now(); // Obtenir la date et l'heure actuelles
 
-        Mail::to('admin@mesvacancesenfamille.com')->send(new ModifyPeriodEmail($clientName, $libellePlanning, $destinationName, $baseArray, $modifyArray, $hebergementCode, $hebergementName));
+        $formatDate = $dateDuJour->format('Y-m-d'); // Format YYYY-MM-DD
+
+        $logoPath = "https://mvef.s3.eu-west-3.amazonaws.com/base_logo_transparent_background.png";
+        $logoData = base64_encode(file_get_contents($logoPath));
+
+        $dompdf = new Dompdf();
+
+        $html = View::make('pdf.modif_planning', compact('clientName', 'libellePlanning', 'destinationName', 'modifiedBaseArray', 'modifyArray', 'hebergementCode', 'hebergementName', 'hebergementTitle', 'formatDate'))->render();
+
+        // Chargement du contenu HTML dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Rendu du PDF
+        $dompdf->render();
+
+        $output = $dompdf->output();
+
+        $filename = "Modif_$destinationName-$hebergementName-$formatDate.pdf";
+
+        // Envoi du PDF par e-mail avec pièce jointe
+        $mailData = [
+            'email' => 'jrgabet@hotmail.fr',
+            'attachmentData' => $output,
+            'attachmentName' => $filename
+        ];
+
+        //'admin@mesvacancesenfamille.com'
+
+        Mail::to($mailData['email'])->send(new ModifyPeriodEmail($mailData));
 
         return response()->json([
             'message' => 'OK',
