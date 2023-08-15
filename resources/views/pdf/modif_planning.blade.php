@@ -73,7 +73,7 @@
         <table> 
             <thead>
                 <tr>
-                    @foreach ($baseArray[0] as $property => $value)
+                    @foreach ($modifiedBaseArray[0] as $property => $value)
                     <th>{{ $property }}</th>
                     @endforeach
                 </tr>
@@ -82,7 +82,7 @@
                 @foreach ($modifyArray as $index => $modifyObject)
                 <tr>
                     @foreach ($modifyObject as $property => $value)
-                    <td class="{{ $baseArray[$index][$property] !== $value ? 'highlight' : '' }}">{{ $value }}</td>
+                    <td class="{{ $modifiedBaseArray[$index][$property] !== $value ? 'highlight' : '' }}">{{ $value }}</td>
                     @endforeach
                 </tr>
                 @endforeach
