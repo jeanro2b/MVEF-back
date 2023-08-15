@@ -156,6 +156,8 @@ class PeriodController extends Controller
             $modifiedBaseArray[$translatedProperty] = $value;
         }
 
+        $modifiedBaseArray = (array) $modifiedBaseArray;
+
         foreach ($periods as $period) {
             Period::where('id', $period['id'])->update(
                 [
