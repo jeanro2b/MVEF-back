@@ -70,27 +70,29 @@
         <h2>Libellé de l'hébergement - {{ $hebergementTitle }}</h2>
     </div>
     <div class="sejour">
-        <table> 
+        <table style="border-collapse: collapse; width: 100%; border: 1px solid black;">
             <thead>
-                <tr>
-                    <th>Début</th>
-                    <th>Fin</th>
-                    <th>Nom</th>
-                    <th>Téléphone</th>
-                    <th>Mail</th>
-                    <th>Nombre</th>
+                <tr style="background-color: #f2f2f2;">
+                    <th style="border: 1px solid black; padding: 3px; text-align: center;">ID</th>
+                    <th style="border: 1px solid black; padding: 3px; text-align: center;">Début</th>
+                    <th style="border: 1px solid black; padding: 3px; text-align: center;">Fin</th>
+                    <th style="border: 1px solid black; padding: 3px; text-align: center;">Nom</th>
+                    <th style="border: 1px solid black; padding: 3px; text-align: center;">Téléphone</th>
+                    <th style="border: 1px solid black; padding: 3px; text-align: center;">Mail</th>
+                    <th style="border: 1px solid black; padding: 3px; text-align: center;">Nombre</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($modifyArray as $index => $modifyObject)
                 <tr>
                     @foreach ($modifyObject as $property => $value)
-                    <td class="{{ $baseArray[$index][$property] !== $value ? 'highlight' : '' }}">{{ $value }}</td>
+                    <td style="border: 1px solid black; padding: 3px; text-align: center;" class="{{ $baseArray[$index][$property] !== $value ? 'highlight' : '' }}">{{ $value }}</td>
                     @endforeach
                 </tr>
                 @endforeach
             </tbody>
         </table>
+
     </div> 
 </body>
 
