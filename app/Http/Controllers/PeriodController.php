@@ -175,7 +175,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.modif_planning', compact('clientName', 'libellePlanning', 'destinationName', 'modifiedBaseArray', 'modifyArray', 'hebergementCode', 'hebergementName', 'hebergementTitle', 'formatDate'))->render();
+        $html = View::make('pdf.modif_planning', compact('logoData', 'clientName', 'libellePlanning', 'destinationName', 'modifiedBaseArray', 'modifyArray', 'hebergementCode', 'hebergementName', 'hebergementTitle', 'formatDate'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
