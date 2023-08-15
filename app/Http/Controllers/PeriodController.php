@@ -166,12 +166,10 @@ class PeriodController extends Controller
 
         // Envoi du PDF par e-mail avec pièce jointe
         $mailData = [
-            'email' => 'jrgabet@hotmail.fr',
+            'email' => 'admin@mesvacancesenfamille.com',
             'attachmentData' => $output,
             'attachmentName' => $filename
         ];
-
-        //'admin@mesvacancesenfamille.com'
 
         Mail::to($mailData['email'])->send(new ModifyPeriodEmail($mailData, $clientName, $libellePlanning, $destinationName, $hebergementCode, $hebergementName, $hebergementTitle, $formatDate));
 
