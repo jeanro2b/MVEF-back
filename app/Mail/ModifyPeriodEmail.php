@@ -18,7 +18,7 @@ class ModifyPeriodEmail extends Mailable
      *
      * @param array $mailData
      */
-    public function __construct(array $mailData)
+    public function __construct(array $mailData, $clientName, $libellePlanning, $destinationName, $hebergementCode, $hebergementName, $hebergementTitle, $formatDate)
     {
         $this->mailData = $mailData;
         $this->clientName = $clientName;
