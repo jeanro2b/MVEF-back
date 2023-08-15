@@ -133,31 +133,6 @@ class PeriodController extends Controller
         $baseArray = (array) $req->base;
         $modifyArray = (array) $req->modify;
 
-        $propertyTranslations = [
-            'start' => 'Début',
-            'end' => 'Fin',
-            'name' => 'Nom',
-            'phone' => 'Téléphone',
-            'mail' => 'Mail',
-            'number' => 'Nombre',
-        ];
-    
-        // Copie modifiée du tableau avec les noms de propriétés traduits
-        $modifiedBaseArray = [];
-        $originalBaseArray = [];
-
-        foreach ($baseArray[0] as $property => $value) {
-            if (isset($propertyTranslations[$property])) {
-                $translatedProperty = $propertyTranslations[$property];
-            } else {
-                // Si la propriété n'a pas de traduction, utilisez le nom d'origine
-                $translatedProperty = $property;
-            }
-
-            $modifiedBaseArray[$translatedProperty] = $value;
-            $originalBaseArray[$property] = $value;
-        }
-
         foreach ($periods as $period) {
             Period::where('id', $period['id'])->update(
                 [
@@ -177,7 +152,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.modif_planning', compact('logoData', 'clientName', 'libellePlanning', 'destinationName', 'modifiedBaseArray', 'modifyArray', 'hebergementCode', 'hebergementName', 'hebergementTitle', 'formatDate', 'originalBaseArray'))->render();
+        $html = View::make('pdf.modif_planning', compact('logoData', 'clientName', 'libellePlanning', 'destinationName', 'baseArray', 'modifyArray', 'hebergementCode', 'hebergementName', 'hebergementTitle', 'formatDate'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
