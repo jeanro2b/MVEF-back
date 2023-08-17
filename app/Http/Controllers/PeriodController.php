@@ -203,6 +203,7 @@ class PeriodController extends Controller
         $phone = $destinationInfo->phone;
         $latitude = $destinationInfo->latitude;
         $longitude = $destinationInfo->longitude;
+        $renseignement = $destinationInfo->renseignement;
 
         $logoPath = "https://mvef.s3.eu-west-3.amazonaws.com/base_logo_transparent_background.png";
         $logoData = base64_encode(file_get_contents($logoPath));
@@ -215,7 +216,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'nomVoyageur'))->render();
+        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'nomVoyageur', 'renseignement'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
@@ -258,7 +259,7 @@ class PeriodController extends Controller
         $descriptionHebergement = $hebergementInfo->description;
         $dateArrive = Carbon::createFromFormat('Y-m-d', $periodInfo->start)->format('d/m/Y');
         $dateDepart = Carbon::createFromFormat('Y-m-d', $periodInfo->end)->format('d/m/Y');
-        $addressBetter = str_replace("<br/>", "", $destinationInfo->address);
+        $addressBetter = str_replace("<br />", "", $destinationInfo->address);
         $mail = $destinationInfo->mail;
         $phone = $destinationInfo->phone;
         $latitude = $destinationInfo->latitude;

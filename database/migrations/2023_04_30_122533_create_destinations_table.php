@@ -37,6 +37,7 @@ return new class extends Migration
             $table->string('parking')->nullable();
             $table->string('favorite')->nullable();
             $table->string('location')->nullable();
+            $table->text('renseignement')->nullable();
             $table->text('site')->nullable();
         });
     }

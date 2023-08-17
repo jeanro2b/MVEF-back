@@ -42,7 +42,8 @@ class DestinationFactory extends Factory
             'parking' => True,
             'favorite' => true,
             'location' => 'Corse',
-            'site' => 'https://mesvacancesenfamille.com'
+            'site' => 'https://mesvacancesenfamille.com',
+            'renseignement' => 'test'
         ];
     }
 }

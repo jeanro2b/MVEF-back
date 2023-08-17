@@ -348,7 +348,8 @@ class DestinationController extends Controller
             'parking' => $requete->parking,
             'favorite' => $requete->favorite,
             'location' => $requete->location,
-            'site' => $requete->site
+            'site' => $requete->site,
+            'renseignement' => $requete->renseignement
         ]);
 
 
@@ -443,7 +444,8 @@ class DestinationController extends Controller
                 'parking' => $requete->parking,
                 'favorite' => $requete->favorite,
                 'location' => $requete->location,
-                'site' => $requete->site
+                'site' => $requete->site,
+                'renseignement' => $requete->renseignement
             ]
         );
 
@@ -521,6 +523,8 @@ class DestinationController extends Controller
 
                             $retours = $sheet->getCell('X' . $row->getRowIndex())->getValue();
 
+                            $renseignement = tr_replace("\n", "<br />", $sheet->getCell('AB' . $row->getRowIndex())->getValue());
+
                             $data = [
                                 'name' => $name,
                                 'city' => $city,
@@ -546,6 +550,7 @@ class DestinationController extends Controller
                                 'vehicule' => $vehicule,
                                 'parking' => $parking,
                                 'favorite' => $favorite,
+                                'renseignement' => $renseignement
                             ];
 
                             Destination::create($data);
