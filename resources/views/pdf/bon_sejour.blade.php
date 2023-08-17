@@ -213,7 +213,7 @@
         <p>{{ $phone }}</p>
         <p>{{ $latitude }}</p>
         <p>{{ $longitude }}</p>
-        <p>{{ $renseignement }}</p>
+        <p>{!! nl2br(e($renseignement)) !!}</p>
     </div>  
 </body>
 
