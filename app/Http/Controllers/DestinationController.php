@@ -523,7 +523,7 @@ class DestinationController extends Controller
 
                             $retours = $sheet->getCell('X' . $row->getRowIndex())->getValue();
 
-                            $renseignement = tr_replace("\n", "<br />", $sheet->getCell('AB' . $row->getRowIndex())->getValue());
+                            $renseignement = str_replace("\n", "<br />", $sheet->getCell('AB' . $row->getRowIndex())->getValue());
 
                             $data = [
                                 'name' => $name,
