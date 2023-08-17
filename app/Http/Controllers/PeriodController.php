@@ -203,7 +203,7 @@ class PeriodController extends Controller
         $phone = $destinationInfo->phone;
         $latitude = $destinationInfo->latitude;
         $longitude = $destinationInfo->longitude;
-        $renseignement = strip_tags($destinationInfo->renseignement);
+        $renseignement = $destinationInfo->renseignement;
 
         $logoPath = "https://mvef.s3.eu-west-3.amazonaws.com/base_logo_transparent_background.png";
         $logoData = base64_encode(file_get_contents($logoPath));
