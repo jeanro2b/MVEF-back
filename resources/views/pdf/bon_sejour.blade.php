@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Bon de séjour</title>
+    <link href="{{ asset('font/Nunito-Regular.ttf') }}" rel="stylesheet">
     <style>
         /* Ajoutez ici le style CSS de votre e-mail */
         body {
@@ -14,7 +15,7 @@
         .header {
             display: flex;
             width: 100%;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             height: 150px;
         }
@@ -57,6 +58,15 @@
 
         .dest-name {
             margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dest-name img {
+            margin-left: 100px;
+            margin-right: 100px;
+            font-size: 2em;
         }
 
         .dest-name p {
@@ -65,6 +75,15 @@
 
         .dest-date {
             margin: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dest-date img {
+            margin-left: 100px;
+            margin-right: 100px;
+            font-size: 2em;
         }
 
         .dest-date p {
@@ -146,44 +165,49 @@
 <body>
     <div class="header">
         <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
-        <div class="infos">
+        <!-- <div class="infos">
             <p><strong>Mes Vacances en Famille</strong></p>
             <p>Hameau de Lutina, 20237,</p>
             <p>Poggio-Marinaccio</p>
             <p>Service commercial</p>
             <p>145 route Millery - 69700 MONTAGNY</p>
             <a href="www.mesvacancesenfamille.com">www.mesvacancesenfamille.com</a>
-        </div>
+        </div> -->
     </div>
     <div class="first-section">
-        <h2>Carnet de voyage - {{ $libellePlanning }}</h2>
-        <h2>Client - {{ $nomClient }}</h2>
-        <h2>Voyageur - {{ $nomVoyageur }}</h2>
+        <h2>Carnet de voyage</h2>
+        <h2>Voyageur : {{ $nomVoyageur }}</h2>
+        <h2>Client : {{ $nomClient }}</h2>
+        <h2>{{ $libellePlanning }}</h2>
     </div>
-    <div class="sejour">
+    <!-- <div class="sejour">
         Votre séjour
-    </div>
+    </div> -->
     <div class="second-section">
         <div class="destination">
             <div class="dest-name">
                 <img class="img" src="data:image/png;base64,{{ $destData }}" alt="dest" width="30px">
-                <p>{{ $nomDestination }}</p>
+                <p>{{ $nomDestination }} à {{ $villeDestination }}</p>
             </div>
             <div class="dest-date">
                 <img class="img" src="data:image/png;base64,{{ $calData }}" alt="cal" width="30px">
                 <p>Du {{ $dateArrive }} au {{ $dateDepart }}</p>
             </div>
-            <div class="arrive">
+            <div class="dest-date">
+                <img class="img" src="data:image/png;base64,{{ $calData }}" alt="cal" width="30px">
+                <p>{!! $descriptionHebergement !!}</p>
+            </div>
+            <!-- <div class="arrive">
                 <p>Heure d'arrivée : {{ $heureArrive }}</p>
             </div>
             <div class="depart">
                 <p>Heure de départ : {{ $heureDepart }}</p>
-            </div>
+            </div> -->
         </div>
-        <div class="hebergement">
+        <!-- <div class="hebergement">
             <h3>Votre hébergement</h3>
             <p>{!! $descriptionHebergement !!}</p>
-        </div>
+        </div> -->
     </div>
     @php
         $servicesArray = $services->toArray();
