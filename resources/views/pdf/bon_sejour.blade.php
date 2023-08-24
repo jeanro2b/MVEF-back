@@ -66,7 +66,6 @@
             display: flex;
             flex-direction: row;
             flex: wrap;
-            width: 45%;
             justify-content: center;
             align-items: center;
             position: relative;
@@ -92,7 +91,6 @@
             display: flex;
             flex-direction: row;
             flex: wrap;
-            width: 45%;
             justify-content: center;
             align-items: center;
             position: relative;
