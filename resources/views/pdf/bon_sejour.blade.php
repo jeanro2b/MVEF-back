@@ -23,8 +23,7 @@
             align-items: center;
             height: 150px;
             text-align: center;
-            position: absolute;
-            left: 280px;
+            transform: translateX(50%);
         }
 
         .infos {
