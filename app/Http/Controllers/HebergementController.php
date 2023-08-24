@@ -144,9 +144,18 @@ class HebergementController extends Controller
                 $hebergement->name_destination = $dest->name;
             }
 
-            $pImage = Storage::disk('s3')->url($hebergement->pImage);
-            $sImage = Storage::disk('s3')->url($hebergement->sImage);
-            $tImage = Storage::disk('s3')->url($hebergement->tImage);
+            if (!empty($hebergement->pImage)) {
+                $pImage = Storage::disk('s3')->url($hebergement->pImage);
+            }
+
+            if (!empty($hebergement->sImage)) {
+                $sImage = Storage::disk('s3')->url($hebergement->sImage);
+            }
+
+            if (!empty($hebergement->tImage)) {
+                $tImage = Storage::disk('s3')->url($hebergement->tImage);
+            }
+            
         }
 
         foreach ($hebergements as $hebergement) {
@@ -165,13 +174,23 @@ class HebergementController extends Controller
             }
         }
 
-        return response()->json([
-            'message' => 'OK',
-            'hebergements' => $hebergements,
-            'pImage' => $pImage ? $pImage : '',
-            'sImage' => $sImage ? $sImage : '',
-            'tImage' => $tImage ? $tImage : ''
-        ], 200);
+        if (isset($pImage) && isset($sImage) && isset($tImage)) {
+            return response()->json([
+                'message' => 'OK',
+                'hebergements' => $hebergements,
+                'pImage' => isset($pImage) ? $pImage : '',
+                'sImage' => isset($sImage) ? $sImage : '',
+                'tImage' => isset($tImage) ? $tImage : ''
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'OK',
+                'hebergements' => $hebergements,
+                'pImage' => isset($pImage) ? $pImage : '',
+                'sImage' => isset($sImage) ? $sImage : '',
+                'tImage' => isset($tImage) ? $tImage : ''
+            ], 200);
+        }
     }
 
     /**
