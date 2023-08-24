@@ -215,7 +215,8 @@ class PeriodController extends Controller
         $calPath = "https://mvef.s3.eu-west-3.amazonaws.com/2370264.png";
         $calData = base64_encode(file_get_contents($calPath));
 
-        $hebPath = "https://mvef.s3.eu-west-3.amazonaws.com/png-clipart-computer-icons-house-house-logo-angle-text.png";
+        $hebPath = "https://mvef.s3.eu-west-3.amazonaws.com/588a6695d06f6719692a2d1c.png
+";
         $hebData = base64_encode(file_get_contents($hebPath));
 
         $dompdf = new Dompdf();
@@ -280,7 +281,8 @@ class PeriodController extends Controller
         $calPath = "https://mvef.s3.eu-west-3.amazonaws.com/2370264.png";
         $calData = base64_encode(file_get_contents($calPath));
 
-        $hebPath = "https://mvef.s3.eu-west-3.amazonaws.com/png-clipart-computer-icons-house-house-logo-angle-text.png";
+        $hebPath = "https://mvef.s3.eu-west-3.amazonaws.com/588a6695d06f6719692a2d1c.png
+";
         $hebData = base64_encode(file_get_contents($hebPath));
 
         $dompdf = new Dompdf();

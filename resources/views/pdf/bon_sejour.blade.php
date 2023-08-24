@@ -23,7 +23,7 @@
             align-items: center;
             height: 150px;
             text-align: center;
-            transform: translateX(30%);
+            transform: translateX(33%);
         }
 
         .infos {
