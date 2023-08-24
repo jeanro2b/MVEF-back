@@ -23,7 +23,7 @@
             align-items: center;
             height: 150px;
             text-align: center;
-            transform: translateX(35%);
+            transform: translateX(30%);
         }
 
         .infos {
@@ -160,7 +160,7 @@
 
         .services {
         position: relative; /* Définir la classe "services" en position relative */
-        margin: 175px 0 30px 15px;
+        margin: 205px 0 30px 15px;
         }
 
         .columns-container {
@@ -215,7 +215,7 @@
                 <p>Du {{ $dateArrive }} au {{ $dateDepart }}</p>
             </div>
             <div class="dest-date">
-                <img class="img" src="data:image/png;base64,{{ $calData }}" alt="cal" width="30px">
+                <img class="img" src="data:image/png;base64,{{ $hebData }}" alt="cal" width="30px">
                 <p>{!! $descriptionHebergement !!}</p>
             </div>
             <!-- <div class="arrive">

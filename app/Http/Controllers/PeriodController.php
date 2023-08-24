@@ -215,9 +215,12 @@ class PeriodController extends Controller
         $calPath = "https://mvef.s3.eu-west-3.amazonaws.com/2370264.png";
         $calData = base64_encode(file_get_contents($calPath));
 
+        $hebPath = "https://mvef.s3.eu-west-3.amazonaws.com/png-clipart-computer-icons-house-house-logo-angle-text.png";
+        $hebData = base64_encode(file_get_contents($hebPath));
+
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
+        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
@@ -277,9 +280,12 @@ class PeriodController extends Controller
         $calPath = "https://mvef.s3.eu-west-3.amazonaws.com/2370264.png";
         $calData = base64_encode(file_get_contents($calPath));
 
+        $hebPath = "https://mvef.s3.eu-west-3.amazonaws.com/png-clipart-computer-icons-house-house-logo-angle-text.png";
+        $hebData = base64_encode(file_get_contents($hebPath));
+
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
+        $html = View::make('pdf.bon_sejour', compact('nomClient', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
