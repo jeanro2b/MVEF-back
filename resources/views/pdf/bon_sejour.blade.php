@@ -10,7 +10,7 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Nunito'; 
+            font-family: 'Nunito', 'Nunito-Regular', sans-serif; 
         }
 
         .header {
