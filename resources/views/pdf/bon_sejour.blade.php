@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <title>Bon de séjour</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
     <link href="{{ asset('font/Nunito-Regular.ttf') }}" rel="stylesheet">
     <style>
         /* Ajoutez ici le style CSS de votre e-mail */
