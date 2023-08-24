@@ -82,8 +82,8 @@
         .dest-name p {
             margin: 0 10px;
             position: absolute;
-            top: 20px;
-            left: 500px;
+            top: 5px;
+            left: 350px;
         }
 
         .dest-date {
@@ -108,8 +108,8 @@
             margin: 0 10px;
             position: absolute;
             width: 300px;
-            top: 20px;
-            left: 500px;
+            top: 5px;
+            left: 350px;
         }
 
         .arrive {
