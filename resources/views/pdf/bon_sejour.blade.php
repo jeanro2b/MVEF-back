@@ -75,14 +75,13 @@
             margin-left: 100px;
             margin-right: 50px;
             font-size: 2em;
-            height: 85px;
-            width: 85px;
+            height: 80px;
+            width: 80px;
         }
 
         .dest-name p {
             margin: 0 10px;
             position: absolute;
-            top: 5px;
             left: 350px;
         }
 
@@ -100,15 +99,14 @@
             margin-left: 100px;
             margin-right: 100px;
             font-size: 2em;
-            height: 85px;
-            width: 85px;
+            height: 80px;
+            width: 80px;
         }
 
         .dest-date p {
             margin: 0 10px;
             position: absolute;
             width: 300px;
-            top: 5px;
             left: 350px;
         }
 
@@ -161,7 +159,7 @@
 
         .services {
         position: relative; /* Définir la classe "services" en position relative */
-        margin: 45px 0 0 15px;
+        margin: 75px 0 0 15px;
         }
 
         .columns-container {
