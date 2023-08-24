@@ -163,6 +163,11 @@
         margin: 185px 0 30px 15px;
         }
 
+        .services h2 {
+        margin: 10px 0 4px 0px;
+        }
+
+
         .columns-container {
         position: relative; /* Définir le conteneur en position relative */
         }
@@ -238,7 +243,7 @@
         $secondHalf = array_slice($servicesArray, $halfCount);
     @endphp
     <div class="services">
-        <h3>Services</h3>
+        <h2>Services</h2>
         <div class="columns-container">
             <!-- Première colonne -->
             <ul class="two-columns-list first-column">
@@ -258,6 +263,7 @@
         <p>{{ $phone }}</p>
         <p>{{ $latitude }}</p>
         <p>{{ $longitude }}</p>
+        <h2>Informations pratiques et autres services</h2>
         <p>{!! $renseignement !!}</p>
     </div>  
 </body>
