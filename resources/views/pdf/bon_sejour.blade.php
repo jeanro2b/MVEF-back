@@ -22,6 +22,7 @@
             justify-content: center;
             align-items: center;
             height: 150px;
+            text-align: center;
         }
 
         .infos {
@@ -63,6 +64,9 @@
         .dest-name {
             margin: 10px;
             display: flex;
+            flex-direction: row;
+            flex: wrap;
+            width: 45%;
             justify-content: center;
             align-items: center;
         }
@@ -80,6 +84,9 @@
         .dest-date {
             margin: 10px;
             display: flex;
+            flex-direction: row;
+            flex: wrap;
+            width: 45%;
             justify-content: center;
             align-items: center;
         }
