@@ -23,6 +23,8 @@
             align-items: center;
             height: 150px;
             text-align: center;
+            position: absolute;
+            left: 280px;
         }
 
         .infos {
@@ -159,7 +161,7 @@
 
         .services {
         position: relative; /* Définir la classe "services" en position relative */
-        margin: 75px 0 0 15px;
+        margin: 135px 0 0 15px;
         }
 
         .columns-container {
