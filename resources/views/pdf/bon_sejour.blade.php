@@ -69,18 +69,22 @@
             width: 45%;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         .dest-name img {
             margin-left: 100px;
             margin-right: 50px;
             font-size: 2em;
-            height: 150px;
-            width: 150px;
+            height: 85px;
+            width: 85px;
         }
 
         .dest-name p {
             margin: 0 10px;
+            position: absolute;
+            top: 30px;
+            right: 50px;
         }
 
         .dest-date {
@@ -91,16 +95,22 @@
             width: 45%;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         .dest-date img {
             margin-left: 100px;
             margin-right: 100px;
             font-size: 2em;
+            height: 85px;
+            width: 85px;
         }
 
         .dest-date p {
             margin: 0 10px;
+            position: absolute;
+            top: 30px;
+            right: 50px;
         }
 
         .arrive {
@@ -177,7 +187,7 @@
 
 <body>
     <div class="header">
-        <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="350px" height="350px">
+        <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
         <!-- <div class="infos">
             <p><strong>Mes Vacances en Famille</strong></p>
             <p>Hameau de Lutina, 20237,</p>
