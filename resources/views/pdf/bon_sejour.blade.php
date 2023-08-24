@@ -57,7 +57,7 @@
         .destination {
             display: flex;
             flex-direction: column;
-            width: 40%;
+            width: 100%;
             margin-top: 15px;
         }
 
@@ -73,8 +73,10 @@
 
         .dest-name img {
             margin-left: 100px;
-            margin-right: 100px;
+            margin-right: 50px;
             font-size: 2em;
+            height: 150px;
+            width: 150px;
         }
 
         .dest-name p {
@@ -175,7 +177,7 @@
 
 <body>
     <div class="header">
-        <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
+        <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="350px" height="350px">
         <!-- <div class="infos">
             <p><strong>Mes Vacances en Famille</strong></p>
             <p>Hameau de Lutina, 20237,</p>
