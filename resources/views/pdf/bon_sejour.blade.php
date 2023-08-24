@@ -82,8 +82,8 @@
         .dest-name p {
             margin: 0 10px;
             position: absolute;
-            top: 30px;
-            right: 50px;
+            top: 20px;
+            left: 500px;
         }
 
         .dest-date {
@@ -107,8 +107,9 @@
         .dest-date p {
             margin: 0 10px;
             position: absolute;
-            top: 30px;
-            right: 50px;
+            width: 300px;
+            top: 20px;
+            left: 500px;
         }
 
         .arrive {
@@ -160,7 +161,7 @@
 
         .services {
         position: relative; /* Définir la classe "services" en position relative */
-        margin: 15px 0 0 15px;
+        margin: 45px 0 0 15px;
         }
 
         .columns-container {
