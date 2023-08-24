@@ -267,12 +267,12 @@ class DestinationController extends Controller
                 'hebergements' => $hebergements,
                 'services' => $services,
                 'retours' => $retours,
-                'pImage' => $p_Image ? $p_Image : '',
-                'sImage' => $s_Image ? $s_Image : '',
-                'tImage1' => $t1_Image ? $t1_Image : '',
-                'tImage2' => $t2_Image ? $t2_Image : '',
-                'tImage3' => $t3_Image ? $t3_Image : '',
-                'tImage4' => $t4_Image ? $t4_Image : '',
+                'pImage' => isset($p_Image) ? $p_Image : '',
+                'sImage' => isset($s_Image) ? $s_Image : '',
+                'tImage1' => isset($t1_Image) ? $t1_Image : '',
+                'tImage2' => isset($t2_Image) ? $t2_Image : '',
+                'tImage3' => isset($t3_Image) ? $t3_Image : '',
+                'tImage4' => isset($t4_Image) ? $t4_Image : '',
             ], 200);
         } else {
             return response()->json([
@@ -281,12 +281,12 @@ class DestinationController extends Controller
                 'hebergements' => $hebergements,
                 'services' => $services,
                 'retours' => $retours,
-                'pImage' => $p_Image ? $p_Image : '',
-                'sImage' => $s_Image ? $s_Image : '',
-                'tImage1' => $t1_Image ? $t1_Image : '',
-                'tImage2' => $t2_Image ? $t2_Image : '',
-                'tImage3' => $t3_Image ? $t3_Image : '',
-                'tImage4' => $t4_Image ? $t4_Image : '',
+                'pImage' => isset($p_Image) ? $p_Image : '',
+                'sImage' => isset($s_Image) ? $s_Image : '',
+                'tImage1' => isset($t1_Image) ? $t1_Image : '',
+                'tImage2' => isset($t2_Image) ? $t2_Image : '',
+                'tImage3' => isset($t3_Image) ? $t3_Image : '',
+                'tImage4' => isset($t4_Image) ? $t4_Image : '',
             ], 200);
         }
     }
