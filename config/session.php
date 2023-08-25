@@ -155,7 +155,8 @@ return [
     |
     */
 
-    'domain' => '.main--magical-travesseiro-dcefcb.netlify.app',
+    // 'domain' => '.main--magical-travesseiro-dcefcb.netlify.app',
+    'domain' => '.https://mesvacancesenfamille.com',
 
     /*
     |--------------------------------------------------------------------------
