@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL'), 'https://mesvacancesenfamille.com', 'https://main--magical-travesseiro-dcefcb.netlify.app', 'http://localhost:3000'],
+    'allowed_origins' => [env('FRONTEND_URL'), 'https://www.mesvacancesenfamille.com', 'https://main--magical-travesseiro-dcefcb.netlify.app', 'http://localhost:3000'],
 
     'allowed_origins_patterns' => [],
 
