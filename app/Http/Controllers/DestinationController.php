@@ -333,14 +333,14 @@ class DestinationController extends Controller
         $destination = Destination::create([
             'name' => $requete->name,
             'city' => $requete->city,
-            'description' => $requete->description,
-            'address' => $requete->address,
+            'description' => str_replace("\n", '<br />', $requete->description),
+            'address' => str_replace("\n", '<br />', $requete->address),
             'latitude' => $requete->latitude,
             'longitude' => $requete->longitude,
             'phone' => $requete->phone,
-            'languages' => $requete->languages,
+            'languages' => str_replace("\n", '<br />', $requete->languages),
             'mail' => $requete->mail,
-            'reception' => $requete->reception,
+            'reception' => str_replace("\n", '<br />', $requete->reception),
             'arrival' => $requete->arrival,
             'departure' => $requete->departure,
             'carte' => $requete->carte,
@@ -355,7 +355,7 @@ class DestinationController extends Controller
             'favorite' => $requete->favorite,
             'location' => $requete->location,
             'site' => $requete->site,
-            'renseignement' => $requete->renseignement
+            'renseignement' => str_replace("\n", '<br />', $requete->renseignement)
         ]);
 
 
