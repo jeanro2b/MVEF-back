@@ -155,7 +155,6 @@
             position: absolute;
             right: 0;
             top: 0;
-            transform: translateY(-50px);
         }
 
         .img {
@@ -208,7 +207,7 @@
     @if($nomClient === 'Vacances Authentiques')
         <div class="header-2">
             <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
-            <img class="logo-2" src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="320px">
+            <img class="logo-2" src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="300px">
         </div>
     @else
         <div class="header">
