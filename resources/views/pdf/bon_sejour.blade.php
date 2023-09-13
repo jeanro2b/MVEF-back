@@ -189,17 +189,27 @@
 </head>
 
 <body>
-    <div class="header">
+    @if($nomClient === 'Vacances Authentiques')
+        <div class="header">
+            <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
+        </div>
+    @else
+    <div class="header-2">
+            <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
+            <img src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="600px">
+        </div>
+    @endif
+    <!-- <div class="header">
         <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
-        <!-- <div class="infos">
+        <div class="infos">
             <p><strong>Mes Vacances en Famille</strong></p>
             <p>Hameau de Lutina, 20237,</p>
             <p>Poggio-Marinaccio</p>
             <p>Service commercial</p>
             <p>145 route Millery - 69700 MONTAGNY</p>
             <a href="www.mesvacancesenfamille.com">www.mesvacancesenfamille.com</a>
-        </div> -->
-    </div>
+        </div>
+    </div> -->
     <div class="first-section">
         <h2>Carnet de voyage</h2>
         <h2>Voyageur : {{ $nomVoyageur }}</h2>
