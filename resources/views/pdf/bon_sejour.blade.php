@@ -26,6 +26,15 @@
             transform: translateX(32%);
         }
 
+        .header-2 {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            text-align: center;
+        }
+
         .infos {
             position: absolute;
             text-align: right;
