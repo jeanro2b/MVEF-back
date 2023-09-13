@@ -142,6 +142,12 @@
             top: 0;
         }
 
+        .logo-2 {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
         .img {
             margin: 0px 0px 5px 10px;
         }
@@ -191,8 +197,8 @@
 <body>
     @if($nomClient === 'Vacances Authentiques')
         <div class="header-2">
-            <img src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
-            <img src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="500px">
+            <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
+            <img class="logo-2" src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="500px">
         </div>
     @else
         <div class="header">
