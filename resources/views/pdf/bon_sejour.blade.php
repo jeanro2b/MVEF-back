@@ -26,6 +26,16 @@
             transform: translateX(32%);
         }
 
+        .header-2 {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            text-align: center;
+            transform: translateX(32%);
+        }
+
         .infos {
             position: absolute;
             text-align: right;
@@ -190,13 +200,13 @@
 
 <body>
     @if($nomClient === 'Vacances Authentiques')
-        <div class="header">
-            <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
+        <div class="header-2">
+            <img src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
+            <img src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="500px">
         </div>
     @else
-    <div class="header-2">
+        <div class="header">
             <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
-            <img src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="600px">
         </div>
     @endif
     <!-- <div class="header">
