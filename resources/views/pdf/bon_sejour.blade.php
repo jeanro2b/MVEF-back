@@ -155,7 +155,7 @@
             position: absolute;
             right: 0;
             top: 0;
-            transform: translateY(25px);
+            transform: translateY(15px);
         }
 
         .img {
