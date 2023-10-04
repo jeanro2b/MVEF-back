@@ -240,15 +240,16 @@
             <div class="dest-name">
                 <img class="img" src="data:image/png;base64,{{ $destData }}" alt="dest" width="30px">
                 <p>{{ $nomDestination }} à {{ $villeDestination }}
-                    <br/>
-                    Heure d'arrivée : {{ $heureArrive }}
-                    <br/>
-                    Heure de départ : {{ $heureDepart }}
                 </p>
             </div>
             <div class="dest-date">
                 <img class="img" src="data:image/png;base64,{{ $calData }}" alt="cal" width="30px">
-                <p>Du {{ $dateArrive }} au {{ $dateDepart }}</p>
+                <p>Du {{ $dateArrive }} au {{ $dateDepart }}
+                <br/>
+                    Heure d'arrivée : {{ $heureArrive }}
+                    <br/>
+                    Heure de départ : {{ $heureDepart }}
+                </p>
             </div>
             <div class="dest-date">
                 <img class="img" src="data:image/png;base64,{{ $hebData }}" alt="cal" width="30px">
