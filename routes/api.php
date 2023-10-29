@@ -42,6 +42,9 @@ Route::get('destination/{id}', [DestinationController::class, 'get_destination']
 Route::get('hebergements-all', [HebergementController::class, 'get_all_hebergements'])
     ->name('get_hebergements');
 
+Route::get('hebergements-destination/{destinationId}', [HebergementController::class, 'get_all_destination_hebergements'])
+    ->name('get_hebergements_destination');
+
 Route::get('hebergement/{id}', [HebergementController::class, 'get_hebergement'])
     ->name('get_hebergement');
 

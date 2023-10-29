@@ -91,6 +91,73 @@ class HebergementController extends Controller
         ], 200);
     }
 
+    // get all of dest 
+
+    public function get_all_destination_hebergements($destination_id)
+    {
+        $hebergements = DB::table('hebergements')
+            ->select(
+                'id',
+                'name',
+                'long_title',
+                'destination_id',
+            )
+            ->where('destination_id', $destination_id)
+            ->get();
+
+        $equipements = DB::table('equipements')
+            ->select(
+                'id',
+                'text',
+                'hebergement_id'
+            )
+            ->get();
+
+        $destinations = DB::table('destinations')
+            ->select(
+                'id',
+                'name',
+            )
+            ->get();
+
+        $types = DB::table('types')
+            ->select(
+                'id',
+                'type',
+            )
+            ->get();
+
+        foreach ($hebergements as $hebergement) {
+            $dest_id = $hebergement->destination_id;
+            $type_id = $hebergement->type_id;
+            $equips = [];
+
+            foreach ($destinations as $destination) {
+                if ($dest_id == $destination->id) {
+                    $hebergement->name_destination = $destination->name;
+                }
+            }
+
+            foreach ($types as $type) {
+                if ($type_id == $type->id) {
+                    $hebergement->name_type = $type->type;
+                }
+            }
+
+            foreach ($equipements as $equipement) {
+                if ($equipement->hebergement_id == $hebergement->id) {
+                    array_push($equips, $equipement);
+                }
+            }
+
+            $hebergement->equipements = $equips;
+        }
+
+        return response()->json([
+            'message' => 'OK',
+            'hebergements' => $hebergements
+        ], 200);
+    }
     // get 1
 
     public function get_hebergement($id)
