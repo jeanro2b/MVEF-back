@@ -28,7 +28,9 @@ class UserFactory extends Factory
             'city' => Str::random(10),
             'address' => Str::random(15),
             'phone' => '06 06 06 06 06',
-            'role' => 'admin'
+            'role' => 'admin',
+            'newsletter' => true,
+            'firstname' => 'Jean'
         ];
     }
 
