@@ -91,6 +91,9 @@ Route::post('download-bon', [PeriodController::class, 'download_pdf'])
 Route::post('client', [UserController::class, 'create_client'])
     ->name('create_client');
 
+Route::post('inscription-client', [UserController::class, 'inscription_client'])
+    ->name('inscription_client');
+
 Route::post('client-files/{id}', [DocumentController::class, 'post_client_files'])
     ->name('post_client_files');
 
@@ -125,6 +128,9 @@ Route::post('modify-hebergement', [HebergementController::class, 'modify_heberge
 
 Route::put('modify-client', [UserController::class, 'modify_client'])
     ->name('modify_client');
+
+Route::put('modify-user', [UserController::class, 'modify_user'])
+    ->name('modify_user');
 
 Route::put('send-client-info', [UserController::class, 'send_client_info'])
     ->name('send_client_info');
@@ -188,3 +194,8 @@ Route::post('/import-hebergements', [HebergementController::class, 'importerHebe
     ->name('importerHebergements');
 
     Route::post('/login', [UserController::class, 'login']);
+
+
+// Passwords 
+Route::post('/reset-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('/reset', [PasswordResetController::class, 'reset'])->name('password.reset');

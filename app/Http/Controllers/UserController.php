@@ -128,6 +128,35 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function modify_user(Request $req)
+    {
+
+        if($req->password != "") {
+            $user = User::where('id', $req->id)->update(
+                [
+                    'name' => $req->name,
+                    'firstname' => $req->firstName,
+                    'phone' => $req->phone,
+                    'password' => Hash::make($req->password),
+                ]
+            );
+        } else {
+            $user = User::where('id', $req->id)->update(
+                [
+                    'name' => $req->name,
+                    'firstname' => $req->firstName,
+                    'phone' => $req->phone,
+                ]
+            );
+        }
+        
+
+        return response()->json([
+            'message' => 'OK',
+            'user' => $user
+        ], 200);
+    }
+
     public function send_client_info(Request $req) {
         $clientName = $req->name;
         $clientEmail = $req->email;
@@ -296,5 +325,34 @@ class UserController extends Controller
         $user = $request->user();
 
         return response()->json(['id' => $user->id, 'role' => $user->role]);
+    }
+
+    public function inscription_client(Request $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'firstName' => $request->firstName,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'city' => $request->city,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'role' => $request->ce === true ? 'ce' : 'user',
+            'newsletter' => $request->newsLetter,
+        ]);
+
+        $clientName = $request->name;
+        $clientEmail = $request->email;
+        $clientPassword = $request->password;
+        // Autres informations sur le client
+
+        // Changer le template d'envoi potentiellement
+        Mail::to($clientEmail)->send(new UserInfoEmail($clientName, $clientEmail, $clientPassword));
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return response()->noContent();
     }
 }
