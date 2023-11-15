@@ -22,6 +22,16 @@ class PlanningController extends Controller
     public function get_all_plannings()
     {
 
+        $periods = DB::table('periods')
+        ->select(
+            'planning_id',
+            DB::raw('SUM(IF(name IS NOT NULL OR phone IS NOT NULL OR mail IS NOT NULL, 1, 0)) as filled_periods'),
+            DB::raw('COUNT(*) as total_periods')
+        )
+        ->groupBy('planning_id')
+        ->get();
+        
+
         $hebergements = DB::table('hebergements')
             ->select(
                 'id',
@@ -42,6 +52,26 @@ class PlanningController extends Controller
 
 
         foreach ($plannings as $planning) {
+            $planning_id = $planning->id;
+
+            // Recherchez le planning_id correspondant dans les périodes
+            $matchingPeriod = $periods->firstWhere('planning_id', $planning_id);
+    
+            // Si une correspondance est trouvée, calculez le taux et ajoutez la propriété 'rate'
+            if ($matchingPeriod) {
+                $total_periods = $matchingPeriod->total_periods;
+                $filled_periods = $matchingPeriod->filled_periods;
+    
+                // Évitez la division par zéro
+                $rate = ($total_periods > 0) ? ($filled_periods / $total_periods) * 100 : 0;
+    
+                // Arrondir le résultat sans virgule
+                $planning->rate = round($rate);
+            } else {
+                $planning->rate = 0; // Si aucune correspondance n'est trouvée, le taux est à zéro
+            }
+
+
             $user_id = $planning->user_id;
             $hebergement_id = $planning->hebergement_id;
 
