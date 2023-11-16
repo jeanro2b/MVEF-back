@@ -185,6 +185,15 @@ class DestinationController extends Controller
             )
             ->where('destination_id', $id)
             ->get();
+        
+        $servicespayants = DB::table('servicespayants')
+            ->select(
+                'id',
+                'destination_id',
+                'text'
+            )
+            ->where('destination_id', $id)
+            ->get();
 
         $retours = DB::table('retours')
             ->select(
@@ -266,6 +275,7 @@ class DestinationController extends Controller
                 'destinations' => $destinations,
                 'hebergements' => $hebergements,
                 'services' => $services,
+                'servicespayants' => $servicespayants,
                 'retours' => $retours,
                 'pImage' => isset($p_Image) ? $p_Image : '',
                 'sImage' => isset($s_Image) ? $s_Image : '',
@@ -280,6 +290,7 @@ class DestinationController extends Controller
                 'destinations' => $destinations,
                 'hebergements' => $hebergements,
                 'services' => $services,
+                'servicespayants' => $servicespayants,
                 'retours' => $retours,
                 'pImage' => isset($p_Image) ? $p_Image : '',
                 'sImage' => isset($s_Image) ? $s_Image : '',
