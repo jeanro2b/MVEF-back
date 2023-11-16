@@ -35,11 +35,18 @@ class Destination extends Model
         'location',
         'site',
         'renseignement',
+        'caution',
+        'taxe',
     ];
 
     public function service()
     {
         return $this->belongsToMany(Service::class);
+    }
+
+    public function servicespayant()
+    {
+        return $this->belongsToMany(Servicespayants::class);
     }
 
     public function retours()
