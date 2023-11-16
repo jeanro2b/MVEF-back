@@ -10,6 +10,7 @@ use App\Models\Period;
 use App\Models\Planning;
 use App\Models\Retours;
 use App\Models\Service;
+use App\Models\Servicespayant;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -355,6 +356,8 @@ class DestinationController extends Controller
             'arrival' => $requete->arrival,
             'departure' => $requete->departure,
             'carte' => $requete->carte,
+            'caution' => $requete->caution,
+            'taxe' => $requete->taxe,
             'pImage' => $pImage = '1' ? '' : $pImage,
             'sImage' => $sImage = '1' ? '' : $sImage,
             'tImage1' => $tImage1 = '1' ? '' : $tImage1,
@@ -373,6 +376,13 @@ class DestinationController extends Controller
         foreach ($requete->services as $service) {
             Service::create([
                 'text' => $service,
+                'destination_id' => $destination->id
+            ]);
+        }
+
+        foreach ($requete->servicespayants as $servicepayant) {
+            Servicespayant::create([
+                'text' => $servicepayant,
                 'destination_id' => $destination->id
             ]);
         }
@@ -451,6 +461,8 @@ class DestinationController extends Controller
                 'arrival' => $requete->arrival,
                 'departure' => $requete->departure,
                 'carte' => $requete->carte,
+                'caution' => $requete->caution,
+                'taxe' => $requete->taxe,
                 'pImage' => $pImageTemp,
                 'sImage' => $sImageTemp,
                 'tImage1' => $tImage1Temp,
@@ -467,11 +479,19 @@ class DestinationController extends Controller
         );
 
         Service::where('destination_id', $requete->id)->delete();
+        Servicespayant::where('destination_id', $requete->id)->delete();
         Retours::where('destination_id', $requete->id)->delete();
 
         foreach ($requete->services as $service) {
             Service::create([
                 'text' => $service,
+                'destination_id' => $requete->id
+            ]);
+        }
+
+        foreach ($requete->servicespayants as $servicepayant) {
+            Servicespayant::create([
+                'text' => $servicepayant,
                 'destination_id' => $requete->id
             ]);
         }
