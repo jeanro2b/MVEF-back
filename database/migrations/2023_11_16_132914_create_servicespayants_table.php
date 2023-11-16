@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('destination_id')->references('id')->on('destinations');
 
             $table->string('icon')->nullable();
-            $table->text('text');
+            $table->text('text')->nullable();
         });
     }
 
