@@ -294,7 +294,7 @@ class PlanningController extends Controller
             'message' => 'OK',
             'destination' => $destination,
             'services' => $services,
-            'pImage' => isset($p_Image) ? $p_Image : ''
+            'pImage' => isset($p_Image) ? $p_Image : '',
         ], 200);
     }
 }
