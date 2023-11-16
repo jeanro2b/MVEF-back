@@ -280,6 +280,9 @@ class PlanningController extends Controller
                         $destination = Destination::where('id', $destination_id)->get();
                         foreach($destination as $dest) {
                             $services = Service::where('destination_id', $dest->id)->get();
+                            if (!empty($dest->pImage)) {
+                                $p_Image = Storage::disk('s3')->url($dest->pImage);
+                            }
                         }
                     }
                     
@@ -290,7 +293,8 @@ class PlanningController extends Controller
         return response()->json([
             'message' => 'OK',
             'destination' => $destination,
-            'services' => $services
+            'services' => $services,
+            'pImage' => isset($p_Image) ? $p_Image : ''
         ], 200);
     }
 }
