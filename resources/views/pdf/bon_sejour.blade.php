@@ -17,6 +17,8 @@
             transform-origin: left top;
             overflow-x: hidden;
             position: absolute;
+            width: 100vh;
+            height: 100vw;
             top: 0;
             left: 0;
         }
