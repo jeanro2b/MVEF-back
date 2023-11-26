@@ -267,37 +267,12 @@
             <p>{!! $descriptionHebergement !!}</p>
         </div> -->
     </div>
-    <!-- @php
-        $servicesArray = $services->toArray();
 
-        $halfCount = ceil(count($servicesArray) / 2);
-        $firstHalf = array_slice($servicesArray, 0, $halfCount);
-        $secondHalf = array_slice($servicesArray, $halfCount);
-    @endphp -->
-    <div class="services">
-        <h2>Services</h2>
-        <div class="columns-container">
-            <!-- Première colonne -->
-            <ul class="two-columns-list first-column">
-            @foreach ($firstHalf as $service)
-                <li>{{ $service['text'] }}</li>
-            @endforeach
-            </ul>
-            <!-- Deuxième colonne (en position relative) -->
-            <ul class="two-columns-list second-column">
-            @foreach ($secondHalf as $service)
-                <li>{{ $service['text'] }}</li>
-            @endforeach
-            </ul>
-        </div>
-        <p>{{ $addressBetter }}</p>
-        <p>{{ $mail }}</p>
-        <p>{{ $phone }}</p>
-        <p>{{ $latitude }}</p>
-        <p>{{ $longitude }}</p>
-        <h2>Informations pratiques et autres services</h2>
-        <p>{!! $renseignement !!}</p>
-    </div>  
+    
+
+
+
+    
 </body>
 
 </html>
