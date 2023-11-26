@@ -20,6 +20,7 @@ use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Dompdf\Dompdf;
+use Spatie\Browsershot\Browsershot;
 use Illuminate\Support\Facades\View;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf as PdfDompdf;
 
