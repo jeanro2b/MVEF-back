@@ -291,8 +291,6 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $servicesArray = $services->toArray();
-
         $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
 
         // Chargement du contenu HTML dans Dompdf
