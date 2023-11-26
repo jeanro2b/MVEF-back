@@ -15,8 +15,6 @@
             font-family: 'Rammetto One', sans-serif;
             transform: rotate(90deg);
             transform-origin: left top;
-            width: 100vh;
-            height: 100vw;
             overflow-x: hidden;
             position: absolute;
             top: 0;
