@@ -13,8 +13,8 @@
             margin: 0;
             padding: 0;
             font-family: 'Rammetto One', sans-serif;
-            transform: rotate(90deg);
-            transform-origin: left top;
+            /* transform: rotate(90deg);
+            transform-origin: left top; */
             overflow-x: hidden;
             position: absolute;
             width: 100vh;
