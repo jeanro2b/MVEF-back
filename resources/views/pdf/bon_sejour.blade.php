@@ -195,14 +195,6 @@
             <p>{!! $descriptionHebergement !!}</p>
         </div>
     </div>
-
-    @php
-        $servicesArray = $services->toArray();
-
-        $halfCount = ceil(count($servicesArray) / 2);
-        $firstHalf = array_slice($servicesArray, 0, $halfCount);
-        $secondHalf = array_slice($servicesArray, $halfCount);
-    @endphp
     <div class="services">
         <h2>Services</h2>
         <div class="columns-container">
