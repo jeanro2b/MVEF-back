@@ -225,24 +225,24 @@ class PeriodController extends Controller
 
         $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
 
-        // Chargement du contenu HTML dans Dompdf
-        $dompdf->loadHtml($html);
+        $imagePath = "mail/$filename";
 
-        // Rendu du PDF
-        $dompdf->render();
-
-        $output = $dompdf->output();
-
-        $filename = "PDF_bon_sejour_$nomVoyageur.pdf";
-
-        // Envoi du PDF par e-mail avec pièce jointe
+        // Utilisez Browsershot pour convertir le HTML en image
+        Browsershot::html($html)
+            ->noSandbox()
+            ->save($imagePath);
+        
+        // Envoi de l'image par e-mail avec pièce jointe
         $mailData = [
             'email' => $req->mail,
-            'attachmentData' => $output,
+            'attachmentData' => file_get_contents($imagePath),
             'attachmentName' => $filename
         ];
-
+        
         Mail::to($mailData['email'])->send(new ReservationMail($mailData));
+        
+        // Facultatif : Supprimez l'image après l'envoi de l'e-mail si nécessaire
+        unlink($imagePath);
 
         return 'Le PDF a été généré et envoyé par e-mail.';
     }
@@ -301,7 +301,7 @@ class PeriodController extends Controller
 
         $output = $dompdf->output();
 
-        $filename = "PDF_bon_sejour_$nomVoyageur.pdf";
+        $filename = "bon_sejour_$nomVoyageur.pdf";
 
         $contentType = 'application/pdf';
 
