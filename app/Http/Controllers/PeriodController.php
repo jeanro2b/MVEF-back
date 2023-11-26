@@ -221,10 +221,9 @@ class PeriodController extends Controller
         $logoVacancesAuthPath = "https://mvef.s3.eu-west-3.amazonaws.com/LOGO-VACANCES+AUTHENTIQUES.jpg";
         $logoVacancesAuthData = base64_encode(file_get_contents($logoVacancesAuthPath));
 
-        $dompdf = new Dompdf();
-
         $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
 
+        $filename = "bon_sejour_$nomVoyageur.pdf";
         $imagePath = "mail/$filename";
 
         // Utilisez Browsershot pour convertir le HTML en image
