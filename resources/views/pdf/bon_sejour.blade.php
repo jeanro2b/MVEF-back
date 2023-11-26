@@ -155,7 +155,7 @@
 </head>
 
 <body>
-    <img class="background" src="https://mvef.s3.eu-west-3.amazonaws.com/LinkedIn.png" alt="background">
+    <img class="background" src="https://mvef.s3.eu-west-3.amazonaws.com/fond.jpg" alt="background">
 
     @if($nomClient === 'Vacances Authentiques')
         <div class="header-2">
