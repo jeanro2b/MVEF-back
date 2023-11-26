@@ -222,27 +222,28 @@ class PeriodController extends Controller
         $logoVacancesAuthPath = "https://mvef.s3.eu-west-3.amazonaws.com/LOGO-VACANCES+AUTHENTIQUES.jpg";
         $logoVacancesAuthData = base64_encode(file_get_contents($logoVacancesAuthPath));
 
+        $dompdf = new Dompdf();
+
         $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
 
-        $filename = "bon_sejour_$nomVoyageur.pdf";
-        $imagePath = "mail/$filename";
+        // Chargement du contenu HTML dans Dompdf
+        $dompdf->loadHtml($html);
 
-        // Utilisez Browsershot pour convertir le HTML en image
-        Browsershot::html($html)
-            ->noSandbox()
-            ->save($imagePath);
-        
-        // Envoi de l'image par e-mail avec pièce jointe
+        // Rendu du PDF
+        $dompdf->render();
+
+        $output = $dompdf->output();
+
+        $filename = "PDF_bon_sejour_$nomVoyageur.pdf";
+
+        // Envoi du PDF par e-mail avec pièce jointe
         $mailData = [
             'email' => $req->mail,
-            'attachmentData' => file_get_contents($imagePath),
+            'attachmentData' => $output,
             'attachmentName' => $filename
         ];
-        
+
         Mail::to($mailData['email'])->send(new ReservationMail($mailData));
-        
-        // Facultatif : Supprimez l'image après l'envoi de l'e-mail si nécessaire
-        unlink($imagePath);
 
         return 'Le PDF a été généré et envoyé par e-mail.';
     }
