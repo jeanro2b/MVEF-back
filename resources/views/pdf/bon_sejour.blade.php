@@ -200,16 +200,10 @@
         <div class="columns-container">
             <!-- Première colonne -->
             <ul class="two-columns-list first-column">
-                <!-- @foreach ($firstHalf as $service)
-                    <li>{{ $service['text'] }}</li>
-                @endforeach -->
                 <li>test</li>
             </ul>
             <!-- Deuxième colonne (en position relative) -->
             <ul class="two-columns-list second-column">
-                <!-- @foreach ($secondHalf as $service)
-                    <li>{{ $service['text'] }}</li>
-                @endforeach -->
                 <li>test</li>
             </ul>
         </div>
