@@ -15,12 +15,12 @@
             font-family: 'Rammetto One', sans-serif;
             /* transform: rotate(90deg);
             transform-origin: left top; */
-            overflow-x: hidden;
+            /* overflow-x: hidden;
             position: absolute;
             width: 100vh;
             height: 100vw;
             top: 0;
-            left: 0;
+            left: 0; */
         }
 
         .background {
