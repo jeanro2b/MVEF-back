@@ -206,9 +206,15 @@ class PeriodController extends Controller
         $longitude = $destinationInfo->longitude;
         $renseignement = $destinationInfo->renseignement;
         $villeDestination = $destinationInfo->city;
+        $caution = $destinationInfo->caution;
+        $taxe = $destinationInfo->taxe;
 
         $logoPath = "https://mvef.s3.eu-west-3.amazonaws.com/base_logo_transparent_background.png";
         $logoData = base64_encode(file_get_contents($logoPath));
+        $bslogoPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogo.png";
+        $bslogoData = base64_encode(file_get_contents($bslogoPath));
+        $bslogotxtPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogotxt.png";
+        $bslogotxtData = base64_encode(file_get_contents($bslogotxtPath));
 
         $destPath = "https://mvef.s3.eu-west-3.amazonaws.com/icone-de-localisation-noire.png";
         $destData = base64_encode(file_get_contents($destPath));
@@ -224,7 +230,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
+        $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination', 'caution', 'taxe'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
@@ -274,6 +280,8 @@ class PeriodController extends Controller
         $longitude = $destinationInfo->longitude;
         $renseignement = $destinationInfo->renseignement;
         $villeDestination = $destinationInfo->city;
+        $caution = $destinationInfo->caution;
+        $taxe = $destinationInfo->taxe;
 
         $logoPath = "https://mvef.s3.eu-west-3.amazonaws.com/base_logo_transparent_background.png";
         $logoData = base64_encode(file_get_contents($logoPath));
@@ -292,7 +300,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination'))->render();
+        $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination', 'caution', 'taxe'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
