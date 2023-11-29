@@ -238,14 +238,37 @@
     <!-- <div class="sejour">
         Votre séjour
     </div> -->
-    <div class="services">
-        <h3>Destination</h3>
-        <p>{{ $nomDestination }} à {{ $villeDestination }}</p>
-        <h3>Horaires</h3>
-        <p>Arrivée : le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
-        <p>Départ : le {{ $dateArrive }} avant {{ $heureDepart }}</p>
-        <h2>Hébergement</h2>
-        <p>{!! $descriptionHebergement !!}</p>
+    <div class="second-section">
+        <div class="destination">
+            <div class="dest-name">
+                <img class="img" src="data:image/png;base64,{{ $destData }}" alt="dest" width="30px">
+                <p>{{ $nomDestination }} à {{ $villeDestination }}
+                </p>
+            </div>
+            <div class="dest-date">
+                <img class="img" src="data:image/png;base64,{{ $calData }}" alt="cal" width="30px">
+                <p>Du {{ $dateArrive }} au {{ $dateDepart }}
+                <br/>
+                    Heure d'arrivée : {{ $heureArrive }}
+                    <br/>
+                    Heure de départ : {{ $heureDepart }}
+                </p>
+            </div>
+            <div class="dest-date">
+                <img class="img" src="data:image/png;base64,{{ $hebData }}" alt="cal" width="30px">
+                <p>{!! $descriptionHebergement !!}</p>
+            </div>
+            <!-- <div class="arrive">
+                <p>Heure d'arrivée : {{ $heureArrive }}</p>
+            </div>
+            <div class="depart">
+                <p>Heure de départ : {{ $heureDepart }}</p>
+            </div> -->
+        </div>
+        <!-- <div class="hebergement">
+            <h3>Votre hébergement</h3>
+            <p>{!! $descriptionHebergement !!}</p>
+        </div> -->
     </div>
     @php
         $servicesArray = $services->toArray();
