@@ -175,7 +175,7 @@
 
         .services {
         position: relative; /* Définir la classe "services" en position relative */
-        margin: 185px 0 30px 15px;
+        margin: 10px 0 30px 15px;
         }
 
         .services h2 {
