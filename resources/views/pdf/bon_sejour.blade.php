@@ -214,8 +214,8 @@
             <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
         </div> -->
         <div class="header-2">
-            <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
-            <img class="logo-2" src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="300px">
+            <img class="logo" src="data:image/png;base64,{{ $bslogoData }}" alt="img" width="250px">
+            <img class="logo-2" src="data:image/png;base64,{{ $bslogotxtData }}" alt="img" width="300px">
         </div>
     @endif
     <!-- <div class="header">
@@ -241,12 +241,12 @@
     <div class="second-section">
         <div class="destination">
             <div class="dest-name">
-                <!-- <img class="img" src="data:image/png;base64,{{ $destData }}" alt="dest" width="30px"> -->
+                <img class="img" src="data:image/png;base64,{{ $destData }}" alt="dest" width="30px">
                 <p>{{ $nomDestination }} à {{ $villeDestination }}
                 </p>
             </div>
             <div class="dest-date">
-                <!-- <img class="img" src="data:image/png;base64,{{ $calData }}" alt="cal" width="30px"> -->
+                <img class="img" src="data:image/png;base64,{{ $calData }}" alt="cal" width="30px">
                 <p>Du {{ $dateArrive }} au {{ $dateDepart }}
                 <br/>
                     Heure d'arrivée : {{ $heureArrive }}
@@ -255,7 +255,7 @@
                 </p>
             </div>
             <div class="dest-date">
-                <!-- <img class="img" src="data:image/png;base64,{{ $hebData }}" alt="cal" width="30px"> -->
+                <img class="img" src="data:image/png;base64,{{ $hebData }}" alt="cal" width="30px">
                 <p>{!! $descriptionHebergement !!}</p>
             </div>
             <!-- <div class="arrive">
@@ -278,10 +278,10 @@
         $secondHalf = array_slice($servicesArray, $halfCount);
     @endphp
     <div class="services">
-        <h2>Caution</h2>
+        <!-- <h2>Caution</h2>
         <p>{{ $caution }}</p>
         <h2>Taxe de séjour</h2>
-        <p>{{ $taxe }}</p>
+        <p>{{ $taxe }}</p> -->
         <h2>Services</h2>
         <div class="columns-container">
             <!-- Première colonne -->
