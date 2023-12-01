@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Stripe\StripeClient;
+
 
 class ReservationController extends Controller
 {
@@ -23,10 +25,16 @@ class ReservationController extends Controller
     {
         $requete = json_decode($req);
         $name = $requete->name;
-        $firstName = $requete->firstName;
+        $first_name = $requete->firstName;
         $phone = $requete->phone;
         $mail = $requete->mail;
         $amount = $requete->amount;
+        $start = $requete->start;
+        $end = $requete->end;
+        $destination_id = $requete->destination_id;
+        $hebergement_id = $requete->hebergement_id;
+        $user_id = $requete->user_id;
+        //status
 
         $stripe = new StripeClient(config('services.stripe.secret_key'));
 
@@ -39,18 +47,17 @@ class ReservationController extends Controller
             ]);
 
             Reservation::create([
-                'name' => $requete->name,
-                'long_title' => $requete->longTitle,
-                'city' => $requete->city,
-                'description' => str_replace("\n", '<br />', $requete->description),
-                'pImage' => $pImage = '1' ? '' : $pImage,
-                'sImage' => $sImage = '1' ? '' : $sImage,
-                'tImage' => $tImage = '1' ? '' : $tImage,
-                'type_id' => $requete->type,
-                'code' => $requete->code,
-                'destination_id' => $requete->destination_id,
-                'price' => $int_price,
-                'couchage' => $requete->couchage
+                'name' => $name,
+                'first_name' => $first_name,
+                'phone' => $phone,
+                'mail' => $mail,
+                'destination_id' => $destination_id,
+                'hebergement_id' => $hebergement_id,
+                'user_id' => $user_id,
+                'amount' => $amount,
+                'start' => $start,
+                'end' => $end,
+                'status' => 'A venir'
             ]);
 
             return response()->json(['client_secret' => $intent->client_secret]);
@@ -63,10 +70,54 @@ class ReservationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function get_reservation($id)
     {
-        //
+        $reservation = Reservation::where('id', $id)->get();
+
+        return response()->json([
+            'message' => 'OK',
+            'reservation' => $reservation,
+        ], 200);
     }
+
+    public function get_reservation_user($id)
+    {
+        $reservation = Reservation::where('user_id', $id)->get();
+
+        return response()->json([
+            'message' => 'OK',
+            'reservation' => $reservation,
+        ], 200);
+    }
+
+    public function get_all_reservations()
+    {
+        $reservations = DB::table('reservations')
+        ->select(
+            'id',
+            'text',
+            'destination_id',
+            'start',
+            'end',
+            'status',
+            'amount',
+            'intent',
+            'name',
+            'first_name',
+            'phone',
+            'mail',
+            'hebergement_id',
+            'user_id'
+        )
+        ->get();
+
+
+        return response()->json([
+            'message' => 'OK',
+            'reservations' => $reservations,
+        ], 200);
+    }
+
 
     /**
      * Display the specified resource.

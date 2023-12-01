@@ -84,6 +84,16 @@ Route::get('download/{path}', [DocumentController::class, 'download_file'])
     ->name('download_file');
 
 
+Route::post('/reservations-all', [ReservationController::class], 'get_all_reservations')
+    ->name('get_all_reservations');
+
+Route::post('/reservation/{id}', [ReservationController::class], 'get_reservation')
+    ->name('get_reservation');
+
+Route::post('/reservation-user/{id}', [ReservationController::class], 'get_reservation_user')
+    ->name('get_reservation_user');
+
+
 Route::post('download-bon', [PeriodController::class, 'download_pdf'])
     ->name('download_pdf');
 
@@ -119,7 +129,7 @@ Route::post('send-period', [PeriodController::class, 'send_period'])
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->name('login');
 
-    
+
 Route::post('/create-intent-hold', [ReservationController::class], 'create')
     ->name('create');
 // Puts
