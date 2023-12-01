@@ -490,10 +490,11 @@ class DestinationController extends Controller
             ]);
         }
 
-        foreach ($requete->servicespayants as $servicepayant) {
+        foreach ($requete->payants as $payant) {
             Servicespayant::create([
-                'text' => $servicepayant,
-                'destination_id' => $requete->id
+                'text' => $payant->text,
+                'destination_id' => $requete->id,
+                'price' => $payant->price,
             ]);
         }
 
