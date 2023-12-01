@@ -191,7 +191,8 @@ class DestinationController extends Controller
             ->select(
                 'id',
                 'destination_id',
-                'text'
+                'text',
+                'price',
             )
             ->where('destination_id', $id)
             ->get();

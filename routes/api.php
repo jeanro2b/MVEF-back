@@ -11,6 +11,7 @@ use App\Http\Controllers\HebergementController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReservationController;
 
 
 /*
@@ -118,6 +119,9 @@ Route::post('send-period', [PeriodController::class, 'send_period'])
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->name('login');
 
+    
+Route::post('/create-intent-hold', [ReservationController::class], 'create')
+    ->name('create');
 // Puts
 
 Route::post('modify-destination', [DestinationController::class, 'modify_destination'])

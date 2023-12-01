@@ -38,4 +38,9 @@ class Hebergement extends Model
     {
         return $this->hasMany(Planning::class);
     }
+
+    public function reservation()
+    {
+        return $this->belongsToMany(Reservation::class);
+    }
 }

@@ -49,6 +49,11 @@ class Destination extends Model
         return $this->belongsToMany(Servicespayants::class);
     }
 
+    public function reservation()
+    {
+        return $this->belongsToMany(Reservation::class);
+    }
+
     public function retours()
     {
         return $this->hasMany(Retours::class);

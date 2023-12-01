@@ -12,7 +12,8 @@ class Servicespayant extends Model
     protected $fillable = [
         'icon',
         'text',
-        'destination_id'
+        'destination_id',
+        'price'
     ];
 
     public function destination()
