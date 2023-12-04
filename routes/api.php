@@ -84,13 +84,13 @@ Route::get('download/{path}', [DocumentController::class, 'download_file'])
     ->name('download_file');
 
 
-Route::post('/reservations-all', [ReservationController::class], 'get_all_reservations')
+Route::get('/reservations-all', [ReservationController::class], 'get_all_reservations')
     ->name('get_all_reservations');
 
-Route::post('/reservation/{id}', [ReservationController::class], 'get_reservation')
+Route::get('/reservation/{id}', [ReservationController::class], 'get_reservation')
     ->name('get_reservation');
 
-Route::post('/reservation-user/{id}', [ReservationController::class], 'get_reservation_user')
+Route::get('/reservation-user/{id}', [ReservationController::class], 'get_reservation_user')
     ->name('get_reservation_user');
 
 
