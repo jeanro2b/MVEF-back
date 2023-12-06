@@ -71,10 +71,13 @@ class ReservationController extends Controller
                 'amount' => $amount,
                 'start' => $start,
                 'end' => $end,
+                'intent' => $intent->client_secret,
                 'status' => 'A venir'
             ]);
 
-            return response()->json(['client_secret' => $intent->client_secret]);
+            return response()->json([
+                'message' => 'OK',
+            ], 200);
         } catch (\Stripe\Exception\ApiErrorException $e) {
             // Gérez les erreurs Stripe ici
             Log::error($e);
