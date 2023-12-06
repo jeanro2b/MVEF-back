@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stripe\StripeClient;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 
 class ReservationController extends Controller
@@ -32,8 +33,8 @@ class ReservationController extends Controller
         $phone = $requete['phone'];
         $mail = $requete['mail'];
         $amount = $requete['amount'];
-        $start = $requete['start'];
-        $end = $requete['end'];
+        $start = Carbon::parse($requete['start'])->toDateTimeString();
+        $end = Carbon::parse($requete['end'])->toDateTimeString();
         $destination_id = $requete['destination_id'];
         $hebergement_id = $requete['hebergement_id'];
         $user_id = $requete['userId'];
@@ -72,8 +73,6 @@ class ReservationController extends Controller
                 'end' => $end,
                 'status' => 'A venir'
             ]);
-
-            Log::info('ici');
 
             return response()->json(['client_secret' => $intent->client_secret]);
         } catch (\Stripe\Exception\ApiErrorException $e) {
