@@ -49,7 +49,7 @@ class ReservationController extends Controller
         Log::debug($hebergement_id);
         Log::debug($user_id);
 
-        $stripe = new StripeClient(config('services.stripe.secret_key'));
+        $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
 
         try {
             $intent = $stripe->paymentIntents->create([
