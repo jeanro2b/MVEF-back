@@ -130,8 +130,8 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->name('login');
 
 
-Route::post('/create-intent-hold', [ReservationController::class], 'create')
-    ->name('create');
+Route::post('/create-intent-hold', [ReservationController::class], 'create_payment_intent')
+    ->name('create_payment_intent');
 // Puts
 
 Route::post('modify-destination', [DestinationController::class, 'modify_destination'])

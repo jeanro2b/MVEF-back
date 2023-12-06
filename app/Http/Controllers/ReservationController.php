@@ -22,7 +22,7 @@ class ReservationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $req)
+    public function create_payment_intent(Request $req)
     {
         $requete = json_decode($req);
         $name = $requete->name;
