@@ -101,6 +101,7 @@ class HebergementController extends Controller
                 'name',
                 'long_title',
                 'destination_id',
+                'type_id',
             )
             ->where('destination_id', $destination_id)
             ->get();
