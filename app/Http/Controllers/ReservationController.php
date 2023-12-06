@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Stripe\StripeClient;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LocationDemandEmail;
 
 
 class ReservationController extends Controller
@@ -25,9 +27,6 @@ class ReservationController extends Controller
      */
     public function create_payment_intent(Request $requete)
     {
-        // Log::debug($req);
-        // $requete = json_decode($req->getContent(), true);
-        Log::debug($requete);
         $name = $requete['name'];
         $first_name = $requete['firstName'];
         $phone = $requete['phone'];
@@ -38,17 +37,9 @@ class ReservationController extends Controller
         $destination_id = $requete['destination_id'];
         $hebergement_id = $requete['hebergement_id'];
         $user_id = $requete['userId'];
+        $ownerEmail = 'jrgabet@hotmail.fr';
+        $hebergementName = 'Nom';
 
-        Log::debug($name);
-        Log::debug($first_name);
-        Log::debug($phone);
-        Log::debug($mail);
-        Log::debug($amount);
-        Log::debug($start);
-        Log::debug($end);
-        Log::debug($destination_id);
-        Log::debug($hebergement_id);
-        Log::debug($user_id);
 
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
 
@@ -60,7 +51,7 @@ class ReservationController extends Controller
                 'automatic_payment_methods' => ['enabled' => true],
             ]);
 
-            Reservation::create([
+            $reservation = Reservation::create([
                 'name' => $name,
                 'first_name' => $first_name,
                 'phone' => $phone,
@@ -74,6 +65,12 @@ class ReservationController extends Controller
                 'intent' => $intent->client_secret,
                 'status' => 'A venir'
             ]);
+
+            $reservationId = $reservation->id;
+
+            $token = Str::random(21);
+
+            Mail::to($ownerEmail)->send(new LocationDemandEmail($token, $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id));
 
             return response()->json([
                 'message' => 'OK',
