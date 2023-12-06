@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
-use App\Http\Controllers\Str;
+use App\Mail\LocationDemandEmail;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stripe\StripeClient;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\LocationDemandEmail;
+
 
 
 class ReservationController extends Controller
