@@ -36,7 +36,7 @@ class ReservationController extends Controller
         $end = $requete['end'];
         $destination_id = $requete['destination_id'];
         $hebergement_id = $requete['hebergement_id'];
-        $user_id = $requete['user_id'];
+        $user_id = $requete['userId'];
 
         Log::debug($name);
         Log::debug($first_name);
