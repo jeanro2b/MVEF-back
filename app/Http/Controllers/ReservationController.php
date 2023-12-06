@@ -22,22 +22,22 @@ class ReservationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create_payment_intent(Request $req)
+    public function create_payment_intent(Request $requete)
     {
-        Log::debug($req);
-        $requete = json_decode($req->getContent(), true);
+        // Log::debug($req);
+        // $requete = json_decode($req->getContent(), true);
         Log::debug($requete);
-        $name = $requete->name;
-        $first_name = $requete->firstName;
-        $phone = $requete->phone;
-        $mail = $requete->mail;
-        $amount = $requete->amount;
-        $start = $requete->start;
-        $end = $requete->end;
-        $destination_id = $requete->destination_id;
-        $hebergement_id = $requete->hebergement_id;
-        $user_id = $requete->user_id;
-        
+        $name = $requete['name'];
+        $first_name = $requete['firstName'];
+        $phone = $requete['phone'];
+        $mail = $requete['mail'];
+        $amount = $requete['amount'];
+        $start = $requete['start'];
+        $end = $requete['end'];
+        $destination_id = $requete['destination_id'];
+        $hebergement_id = $requete['hebergement_id'];
+        $user_id = $requete['user_id'];
+
         Log::debug($name);
         Log::debug($first_name);
         Log::debug($phone);
