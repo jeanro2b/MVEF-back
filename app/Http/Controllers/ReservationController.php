@@ -6,6 +6,7 @@ use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stripe\StripeClient;
+use Illuminate\Support\Facades\Log;
 
 
 class ReservationController extends Controller
@@ -35,6 +36,16 @@ class ReservationController extends Controller
         $hebergement_id = $requete->hebergement_id;
         $user_id = $requete->user_id;
         //status
+        Log::debug($name);
+        Log::debug($first_name);
+        Log::debug($phone);
+        Log::debug($mail);
+        Log::debug($amount);
+        Log::debug($start);
+        Log::debug($end);
+        Log::debug($destination_id);
+        Log::debug($hebergement_id);
+        Log::debug($user_id);
 
         $stripe = new StripeClient(config('services.stripe.secret_key'));
 
