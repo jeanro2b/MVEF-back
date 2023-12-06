@@ -25,62 +25,62 @@ class ReservationController extends Controller
     public function create_payment_intent(Request $req)
     {
         Log::debug($req);
-        $requete = json_decode($req);
+        $requete = json_decode($req->getContent(), true);
         Log::debug($requete);
-        // $name = $requete->name;
-        // $first_name = $requete->firstName;
-        // $phone = $requete->phone;
-        // $mail = $requete->mail;
-        // $amount = $requete->amount;
-        // $start = $requete->start;
-        // $end = $requete->end;
-        // $destination_id = $requete->destination_id;
-        // $hebergement_id = $requete->hebergement_id;
-        // $user_id = $requete->user_id;
-        //status
-        // Log::debug($name);
-        // Log::debug($first_name);
-        // Log::debug($phone);
-        // Log::debug($mail);
-        // Log::debug($amount);
-        // Log::debug($start);
-        // Log::debug($end);
-        // Log::debug($destination_id);
-        // Log::debug($hebergement_id);
-        // Log::debug($user_id);
+        $name = $requete->name;
+        $first_name = $requete->firstName;
+        $phone = $requete->phone;
+        $mail = $requete->mail;
+        $amount = $requete->amount;
+        $start = $requete->start;
+        $end = $requete->end;
+        $destination_id = $requete->destination_id;
+        $hebergement_id = $requete->hebergement_id;
+        $user_id = $requete->user_id;
+        
+        Log::debug($name);
+        Log::debug($first_name);
+        Log::debug($phone);
+        Log::debug($mail);
+        Log::debug($amount);
+        Log::debug($start);
+        Log::debug($end);
+        Log::debug($destination_id);
+        Log::debug($hebergement_id);
+        Log::debug($user_id);
 
-        // $stripe = new StripeClient(config('services.stripe.secret_key'));
+        $stripe = new StripeClient(config('services.stripe.secret_key'));
 
-        // try {
-        //     $intent = $stripe->paymentIntents->create([
-        //         'amount' => $amount,
-        //         'currency' => 'eur',
-        //         //obso
-        //         'automatic_payment_methods' => ['enabled' => true],
-        //     ]);
+        try {
+            $intent = $stripe->paymentIntents->create([
+                'amount' => $amount,
+                'currency' => 'eur',
+                //obso
+                'automatic_payment_methods' => ['enabled' => true],
+            ]);
 
-        //     Reservation::create([
-        //         'name' => $name,
-        //         'first_name' => $first_name,
-        //         'phone' => $phone,
-        //         'mail' => $mail,
-        //         'destination_id' => $destination_id,
-        //         'hebergement_id' => $hebergement_id,
-        //         'user_id' => $user_id,
-        //         'amount' => $amount,
-        //         'start' => $start,
-        //         'end' => $end,
-        //         'status' => 'A venir'
-        //     ]);
+            Reservation::create([
+                'name' => $name,
+                'first_name' => $first_name,
+                'phone' => $phone,
+                'mail' => $mail,
+                'destination_id' => $destination_id,
+                'hebergement_id' => $hebergement_id,
+                'user_id' => $user_id,
+                'amount' => $amount,
+                'start' => $start,
+                'end' => $end,
+                'status' => 'A venir'
+            ]);
 
-        //     Log::info('ici');
+            Log::info('ici');
 
-        //     return response()->json(['client_secret' => $intent->client_secret]);
-        // } catch (\Stripe\Exception\ApiErrorException $e) {
-        //     // Gérez les erreurs Stripe ici
-        //     Log::error($e);
-        //     return response()->json(['error' => $e->getMessage()], 500);
-        // }
+            return response()->json(['client_secret' => $intent->client_secret]);
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            // Gérez les erreurs Stripe ici
+            Log::error($e);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
