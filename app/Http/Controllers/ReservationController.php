@@ -71,9 +71,12 @@ class ReservationController extends Controller
                 'status' => 'A venir'
             ]);
 
+            Log::info('ici');
+
             return response()->json(['client_secret' => $intent->client_secret]);
         } catch (\Stripe\Exception\ApiErrorException $e) {
             // Gérez les erreurs Stripe ici
+            Log::error($e);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
