@@ -34,8 +34,18 @@ class ReservationController extends Controller
         $phone = $requete['phone'];
         $mail = $requete['mail'];
         $amount = $requete['amount'];
-        $start = Carbon::parse($requete['start'])->toDateTimeString();
-        $end = Carbon::parse($requete['end'])->toDateTimeString();
+
+        $start = Carbon::parse($requete['start']);
+        $end = Carbon::parse($requete['end']);
+        $startDate = $start->toDateTimeString();
+        $endDate = $end->toDateTimeString();
+        $yearStart = $start->year;
+        $monthStart = $start->month;
+        $dayStart = $start->day;
+        $yearEnd = $start->year;
+        $monthEnd = $start->month;
+        $dayEnd = $start->day;
+
         $destination_id = $requete['destination_id'];
         $hebergement_id = $requete['hebergement_id'];
         $user_id = $requete['userId'];
@@ -62,8 +72,8 @@ class ReservationController extends Controller
                 'hebergement_id' => $hebergement_id,
                 'user_id' => $user_id,
                 'amount' => $amount,
-                'start' => $start,
-                'end' => $end,
+                'start' => $startDate,
+                'end' => $endDate,
                 'intent' => $intent->client_secret,
                 'status' => 'A venir'
             ]);
