@@ -35,18 +35,18 @@ class ReservationController extends Controller
         $mail = $requete['mail'];
         $amount = $requete['amount'];
 
-        // $start = Carbon::parse($requete['start']);
-        // $end = Carbon::parse($requete['end']);
-        $start = Carbon::createFromFormat('D M d Y H:i:s eO', $requete['start']);
-        $end = Carbon::createFromFormat('D M d Y H:i:s eO', $requete['end']);
+        $start = Carbon::parse($requete['start']);
+        $end = Carbon::parse($requete['end']);
+        // $start = Carbon::createFromFormat('D M d Y H:i:s eO', $requete['start']);
+        // $end = Carbon::createFromFormat('D M d Y H:i:s eO', $requete['end']);
         $startDate = $start->toDateTimeString();
         $endDate = $end->toDateTimeString();
         $yearStart = $start->year;
         $monthStart = $start->month;
-        $dayStart = $start->day;
+        $dayStart = $start->day + 1;
         $yearEnd = $start->year;
         $monthEnd = $start->month;
-        $dayEnd = $start->day;
+        $dayEnd = $start->day + 1;
 
         $destination_id = $requete['destination_id'];
         $hebergement_id = $requete['hebergement_id'];
