@@ -42,10 +42,10 @@ class ReservationController extends Controller
         $startDate = $start->toDateTimeString();
         $endDate = $end->toDateTimeString();
         $yearStart = $start->year;
-        $monthStart = $start->month;
+        $monthStart = $start->month + 1;
         $dayStart = $start->day + 1;
         $yearEnd = $start->year;
-        $monthEnd = $start->month;
+        $monthEnd = $start->month + 1;
         $dayEnd = $start->day + 1;
 
         $destination_id = $requete['destination_id'];
