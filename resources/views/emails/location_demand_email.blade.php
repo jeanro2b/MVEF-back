@@ -47,7 +47,7 @@
         <h4>Date d'arrivée</h4>
         <p>{{ $dayStart }} / {{ $monthStart }} / {{ $yearStart }}</p>
         <h4>Date de départ</h4>
-        <p>{{ $dayStart }} / {{ $monthStart }} / {{ $yearStart }}</p>
+        <p>{{ $dayEnd }} / {{ $monthEnd }} / {{ $yearEnd }}</p>
         <div class='lien'>
         @php
             $escapedToken = e($token);
