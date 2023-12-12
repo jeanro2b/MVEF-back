@@ -65,6 +65,8 @@ class ReservationController extends Controller
                 'automatic_payment_methods' => ['enabled' => true],
             ]);
 
+            $token = Str::random(21);
+
             $reservation = Reservation::create([
                 'name' => $name,
                 'first_name' => $first_name,
@@ -77,12 +79,11 @@ class ReservationController extends Controller
                 'start' => $startDate,
                 'end' => $endDate,
                 'intent' => $intent->client_secret,
-                'status' => 'A venir'
+                'status' => 'A venir',
+                'token' => $token,
             ]);
 
             $reservationId = $reservation->id;
-
-            $token = Str::random(21);
 
             Mail::to($ownerEmail)->send(new LocationDemandEmail($token, $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id));
 
@@ -145,6 +146,27 @@ class ReservationController extends Controller
             'message' => 'OK',
             'reservations' => $reservations,
         ], 200);
+    }
+
+    public function accept_reservation(Request $requete)
+    {
+        $user_id = $requete['user'];
+        $token = $requete['secret'];
+        Log::debug($secret);
+
+        $reservation = Reservation::where('token', $token)->get();
+        Log::debug($reservation->intent);
+        
+
+        if($reservation) {
+            return response()->json([
+                'message' => 'OK',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'KO',
+            ], 400);
+        }
     }
 
 

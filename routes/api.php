@@ -132,6 +132,13 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
 
 Route::post('/create-intent-hold', [ReservationController::class, 'create_payment_intent'])
     ->name('create_payment_intent');
+
+Route::post('/reservation-accept', [ReservationController::class, 'accept_reservation'])
+    ->name('accept_reservation');
+
+Route::post('/reservation-refuse', [ReservationController::class, 'refuse_reservation'])
+    ->name('refuse_reservation');
+
 // Puts
 
 Route::post('modify-destination', [DestinationController::class, 'modify_destination'])

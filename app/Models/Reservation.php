@@ -23,7 +23,8 @@ class Reservation extends Model
         'phone',
         'mail',
         'hebergement_id',
-        'user_id'
+        'user_id',
+        'token'
     ];
 
     public function destination()
