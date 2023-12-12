@@ -153,7 +153,7 @@ class ReservationController extends Controller
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
         $user_id = $requete['user'];
         $token = $requete['secret'];
-        Log::debug($secret);
+        Log::debug($token);
 
         $reservation = Reservation::where('token', $token)->get();
         Log::debug($reservation->intent);
@@ -183,7 +183,7 @@ class ReservationController extends Controller
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
         $user_id = $requete['user'];
         $token = $requete['secret'];
-        Log::debug($secret);
+        Log::debug($token);
 
         $reservation = Reservation::where('token', $token)->get();
         Log::debug($reservation->intent);
