@@ -167,7 +167,7 @@ class ReservationController extends Controller
                 $payment_intent,
                 [
                 'payment_method' => 'pm_card_visa',
-                'return_url' => 'www.mesvacancesenfamille.com'
+                'return_url' => 'https://www.mesvacancesenfamille.com'
                 ]
             );
 
