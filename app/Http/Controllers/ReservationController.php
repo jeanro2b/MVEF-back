@@ -155,14 +155,16 @@ class ReservationController extends Controller
         $token = $requete['secret'];
         Log::debug($token);
 
-        $reservation = Reservation::where('token', $token)->get();
-        Log::debug($reservation);
+        $reservations = Reservation::where('token', $token)->get();
+        foreach ($reservations as $reservation) {
+            $payment_intent = $reservation->intent;
+        }
         
 
         if($reservation) {
 
             $stripe->paymentIntents->confirm(
-                $reservation->intent,
+                $payment_intent,
                 [
                 'payment_method' => 'pm_card_visa',
                 ]
