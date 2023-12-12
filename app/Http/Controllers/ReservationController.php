@@ -156,7 +156,7 @@ class ReservationController extends Controller
         Log::debug($token);
 
         $reservation = Reservation::where('token', $token)->get();
-        Log::debug($reservation->intent);
+        Log::debug($reservation);
         
 
         if($reservation) {
