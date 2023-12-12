@@ -150,6 +150,7 @@ class ReservationController extends Controller
 
     public function accept_reservation(Request $requete)
     {
+        $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
         $user_id = $requete['user'];
         $token = $requete['secret'];
         Log::debug($secret);
@@ -159,6 +160,38 @@ class ReservationController extends Controller
         
 
         if($reservation) {
+
+            $stripe->paymentIntents->confirm(
+                $reservation->intent,
+                [
+                'payment_method' => 'pm_card_visa',
+                ]
+            );
+
+            return response()->json([
+                'message' => 'OK',
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'KO',
+            ], 400);
+        }
+    }
+
+    public function refuse_reservation(Request $requete)
+    {
+        $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
+        $user_id = $requete['user'];
+        $token = $requete['secret'];
+        Log::debug($secret);
+
+        $reservation = Reservation::where('token', $token)->get();
+        Log::debug($reservation->intent);
+        
+
+        if($reservation) {
+            // Envoyer mail au client
+            // Mettre le statut en refusé
             return response()->json([
                 'message' => 'OK',
             ], 200);
