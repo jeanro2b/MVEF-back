@@ -78,7 +78,7 @@ class ReservationController extends Controller
                 'amount' => $amount,
                 'start' => $startDate,
                 'end' => $endDate,
-                'intent' => $intent->client_secret,
+                'intent' => $intent->id,
                 'status' => 'A venir',
                 'token' => $token,
             ]);
