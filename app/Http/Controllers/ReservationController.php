@@ -35,7 +35,7 @@ class ReservationController extends Controller
         $phone = $requete['phone'];
         $mail = $requete['mail'];
         $amount = $requete['amount'];
-        $services = $requete['services'];
+        // $services = $requete['services'];
 
         $start = Carbon::parse($requete['start']);
         $end = Carbon::parse($requete['end']);
@@ -88,7 +88,7 @@ class ReservationController extends Controller
                 'intent' => $intent->id,
                 'status' => 'A venir',
                 'token' => $token,
-                'services' => $services,
+                // 'services' => $services,
             ]);
 
             $reservationId = $reservation->id;
