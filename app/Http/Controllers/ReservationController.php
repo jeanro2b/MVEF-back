@@ -163,8 +163,10 @@ class ReservationController extends Controller
                 )
                 ->where('id', $reservation->destination_id)
                 ->get();
-            
-            $reservation->destination_name = $destination->name;
+
+            foreach ($destination as $dest) {
+                $reservation->destination_name = $dest->name;
+            }
 
             $hebergement = DB::table('hebergements')
                 ->select(
@@ -175,7 +177,9 @@ class ReservationController extends Controller
                 ->where('id', $reservation->hebergement_id)
                 ->get();
 
-            $reservation->code = $hebergement->code;
+            foreach ($hebergement as $heb) {
+                $reservation->code = $heb->code;
+            }
         }
 
 
