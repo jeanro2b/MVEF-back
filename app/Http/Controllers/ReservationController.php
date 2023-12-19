@@ -35,6 +35,7 @@ class ReservationController extends Controller
         $phone = $requete['phone'];
         $mail = $requete['mail'];
         $amount = $requete['amount'];
+        $services = $requete['services'];
 
         $start = Carbon::parse($requete['start']);
         $end = Carbon::parse($requete['end']);
@@ -55,7 +56,10 @@ class ReservationController extends Controller
         $ownerEmail = 'jrgabet@hotmail.fr';
         $hebergementName = 'Nom';
 
-        $user = User::where('id', $user_id)->get();
+        $users = User::where('id', $user_id)->get();
+        foreach ($users as $user) {
+            $user_email = $user->email;
+        }
 
 
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
@@ -84,11 +88,12 @@ class ReservationController extends Controller
                 'intent' => $intent->id,
                 'status' => 'A venir',
                 'token' => $token,
+                'services' => $services,
             ]);
 
             $reservationId = $reservation->id;
 
-            Mail::to($user->email)->send(new LocationDemandEmailUser($reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id));
+            Mail::to($user_email)->send(new LocationDemandEmailUser($reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id));
 
             Mail::to($ownerEmail)->send(new LocationDemandEmail($token, $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id));
 
