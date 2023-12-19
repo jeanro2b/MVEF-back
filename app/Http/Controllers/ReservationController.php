@@ -138,7 +138,7 @@ class ReservationController extends Controller
         $reservations = DB::table('reservations')
         ->select(
             'id',
-            'text',
+            'created_at',
             'destination_id',
             'start',
             'end',
@@ -149,10 +149,36 @@ class ReservationController extends Controller
             'first_name',
             'phone',
             'mail',
+            'voyageurs',
             'hebergement_id',
             'user_id'
         )
         ->get();
+
+        foreach($reservations as $reservation) {
+            $destination = DB::table('destinations')
+                ->select(
+                    'id',
+                    'name',
+                )
+                ->where('id', $reservation->destination_id)
+                ->get();
+            
+            $reservation->destination_name = $destination->name;
+
+            $hebergement = DB::table('hebergements')
+                ->select(
+                    'id',
+                    'name',
+                    'code'
+                )
+                ->where('id', $reservation->hebergement_id)
+                ->get();
+
+            $reservation->code = $hebergement->code;
+        }
+
+
 
 
         return response()->json([
