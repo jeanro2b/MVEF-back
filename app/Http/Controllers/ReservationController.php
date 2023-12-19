@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
+use App\Models\User;
 use App\Mail\LocationDemandEmail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -44,15 +45,17 @@ class ReservationController extends Controller
         $yearStart = $start->year;
         $monthStart = $start->month + 1;
         $dayStart = $start->day + 1;
-        $yearEnd = $start->year;
-        $monthEnd = $start->month + 1;
-        $dayEnd = $start->day + 1;
+        $yearEnd = $end->year;
+        $monthEnd = $end->month + 1;
+        $dayEnd = $end->day + 1;
 
         $destination_id = $requete['destination_id'];
         $hebergement_id = $requete['hebergement_id'];
         $user_id = $requete['userId'];
         $ownerEmail = 'jrgabet@hotmail.fr';
         $hebergementName = 'Nom';
+
+        $user = User::where('id', $user_id)->get();
 
 
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
@@ -84,6 +87,8 @@ class ReservationController extends Controller
             ]);
 
             $reservationId = $reservation->id;
+
+            Mail::to($user->email)->send(new LocationDemandEmailUser($reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id));
 
             Mail::to($ownerEmail)->send(new LocationDemandEmail($token, $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id));
 
