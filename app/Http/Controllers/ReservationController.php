@@ -37,6 +37,7 @@ class ReservationController extends Controller
         $mail = $requete['mail'];
         $amount = $requete['amount'];
         $services = $requete['services'];
+        $voyageurs = $requete['voyageurs'];
 
         $start = Carbon::parse($requete['start']);
         $end = Carbon::parse($requete['end']);
@@ -90,6 +91,7 @@ class ReservationController extends Controller
                 'status' => 'A venir',
                 'token' => $token,
                 'services' => json_encode($services),
+                'voyageurs' => $voyageurs,
             ]);
 
             $reservationId = $reservation->id;
@@ -164,14 +166,26 @@ class ReservationController extends Controller
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
         $user_id = $requete['user'];
         $token = $requete['secret'];
-        Log::debug($token);
+
+        $users = User::where('id', $user_id)->get();
+        foreach ($users as $user) {
+            $user_email = $user->email;
+        }
 
         $reservations = Reservation::where('token', $token)->get();
         foreach ($reservations as $reservation) {
             $payment_intent = $reservation->intent;
+            $start = $reservation->start;
+            $end = $reservation->end;
+            $hebergement_id = $reservation->hebergement_id;
+            $destination_id = $reservation->destination_id;
+            $amount = $reservation->amount;
+            $services = $reservation->services;
+            $name = $reservation->name;
+            $first_name = $reservation->first_name;
         }
+        $ownerEmail = 'jrgabet@hotmail.fr';
         
-
         if($reservation) {
 
             $stripe->paymentIntents->confirm(
@@ -181,6 +195,9 @@ class ReservationController extends Controller
                 'return_url' => 'https://www.mesvacancesenfamille.com'
                 ]
             );
+
+            // Mail::to($user_email)->send(new LocationAcceptedEmailUser());
+            // Mail::to($ownerEmail)->send(new LocationAcceptedEmail());
 
             return response()->json([
                 'message' => 'OK',
