@@ -182,9 +182,6 @@ class ReservationController extends Controller
             }
         }
 
-
-
-
         return response()->json([
             'message' => 'OK',
             'reservations' => $reservations,
