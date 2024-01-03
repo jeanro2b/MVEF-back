@@ -193,6 +193,8 @@ Route::delete('delete-planning-periods/{id}', [PeriodController::class, 'delete_
 Route::delete('delete-file-client/{fileId}/{id}', [DocumentController::class, 'delete_file_client'])
     ->name('delete_file_client');
 
+Route::delete('/reservation-delete/{id}', [ReservationController::class, 'delete_reservation'])
+    ->name('delete_reservation');
 
 
 Route::get('/csrf-token', function () {

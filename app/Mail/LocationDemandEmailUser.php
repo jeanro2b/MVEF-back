@@ -20,6 +20,7 @@ class LocationDemandEmailUser extends Mailable
     public $monthEnd;
     public $dayEnd;
     public $destination_id;
+    public $amount;
 
     /**
      * Create a new message instance.
@@ -33,9 +34,10 @@ class LocationDemandEmailUser extends Mailable
      * @param  string  $monthEnd
      * @param  string  $dayEnd
      * @param  string  $destination_id
+     * @param  string  $amount
      * @return void
      */
-    public function __construct( $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id)
+    public function __construct( $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $amount)
     {
         $this->reservationId = $reservationId;
         $this->hebergementName = $hebergementName;
@@ -46,6 +48,7 @@ class LocationDemandEmailUser extends Mailable
         $this->monthEnd = $monthEnd;
         $this->dayEnd = $dayEnd;
         $this->destination_id = $destination_id;
+        $this->$amount = $amount;
     }
 
     /**
@@ -67,6 +70,7 @@ class LocationDemandEmailUser extends Mailable
                 'monthEnd' => $this->monthEnd,
                 'dayEnd' => $this->dayEnd,
                 'destination_id' => $this->destination_id,
+                '$amount' => $this->amount,
             ]);
     }
 }

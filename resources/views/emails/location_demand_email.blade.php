@@ -34,7 +34,8 @@
     <div class="content-wrapper">
         <h1>Objet : Nouvelle réservation depuis Mes Vacances En Famille</h1>
         <p>Bonjour, <br />
-            Veuillez trouver ci-contre le détail de la réservation.<br />
+            Vous avez une nouvelle demande de réservation !<br />
+            Vous trouverez ci-dessous les détails de la demande :
         </p>
         <h4>Hébergement demandé :</h4>
         <p>{{ $hebergementName }}</p>
@@ -48,6 +49,9 @@
         <p>{{ $dayStart }} / {{ $monthStart }} / {{ $yearStart }}</p>
         <h4>Date de départ</h4>
         <p>{{ $dayEnd }} / {{ $monthEnd }} / {{ $yearEnd }}</p>
+        <h4>Demandeur</h4>
+        <p>Nom : {{ $name }}</p>
+        <p>Prénom : {{ $first_name }}</p>
         <div class='lien'>
         @php
             $escapedToken = e($token);
@@ -64,6 +68,8 @@
                 <a href="{{ $refuseUrl }}">
                 REFUSER LA RÉSERVATION</a</p>
         </div>
+        <p>Vous disposez de 24h pour répondre à cette demande, en cas d’absence de réponse de votre part, la demande de réservation sera annulée.</p>
+        <p>Cordialement,</p>
     </div>
 
 </body>

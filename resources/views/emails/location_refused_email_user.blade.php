@@ -36,16 +36,14 @@
         <img src="https://mvef.s3.eu-west-3.amazonaws.com/LinkedIn.png" alt="Bannière">
     </div>
     <div class="content-wrapper">
-        <h1>Objet : Nouvelle réservation depuis Mes Vacances En Famille</h1>
+        <h1>Objet : Refus de réservation Mes Vacances En Famille</h1>
         <p>Bonjour, <br />
             <!-- Vous venez d'effectuer une demande de réservation depuis Mes Vacances En Famille.<br />
             Celle-ci à été transmise au propriétaire concerné et est en attente d'acceptation par celui-ci.<br />
             Vous serez débité et recevrez un mail de confirmation si l'hébergeur accepte votre demande. -->
-            Merci pour votre demande de réservation !<br/>
+            Malheureusement votre réservation n’a pas été confirmée par notre partenaire.<br/>
             Rappel de votre demande :
         </p>
-        <h4>Hébergement demandé :</h4>
-        <p>{{ $hebergementName }}</p>
         @php
             $destinationId = e($destination_id);
             $url = url("https://www.mesvacancesenfamille.com/destinations/{$destinationId}");
@@ -56,16 +54,16 @@
         <p>{{ $dayStart }} / {{ $monthStart }} / {{ $yearStart }}</p>
         <h4>Date de départ</h4>
         <p>{{ $dayEnd }} / {{ $monthEnd }} / {{ $yearEnd }}</p>
-        <h4>Montant de la réservation</h4>
-        <p>{{ $amount }}</p>
+        <h4>Réservation</h4>
+        <p>Numéro : {{ $reservaitonId }}</p>
+        <p>Montant : {{ $amount }}€</p>
         <div class="content-text">
-            <p>Votre demande est transmise à notre partenaire pour approbation ! Vous recevrez un mail dans les prochaines 24h vous indiquant si votre réservation est confirmée.<br/>
-            Votre carte bancaire sera débitée uniquement lorsque notre partenaire aura confirmé votre réservation.<br/>
-            Vous recevrez alors votre confirmation de réservation ainsi qu’une facture.<br/>
-            En cas de refus de notre partenaire, l’empreinte bancaire sera levée immédiatement.<br/>
-            Pour toute question consultez notre FAQ ou contactez nous par mail : contact@mesvacancesenfamille.com
+            <p>L’empreinte bancaire a été levée. Nous vous confirmons que vous ne serez pas débité du montant de la réservation.<br/>
+            Si vous avez utilisé un code de réduction, celui-ci est encore valable.<br/>
+            Nous vous invitons à renouveler votre demande de réservation à d’autres dates ou pour une autre destination.<br/>
+            Voici le lien vers nos destinations : https://www.mesvacancesenfamille.com/destinations <br/>
+            L’équipe Mes Vacances en Famille vous présente ses excuses pour cette situation indépendante de notre volonté.
             </p>
-            <p>Cordialement,</p>
         </div>
     </div>
 

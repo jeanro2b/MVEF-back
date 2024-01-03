@@ -11,7 +11,6 @@ class LocationDemandEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $token;
     public $reservationId;
     public $hebergementName;
     public $yearStart;
@@ -20,14 +19,16 @@ class LocationDemandEmail extends Mailable
     public $yearEnd;
     public $monthEnd;
     public $dayEnd;
-    public $destination_id;
     public $name;
     public $first_name;
+    public $phone;
+    public $amount;
+    public $output;
+    public $filename;
 
     /**
      * Create a new message instance.
      *
-     * @param  string  $token
      * @param  string  $reservationId
      * @param  string  $hebergementName
      * @param  string  $yearStart
@@ -39,11 +40,14 @@ class LocationDemandEmail extends Mailable
      * @param  string  $destination_id
      * @param  string  $name
      * @param  string  $first_name
+     * @param  string  $phone
+     * @param  string  $amount
+     * @param  string  $output
+     * @param  string  $filename
      * @return void
      */
-    public function __construct($token, $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $name, $first_name)
+    public function __construct($reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $name, $first_name, $phone, $amount, $output, $filename)
     {
-        $this->token = $token;
         $this->reservationId = $reservationId;
         $this->hebergementName = $hebergementName;
         $this->yearStart = $yearStart;
@@ -52,9 +56,12 @@ class LocationDemandEmail extends Mailable
         $this->yearEnd = $yearEnd;
         $this->monthEnd = $monthEnd;
         $this->dayEnd = $dayEnd;
-        $this->destination_id = $destination_id;
         $this->name = $name;
         $this->first_name = $first_name;
+        $this->phone = $phone;
+        $this->amount = $amount;
+        $this->output = $output;
+        $this->filename = $filename;
     }
 
     /**
@@ -64,10 +71,9 @@ class LocationDemandEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.location_demand_email')
-            ->subject('Demande de réservation Mes Vacances En Famille')
+        return $this->view('emails.location_accepet_email')
+            ->subject('Réservation acceptée Mes Vacances En Famille')
             ->with([
-                'token' => $this->token,
                 'reservationId' => $this->reservationId,
                 'hebergementName' => $this->hebergementName,
                 'yearStart' => $this->yearStart,
@@ -76,9 +82,13 @@ class LocationDemandEmail extends Mailable
                 'yearEnd' => $this->yearEnd,
                 'monthEnd' => $this->monthEnd,
                 'dayEnd' => $this->dayEnd,
-                'destination_id' => $this->destination_id,
                 'name' => $this->name,
                 'first_name' => $this->first_name,
-            ]);
+                'phone' => $this->phone,
+                'amount' => $this->amount,
+                'output' => $this->output,
+                'filename' => $this->filename,
+            ])
+            ->attachData($this->output, $this->filename);
     }
 }
