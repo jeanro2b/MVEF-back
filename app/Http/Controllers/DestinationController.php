@@ -385,7 +385,7 @@ class DestinationController extends Controller
             Servicespayant::create([
                 'text' => $servicepayant->text,
                 'destination_id' => $destination->id,
-                'price' => $servicepayant->price === '' ? null : $servicepayant->price,
+                'price' => $servicepayant->price === '' ? null : floatval($servicepayant->price),
             ]);
         }
 
@@ -495,7 +495,7 @@ class DestinationController extends Controller
             Servicespayant::create([
                 'text' => $payant->text,
                 'destination_id' => $requete->id,
-                'price' => $payant->price === '' ? null : $payant->price,
+                'price' => $payant->price === '' ? null : floatval($payant->price),
             ]);
         }
 
