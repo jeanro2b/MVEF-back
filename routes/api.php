@@ -49,6 +49,8 @@ Route::get('hebergements-destination/{destinationId}', [HebergementController::c
 Route::get('hebergement/{id}', [HebergementController::class, 'get_hebergement'])
     ->name('get_hebergement');
 
+Route::get('/code-all', [CodeController::class, 'get_all_codes'])
+    ->name('get_all_codes');
 
 Route::get('clients-all', [UserController::class, 'get_all_clients'])
     ->name('get_clients');
@@ -111,6 +113,9 @@ Route::post('client-files/{id}', [DocumentController::class, 'post_client_files'
 
 Route::post('destination', [DestinationController::class, 'create_destination'])
     ->name('create_destination');
+
+Route::post('/code', [CodeController::class, 'create_code'])
+    ->name('create_code');
 
 Route::post('hebergement', [HebergementController::class, 'create_hebergement'])
     ->name('create_hebergement');
@@ -195,6 +200,9 @@ Route::delete('delete-file-client/{fileId}/{id}', [DocumentController::class, 'd
 
 Route::delete('/reservation-delete/{id}', [ReservationController::class, 'delete_reservation'])
     ->name('delete_reservation');
+
+Route::delete('/delete-code/{id}', [CodeController::class, 'delete_code'])
+    ->name('delete_code');
 
 
 Route::get('/csrf-token', function () {

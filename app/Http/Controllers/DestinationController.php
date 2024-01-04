@@ -165,7 +165,7 @@ class DestinationController extends Controller
                 'tImage',
                 'description',
                 'couchage',
-                'long_title'
+                'long_title',
             )
             ->where('destination_id', $id)
             ->get();
