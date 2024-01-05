@@ -14,11 +14,9 @@ class CodeController extends Controller
 
     public function create_code(Request $request)
     {
-        $end = new Carbon($request->end);
-
         $code = Code::create([
             'code' => $request->code,
-            'end' => $end->toDateTimeString(),
+            'end' => $request->end,
             'user_id' => $request->user,
         ]);
 
