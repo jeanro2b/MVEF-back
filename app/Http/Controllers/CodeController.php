@@ -14,14 +14,12 @@ class CodeController extends Controller
 
     public function create_code(Request $request)
     {
-        Log::debug($request);
-        $requete = json_decode($request);
-        Log::debug($requete);
+        $end = new Carbon($request->end);
 
         $code = Code::create([
-            'code' => $requete->name,
-            'end' => $requete->end->toDateTimeString(),
-            'user_id' => $requete->user,
+            'code' => $request->code,
+            'end' => $end->toDateTimeString(),
+            'user_id' => $request->user,
         ]);
 
         return response()->json([
