@@ -14,7 +14,9 @@ class CodeController extends Controller
 
     public function create_code(Request $request)
     {
+        Log::debug($request);
         $requete = json_decode($request);
+        Log::debug($requete);
 
         $code = Code::create([
             'code' => $requete->name,
