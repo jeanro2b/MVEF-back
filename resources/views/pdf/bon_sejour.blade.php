@@ -244,8 +244,9 @@
         <p>{{ $nomDestination }} à {{ $villeDestination }}</p>
         <h3>Horaires</h3>
         <p>Arrivée : le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
-        <p>Départ : le {{ $dateArrive }} avant {{ $heureDepart }}</p>
+        <p>Départ : le {{ $dateDepart }} avant {{ $heureDepart }}</p>
         <h2>Hébergement</h2>
+        <p>{{ $nomHebergement }}</p>
         <p>{!! $descriptionHebergement !!}</p>
     </div>
     @php

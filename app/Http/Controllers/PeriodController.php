@@ -197,6 +197,7 @@ class PeriodController extends Controller
         $heureArrive = $destinationInfo->arrival;
         $heureDepart = $destinationInfo->departure;
         $descriptionHebergement = $hebergementInfo->description;
+        $nomHebergement = $hebergementInfo->long_title;
         $dateArrive = Carbon::createFromFormat('Y-m-d', $periodInfo->start)->format('d/m/Y');
         $dateDepart = Carbon::createFromFormat('Y-m-d', $periodInfo->end)->format('d/m/Y');
         $addressBetter = str_replace("<br />", "", $destinationInfo->address);
@@ -230,7 +231,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination', 'caution', 'taxe', 'bslogoData', 'bslogotxtData'))->render();
+        $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination', 'caution', 'taxe', 'bslogoData', 'bslogotxtData', 'nomHebergement'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
@@ -271,6 +272,7 @@ class PeriodController extends Controller
         $heureArrive = $destinationInfo->arrival;
         $heureDepart = $destinationInfo->departure;
         $descriptionHebergement = $hebergementInfo->description;
+        $nomHebergement = $hebergementInfo->long_title;
         $dateArrive = Carbon::createFromFormat('Y-m-d', $periodInfo->start)->format('d/m/Y');
         $dateDepart = Carbon::createFromFormat('Y-m-d', $periodInfo->end)->format('d/m/Y');
         $addressBetter = str_replace("<br />", "", $destinationInfo->address);
@@ -304,7 +306,7 @@ class PeriodController extends Controller
 
         $dompdf = new Dompdf();
 
-        $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination', 'caution', 'taxe','bslogoData', 'bslogotxtData'))->render();
+        $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination', 'caution', 'taxe','bslogoData', 'bslogotxtData', 'nomHebergement'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
