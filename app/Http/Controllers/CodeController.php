@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Code;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class CodeController extends Controller
@@ -13,6 +14,7 @@ class CodeController extends Controller
 
     public function create_code(Request $request)
     {
+        Log::debug($request);
         $end = new Carbon($request->end);
 
         $code = Code::create([
