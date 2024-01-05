@@ -33,7 +33,8 @@ class UserController extends Controller
             ->select(
                 'id',
                 'name',
-                'city'
+                'city',
+                'role'
             )
             ->get();
 
