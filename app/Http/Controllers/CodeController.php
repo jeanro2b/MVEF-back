@@ -34,6 +34,25 @@ class CodeController extends Controller
         )
         ->get();
 
+        $users = DB::table('users')
+        ->select(
+            'id',
+            'name',
+            'city',
+            'role'
+        )
+        ->get();
+
+        foreach ($codes as $code) {
+            $formattedDateEnd = Carbon::parse($code->end)->format('d/m/Y');
+            $code->end = $formattedDateEnd;
+            foreach ($users as $user) {
+                if ($user->id == $code->user_id) {
+                    $code->user_name = $user->name;
+                }
+            }
+        }
+
         return response()->json([
             'message' => 'OK',
             'codes' => $codes
@@ -51,6 +70,44 @@ class CodeController extends Controller
         return response()->json([
             'message' => 'OK',
             'code' => $code
+        ], 200);
+    }
+
+    public function get_code($id)
+    {
+
+        $codes = DB::table('codes')
+            ->select(
+                'id',
+                'code',
+                'user_id',
+                'end'
+            )
+            ->where('id', $id)
+            ->get();
+
+        $users = DB::table('users')
+            ->select(
+                'id',
+                'name',
+                'city',
+                'role'
+            )
+            ->get();
+
+        foreach ($codes as $code) {
+            $formattedDateEnd = Carbon::parse($code->end)->format('d/m/Y');
+            $code->end = $formattedDateEnd;
+            foreach ($users as $user) {
+                if ($user->id == $code->user_id) {
+                   $code->user_name = $user->name;
+                }
+            }
+        }
+
+        return response()->json([
+            'message' => 'OK',
+            'code' => $codes
         ], 200);
     }
 

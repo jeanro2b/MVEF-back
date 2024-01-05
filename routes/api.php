@@ -49,7 +49,7 @@ Route::get('hebergements-destination/{destinationId}', [HebergementController::c
 Route::get('hebergement/{id}', [HebergementController::class, 'get_hebergement'])
     ->name('get_hebergement');
 
-Route::get('/code-all', [CodeController::class, 'get_all_codes'])
+Route::get('/codes-all', [CodeController::class, 'get_all_codes'])
     ->name('get_all_codes');
 
 Route::get('clients-all', [UserController::class, 'get_all_clients'])
