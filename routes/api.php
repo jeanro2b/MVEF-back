@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HebergementController;
+use App\Http\Controllers\CodeController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\UserController;
