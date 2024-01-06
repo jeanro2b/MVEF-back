@@ -14,9 +14,10 @@ class CodeController extends Controller
 
     public function create_code(Request $request)
     {
+        Log::debug($request);
         $code = Code::create([
             'code' => $request->code,
-            'end' => $request->end,
+            'end' => $request->end->format('Y-m-d'),
             'user_id' => $request->user,
         ]);
 
