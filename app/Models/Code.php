@@ -12,7 +12,7 @@ class Code extends Model
     protected $fillable = [
         'code',
         'user_id',
-        'date'
+        'end'
     ];
 
     public function user()

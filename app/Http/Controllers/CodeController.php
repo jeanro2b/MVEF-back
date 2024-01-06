@@ -20,7 +20,7 @@ class CodeController extends Controller
         Log::debug($end);
         $code = Code::create([
             'code' => $request->code,
-            'end' => $end,
+            'end' => $request->end,
             'user_id' => $request->user,
         ]);
 
