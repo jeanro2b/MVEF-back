@@ -15,9 +15,12 @@ class CodeController extends Controller
     public function create_code(Request $request)
     {
         Log::debug($request);
+        Log::debug($request->end);
+        $end = Carbon::createFromFormat('Y-m-d', $request->end);
+        Log::debug($end);
         $code = Code::create([
             'code' => $request->code,
-            'end' => $request->end->format('Y-m-d'),
+            'end' => $end,
             'user_id' => $request->user,
         ]);
 
