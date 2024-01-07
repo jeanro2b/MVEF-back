@@ -14,10 +14,6 @@ class CodeController extends Controller
 
     public function create_code(Request $request)
     {
-        Log::debug($request);
-        Log::debug($request->end);
-        $end = Carbon::createFromFormat('Y-m-d', $request->end);
-        Log::debug($end);
         $code = Code::create([
             'code' => $request->code,
             'end' => $request->end,
@@ -65,6 +61,26 @@ class CodeController extends Controller
             'codes' => $codes
         ], 200);
     }
+
+    public function modify_code(Request $req)
+    {
+
+        $code = Code::where('id', $req->id)->update(
+            [
+                'code' => $req->code,
+                'end' => $req->end,
+                'user_id' => $req->user,
+            ]
+        );
+        
+
+        return response()->json([
+            'message' => 'OK',
+            'code' => $code
+        ], 200);
+    }
+
+
     /**
      * Display a listing of the resource.
      */

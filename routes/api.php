@@ -159,6 +159,9 @@ Route::put('modify-client', [UserController::class, 'modify_client'])
 Route::put('modify-user', [UserController::class, 'modify_user'])
     ->name('modify_user');
 
+Route::put('modify-code', [CodeController::class, 'modify_code'])
+    ->name('modify_code');
+
 Route::put('send-client-info', [UserController::class, 'send_client_info'])
     ->name('send_client_info');
 
