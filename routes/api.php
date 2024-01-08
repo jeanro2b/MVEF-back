@@ -59,6 +59,8 @@ Route::get('clients-all', [UserController::class, 'get_all_clients'])
 Route::get('client/{id}', [UserController::class, 'get_client'])
     ->name('get_client');
 
+Route::get('/code/{id}', [CodeController::class, 'get_code'])
+    ->name('get_code');
 
 Route::get('plannings-all', [PlanningController::class, 'get_all_plannings'])
     ->name('get_plannings');
