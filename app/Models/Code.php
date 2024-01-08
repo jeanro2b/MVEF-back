@@ -19,4 +19,16 @@ class Code extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::retrieved(function ($code) {
+            // Vérifier si la date 'end' est dans le passé
+            if (Carbon::parse($code->end)->isPast()) {
+                $code->delete(); // Supprimer l'entrée si la date est passée
+            }
+        });
+    }
 }
