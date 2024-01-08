@@ -28,14 +28,7 @@ class CodeController extends Controller
 
     public function get_all_codes()
     {
-        $codes = DB::table('codes')
-        ->select(
-            'id',
-            'code',
-            'user_id',
-            'end'
-        )
-        ->get();
+        $codes = Code::all();
 
         $users = DB::table('users')
         ->select(
