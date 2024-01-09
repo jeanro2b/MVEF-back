@@ -179,7 +179,11 @@
         }
 
         .services h2 {
-        margin: 10px 0 4px 0px;
+        margin: 30px 0 4px 0px;
+        }
+
+        h2 {
+            margin: 30px 0 4px 0px;
         }
 
         .services h3 {
