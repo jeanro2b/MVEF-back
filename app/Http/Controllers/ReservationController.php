@@ -380,13 +380,13 @@ class ReservationController extends Controller
     public function delete_reservation($id)
     {
 
-        Reservation::where('id', $id)->delete();
+        $reservation = Reservation::where('id', $id)->delete();
 
         // Add mails
 
         return response()->json([
             'message' => 'OK',
-            'hebergement' => $hebergement
+            'reservation' => $reservation
         ], 200);
     }
 

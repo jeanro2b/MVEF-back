@@ -280,9 +280,13 @@
         @if($taxe !== null && $taxe !== '')
             <p><div class="strong">Taxe de séjour</div>{{ $taxe }}</p>
         @endif
+    </div>
+    <div class="services">
         <h2 class="mar">Dates et Horaires</h2>
         <p><div class="strong">Arrivée</div>le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
         <p><div class="strong">Départ</div>le {{ $dateDepart }} avant {{ $heureDepart }}</p>
+    </div>
+    <div class="services">
         <h2 class="mar">Hébergement</h2>
         <p>{{ $nomHebergement }}</p>
         <p>{!! $descriptionHebergement !!}</p>
