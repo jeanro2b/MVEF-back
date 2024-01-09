@@ -218,7 +218,7 @@
             <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
         </div> -->
         <div class="header-2">
-            <img class="logo" src="data:image/png;base64,{{ $bslogoData }}" alt="img" width="2150px">
+            <img class="logo" src="data:image/png;base64,{{ $bslogoData }}" alt="img" width="215px">
             <img class="logo-2" src="data:image/png;base64,{{ $bslogotxtData }}" alt="img" width="250px">
         </div>
     @endif
@@ -243,35 +243,35 @@
         Votre séjour
     </div> -->
     <div class="services">
-        <h2>Destination</h3>
-        <p><div class="strong">Nom</div> : {{ $nomDestination }} à {{ $villeDestination }}</p>
-        <p><div class="strong">Adresse</div> : {{ $addressBetter }}</p>
+        <h2>Destination</h2>
+        <p><div class="strong">Nom</div>{{ $nomDestination }} à {{ $villeDestination }}</p>
+        <p><div class="strong">Adresse</div>{{ $addressBetter }}</p>
 
         @if($mail !== null && $mail !== '')
-            <p><div class="strong">Mail</div> : {{ $mail }}</p>
+            <p><div class="strong">Mail</div>{{ $mail }}</p>
         @endif
 
         @if($phone !== null && $phone !== '')
-            <p><div class="strong">Téléphone</div> : {{ $phone }}</p>
+            <p><div class="strong">Téléphone</div>{{ $phone }}</p>
         @endif
         
         @if($latitude !== null && $latitude !== '')
-            <p><div class="strong">Latitude</div> : {{ $latitude }}</p>
+            <p><div class="strong">Latitude</div>{{ $latitude }}</p>
         @endif
 
         @if($longitude !== null && $longitude !== '')
-            <p><div class="strong">Longitude</div> : {{ $longitude }}</p>
+            <p><div class="strong">Longitude</div>{{ $longitude }}</p>
         @endif
         
         @if($caution !== null && $caution !== '')
-            <p><div class="strong">Caution</div> : {{ $caution }}</p>
+            <p><div class="strong">Caution</div>{{ $caution }}</p>
         @endif
         @if($taxe !== null && $taxe !== '')
-            <p><div class="strong">Taxe de séjour</div> : {{ $taxe }}</p>
+            <p><div class="strong">Taxe de séjour</div>{{ $taxe }}</p>
         @endif
-        <h2>Dates et Horaires</h3>
-        <p><div class="strong">Arrivée</div> : le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
-        <p><div class="strong">Départ</div> : le {{ $dateDepart }} avant {{ $heureDepart }}</p>
+        <h2>Dates et Horaires</h2>
+        <p><div class="strong">Arrivée</div>le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
+        <p><div class="strong">Départ</div>le {{ $dateDepart }} avant {{ $heureDepart }}</p>
         <h2>Hébergement</h2>
         <p>{{ $nomHebergement }}</p>
         <p>{!! $descriptionHebergement !!}</p>
