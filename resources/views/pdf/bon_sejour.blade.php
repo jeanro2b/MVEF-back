@@ -45,7 +45,7 @@
         .first-section {
             font-weight: bold;
             text-align: center;
-            margin: 90px 0 10px 0;
+            margin: 40px 0 10px 0;
             width: 100%;
         }
 
@@ -182,6 +182,9 @@
         margin: 10px 0 4px 0px;
         }
 
+        .services h3 {
+        margin: 10px 0 4px 0px;
+        }
 
         .columns-container {
         position: relative; /* Définir le conteneur en position relative */
