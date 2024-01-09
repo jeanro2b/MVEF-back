@@ -21,7 +21,7 @@
             width: 100%;
             justify-content: center;
             align-items: center;
-            height: 150px;
+            height: 120px;
             text-align: center;
             transform: translateX(32%);
         }
@@ -198,7 +198,10 @@
         top: -18px;
         left: 350px;
         width: 800px;
+        }
 
+        .strong {
+            font-weight: bold;
         }
 
     </style>
@@ -207,16 +210,16 @@
 <body>
     @if($nomClient === 'Vacances Authentiques')
         <div class="header-2">
-            <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
-            <img class="logo-2" src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="300px">
+            <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="215px">
+            <img class="logo-2" src="data:image/png;base64,{{ $logoVacancesAuthData }}" alt="img" width="250px">
         </div>
     @else
         <!-- <div class="header">
             <img class="logo" src="data:image/png;base64,{{ $logoData }}" alt="img" width="250px">
         </div> -->
         <div class="header-2">
-            <img class="logo" src="data:image/png;base64,{{ $bslogoData }}" alt="img" width="250px">
-            <img class="logo-2" src="data:image/png;base64,{{ $bslogotxtData }}" alt="img" width="300px">
+            <img class="logo" src="data:image/png;base64,{{ $bslogoData }}" alt="img" width="2150px">
+            <img class="logo-2" src="data:image/png;base64,{{ $bslogotxtData }}" alt="img" width="250px">
         </div>
     @endif
     <!-- <div class="header">
@@ -240,11 +243,35 @@
         Votre séjour
     </div> -->
     <div class="services">
-        <h3>Destination</h3>
-        <p>{{ $nomDestination }} à {{ $villeDestination }}</p>
-        <h3>Horaires</h3>
-        <p>Arrivée : le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
-        <p>Départ : le {{ $dateDepart }} avant {{ $heureDepart }}</p>
+        <h2>Destination</h3>
+        <p><div class="strong">Nom</div> : {{ $nomDestination }} à {{ $villeDestination }}</p>
+        <p><div class="strong">Adresse</div> : {{ $addressBetter }}</p>
+
+        @if($mail !== null && $mail !== '')
+            <p><div class="strong">Mail</div> : {{ $mail }}</p>
+        @endif
+
+        @if($phone !== null && $phone !== '')
+            <p><div class="strong">Téléphone</div> : {{ $phone }}</p>
+        @endif
+        
+        @if($latitude !== null && $latitude !== '')
+            <p><div class="strong">Latitude</div> : {{ $latitude }}</p>
+        @endif
+
+        @if($longitude !== null && $longitude !== '')
+            <p><div class="strong">Longitude</div> : {{ $longitude }}</p>
+        @endif
+        
+        @if($caution !== null && $caution !== '')
+            <p><div class="strong">Caution</div> : {{ $caution }}</p>
+        @endif
+        @if($taxe !== null && $taxe !== '')
+            <p><div class="strong">Taxe de séjour</div> : {{ $taxe }}</p>
+        @endif
+        <h2>Dates et Horaires</h3>
+        <p><div class="strong">Arrivée</div> : le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
+        <p><div class="strong">Départ</div> : le {{ $dateDepart }} avant {{ $heureDepart }}</p>
         <h2>Hébergement</h2>
         <p>{{ $nomHebergement }}</p>
         <p>{!! $descriptionHebergement !!}</p>
@@ -257,14 +284,6 @@
         $secondHalf = array_slice($servicesArray, $halfCount);
     @endphp
     <div class="services">
-        @if($caution !== null && $caution !== '')
-            <h2>Caution</h2>
-            <p>{{ $caution }}</p>
-        @endif
-        @if($taxe !== null && $taxe !== '')
-            <h2>Taxe de séjour</h2>
-            <p>{{ $taxe }}</p>
-        @endif
         <h2>Services</h2>
         <div class="columns-container">
             <!-- Première colonne -->
@@ -280,11 +299,6 @@
             @endforeach
             </ul>
         </div>
-        <p>{{ $addressBetter }}</p>
-        <p>{{ $mail }}</p>
-        <p>{{ $phone }}</p>
-        <p>{{ $latitude }}</p>
-        <p>{{ $longitude }}</p>
         <h2>Informations pratiques et autres services</h2>
         <p>{!! $renseignement !!}</p>
     </div> 
