@@ -32,7 +32,7 @@ class PriceController extends Controller
 
     public function get_prices($id)
     {
-        $codes = DB::table('prices')
+        $prices = DB::table('prices')
         ->select(
             'id',
             'hebergement_id',
@@ -45,7 +45,7 @@ class PriceController extends Controller
 
         return response()->json([
             'message' => 'OK',
-            'codes' => $codes
+            'prices' => $prices
         ], 200);
     }
 
