@@ -9,6 +9,7 @@ use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\HebergementController;
 use App\Http\Controllers\CodeController;
+use App\Http\Controllers\PriceController;
 use App\Http\Controllers\PeriodController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\UserController;
@@ -52,6 +53,9 @@ Route::get('hebergement/{id}', [HebergementController::class, 'get_hebergement']
 
 Route::get('/codes-all', [CodeController::class, 'get_all_codes'])
     ->name('get_all_codes');
+
+Route::get('/price/{id}', [PriceController::class, 'get_prices'])
+    ->name('get_prices');
 
 Route::get('clients-all', [UserController::class, 'get_all_clients'])
     ->name('get_clients');
@@ -120,6 +124,9 @@ Route::post('destination', [DestinationController::class, 'create_destination'])
 Route::post('/code', [CodeController::class, 'create_code'])
     ->name('create_code');
 
+Route::post('/price', [PriceController::class, 'create_price'])
+    ->name('create_price');
+
 Route::post('hebergement', [HebergementController::class, 'create_hebergement'])
     ->name('create_hebergement');
 
@@ -163,6 +170,9 @@ Route::put('modify-user', [UserController::class, 'modify_user'])
 
 Route::put('modify-code', [CodeController::class, 'modify_code'])
     ->name('modify_code');
+
+Route::put('modify-price', [PriceController::class, 'modify_prices'])
+    ->name('modify_prices');
 
 Route::put('send-client-info', [UserController::class, 'send_client_info'])
     ->name('send_client_info');
