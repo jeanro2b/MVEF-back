@@ -41,7 +41,8 @@ class PriceController extends Controller
             'price',
             'reduction'
         )
-        ->where('hebergement_id', $id);
+        ->where('hebergement_id', $id)
+        ->get();
 
         return response()->json([
             'message' => 'OK',
