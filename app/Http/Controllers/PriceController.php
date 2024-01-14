@@ -21,7 +21,7 @@ class PriceController extends Controller
                 'reduction' => $price->reduction,
                 'start' => $price->start,
                 'end' => $price->end,
-                'hebergement_id' => $price->hebergement,
+                'hebergement_id' => $price->hebergement_id,
             ]);
         }
 
