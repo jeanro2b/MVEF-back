@@ -183,7 +183,7 @@
         }
 
         h2 {
-            margin: 30px 0 4px 0px;
+            margin: 20px 0 4px 0px;
         }
 
         .services h3 {
@@ -299,7 +299,7 @@
         $secondHalf = array_slice($servicesArray, $halfCount);
     @endphp
     <div class="services">
-        <h2>Services</h2>
+        <h2>Services inclus</h2>
         <div class="columns-container">
             <!-- Première colonne -->
             <ul class="two-columns-list first-column">
