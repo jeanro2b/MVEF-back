@@ -45,7 +45,7 @@
         .first-section {
             font-weight: bold;
             text-align: center;
-            margin: 40px 0 10px 0;
+            margin: 30px 0 5px 0;
             width: 100%;
         }
 
