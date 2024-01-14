@@ -56,7 +56,7 @@ class PriceController extends Controller
         foreach ($req->prices as $price) {
             Price::where('id', $price['id'])->update([
                 'price' => $price['price'],
-                'reduction' => $price['reduction'],
+                'reduction' => $price['reduction'] === '' ? 0 : $price['reduction'],
             ]);
         }
         
