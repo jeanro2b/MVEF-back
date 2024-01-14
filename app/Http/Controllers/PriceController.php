@@ -16,9 +16,10 @@ class PriceController extends Controller
     {
 
         foreach ($request->prices as $price) {
+            $reduction = isset($price['reduction']) && $price['reduction'] !== '' ? $price['reduction'] : 0;
             Price::create([
                 'price' => $price['price'],
-                'reduction' => $price['reduction'] === '' ? 0 : $price['reduction'],
+                'reduction' => $reduction,
                 'start' => $price['start'],
                 'end' => $price['end'],
                 'hebergement_id' => $price['hebergement_id'],
@@ -54,9 +55,10 @@ class PriceController extends Controller
     {
 
         foreach ($req->prices as $price) {
+            $reduction = isset($price['reduction']) && $price['reduction'] !== '' ? $price['reduction'] : 0;
             Price::where('id', $price['id'])->update([
                 'price' => $price['price'],
-                'reduction' => $price['reduction'] === '' ? 0 : $price['reduction'],
+                'reduction' => $reduction,
             ]);
         }
         
