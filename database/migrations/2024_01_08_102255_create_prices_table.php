@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->decimal('price', 10, 2);
-            $table->decimal('reduction', 10, 2);
+            $table->decimal('reduction', 10, 2)->nullable();
             $table->date('start');
             $table->date('end');
 
