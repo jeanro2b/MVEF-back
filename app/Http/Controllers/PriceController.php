@@ -18,7 +18,7 @@ class PriceController extends Controller
         foreach ($request->prices as $price) {
             Price::create([
                 'price' => $price['price'],
-                'reduction' => $price['reduction'],
+                'reduction' => $price['reduction'] === '' ? 0 : $price['reduction'],
                 'start' => $price['start'],
                 'end' => $price['end'],
                 'hebergement_id' => $price['hebergement_id'],
@@ -54,7 +54,7 @@ class PriceController extends Controller
     {
 
         foreach ($req->prices as $price) {
-            Price::where('id', $price->id)->update([
+            Price::where('id', $price['id'])->update([
                 'price' => $price['price'],
                 'reduction' => $price['reduction'],
             ]);
