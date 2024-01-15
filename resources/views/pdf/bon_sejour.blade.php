@@ -279,8 +279,8 @@
     </div>
     <div class="services">
         <h2 class="mar">Dates et Horaires</h2>
-        <p><strong>Arrivée : </div>le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
-        <p><strong>Départ : </div>le {{ $dateDepart }} avant {{ $heureDepart }}</p>
+        <p><strong>Arrivée : </strong>le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
+        <p><strong>Départ : </strong>le {{ $dateDepart }} avant {{ $heureDepart }}</p>
     </div>
     <div class="services">
         <h2 class="mar">Hébergement</h2>
