@@ -207,10 +207,6 @@
         width: 800px;
         }
 
-        .strong {
-            font-weight: bold;
-        }
-
         .mar {
             margin-top: 23px
         }
@@ -255,36 +251,36 @@
     </div> -->
     <div class="services">
         <h2>Destination</h2>
-        <p><strong>Nom</strong>{{ $nomDestination }} à {{ $villeDestination }}</p>
-        <p><div class="strong">Adresse</div>{{ $addressBetter }}</p>
+        <p><strong>Nom : </strong>{{ $nomDestination }} à {{ $villeDestination }}</p>
+        <p><strong>Adresse : </strong>{{ $addressBetter }}</p>
 
         @if($mail !== null && $mail !== '')
-           <div class="strong">Mail</div><p>{{ $mail }}</p>
+            <p><strong>Mail : </strong>{{ $mail }}</p>
         @endif
 
         @if($phone !== null && $phone !== '')
-            <p><div class="strong">Téléphone</div>{{ $phone }}</p>
+            <p><strong>Téléphone : </strong>{{ $phone }}</p>
         @endif
         
         @if($latitude !== null && $latitude !== '')
-            <p><div class="strong">Latitude</div>{{ $latitude }}</p>
+            <p><strong>Latitude : </strong>{{ $latitude }}</p>
         @endif
 
         @if($longitude !== null && $longitude !== '')
-            <p><div class="strong">Longitude</div>{{ $longitude }}</p>
+            <p><strong>Longitude : </strong>{{ $longitude }}</p>
         @endif
         
         @if($caution !== null && $caution !== '')
-            <p><div class="strong">Caution</div>{{ $caution }}</p>
+            <p><strong>Caution : </strong>{{ $caution }}</p>
         @endif
         @if($taxe !== null && $taxe !== '')
-            <p><div class="strong">Taxe de séjour</div>{{ $taxe }}</p>
+            <p><strong>Taxe de séjour : </strong>{{ $taxe }}</p>
         @endif
     </div>
     <div class="services">
         <h2 class="mar">Dates et Horaires</h2>
-        <p><div class="strong">Arrivée</div>le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
-        <p><div class="strong">Départ</div>le {{ $dateDepart }} avant {{ $heureDepart }}</p>
+        <p><strong>Arrivée : </div>le {{ $dateArrive }} à partir de {{ $heureArrive }}</p>
+        <p><strong>Départ : </div>le {{ $dateDepart }} avant {{ $heureDepart }}</p>
     </div>
     <div class="services">
         <h2 class="mar">Hébergement</h2>
