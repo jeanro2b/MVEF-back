@@ -255,11 +255,11 @@
     </div> -->
     <div class="services">
         <h2>Destination</h2>
-        <p><div class="strong">Nom</div>{{ $nomDestination }} à {{ $villeDestination }}</p>
+        <p><strong>Nom</strong>{{ $nomDestination }} à {{ $villeDestination }}</p>
         <p><div class="strong">Adresse</div>{{ $addressBetter }}</p>
 
         @if($mail !== null && $mail !== '')
-            <p><div class="strong">Mail</div>{{ $mail }}</p>
+           <div class="strong">Mail</div><p>{{ $mail }}</p>
         @endif
 
         @if($phone !== null && $phone !== '')
