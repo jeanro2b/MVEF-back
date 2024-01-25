@@ -30,7 +30,7 @@ class PriceController extends Controller
 
         }
 
-        if (isset($request->minimum) && !is_null($request->minimum) && $request->minimum !== '') {
+        if (isset($request->minimum) && !is_null($request->minimum) && $request->minimum !== '' && !is_null($request->minimum['min']) && $request->minimum['min'] !== '') {
             Minimum::create([
                 'minimum' => $request->minimum['min'],
                 'hebergement_id' => $request->minimum['hebergement_id'],
@@ -88,7 +88,7 @@ class PriceController extends Controller
 
         }
 
-        if (isset($req->minimum) && !is_null($req->minimum) && $req->minimum !== '') {
+        if (isset($req->minimum) && !is_null($req->minimum) && $req->minimum !== '' && !is_null($request->minimum['min']) && $request->minimum['min'] !== '') {
             Minimum::where('hebergement_id', $req->minimum['hebergement_id'])
             ->where('month', $req->minimum['month'])
             ->update([
