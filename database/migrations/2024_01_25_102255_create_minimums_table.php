@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prices', function (Blueprint $table) {
+        Schema::create('minimums', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->decimal('price', 10, 2);
-            $table->decimal('reduction', 10, 2)->nullable();
-            $table->date('start');
-            $table->date('end');
+            $table->decimal('minimum', 10, 2);
+            $table->string('month');
 
             $table->unsignedBigInteger('hebergement_id');
             $table->foreign('hebergement_id')->references('id')->on('hebergements');
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prices');
+        Schema::dropIfExists('minimums');
     }
 };

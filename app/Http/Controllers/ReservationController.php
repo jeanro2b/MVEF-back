@@ -60,12 +60,17 @@ class ReservationController extends Controller
         $destination_id = $requete['destination_id'];
         $hebergement_id = $requete['hebergement_id'];
         $user_id = $requete['userId'];
-        $ownerEmail = 'jrgabet@hotmail.fr';
         $hebergementName = 'Nom';
 
         $users = User::where('id', $user_id)->get();
+        $destinations = Destination::where('id', $destination_id)->get();
+
         foreach ($users as $user) {
             $user_email = $user->email;
+        }
+
+        foreach ($destinations as $destination) {
+            $ownerEmail = $destination->mail;
         }
 
 
@@ -224,13 +229,13 @@ class ReservationController extends Controller
 
         foreach ($destinations as $destination) {
             $destinationName = $destination->name;
+            $ownerEmail = $destination->mail;
         }
 
         foreach ($hebergements as $hebergement) {
             $hebergementName = $hebergement->name;
         }
 
-        $ownerEmail = 'jrgabet@hotmail.fr';
         $yearStart = $start->year;
         $monthStart = $start->month + 1;
         $dayStart = $start->day + 1;
@@ -380,9 +385,23 @@ class ReservationController extends Controller
     public function delete_reservation($id)
     {
 
-        $reservation = Reservation::where('id', $id)->delete();
+        $reservation = Reservation::where('id', $id)->get();
+
+        foreach ($reservations as $reservation) {
+            $start = $reservation->start;
+            $end = $reservation->end;
+            $hebergement_id = $reservation->hebergement_id;
+            $destination_id = $reservation->destination_id;
+            $amount = $reservation->amount;
+            $services = $reservation->services;
+            $name = $reservation->name;
+            $first_name = $reservation->first_name;
+            $phone->$reservation->phone;
+        }
 
         // Add mails
+
+        Reservation::where('id', $id)->delete();
 
         return response()->json([
             'message' => 'OK',

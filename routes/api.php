@@ -99,7 +99,7 @@ Route::get('/reservations-all', [ReservationController::class, 'get_all_reservat
 Route::get('/reservation/{id}', [ReservationController::class, 'get_reservation'])
     ->name('get_reservation');
 
-Route::get('/reservation-user/{id}', [ReservationController::class, 'get_reservation_user'])
+Route::get('/reservations-user/{id}', [ReservationController::class, 'get_reservation_user'])
     ->name('get_reservation_user');
 
 

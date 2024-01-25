@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Price;
+use App\Models\Minimum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -26,6 +27,14 @@ class PriceController extends Controller
             ]);
         }
 
+        if (isset($request->minimum) && !is_null($request->minimum) && $request->minimum !== '') {
+            Minimum::create([
+                'minimum' => $request->minimum->min,
+                'hebergement_id' => $request->minimum->hebergement_id,
+                'month' => $request->minimum->month,
+            ]);
+        }
+
         return response()->json([
             'message' => 'OK',
         ], 200);
@@ -45,9 +54,20 @@ class PriceController extends Controller
         ->where('hebergement_id', $id)
         ->get();
 
+        $minimum = DB::table('minimums')
+        ->select(
+            'id',
+            'hebergement_id',
+            'minimum',
+            'month',
+        )
+        ->where('hebergement_id', $id)
+        ->get();
+
         return response()->json([
             'message' => 'OK',
-            'prices' => $prices
+            'prices' => $prices,
+            'minimum' => $minimum
         ], 200);
     }
 
@@ -59,6 +79,16 @@ class PriceController extends Controller
             Price::where('id', $price['id'])->update([
                 'price' => $price['price'],
                 'reduction' => $reduction,
+            ]);
+        }
+
+        if (isset($req->minimum) && !is_null($req->minimum) && $req->minimum !== '') {
+            Minimum::where('hebergement_id', $req->minimum->hebergement_id)
+            ->where('month', $req->minimum->month)
+            ->update([
+                'minimum' => $req->minimum->min,
+                'hebergement_id' => $req->minimum->hebergement_id,
+                'month' => $req->minimum->month,
             ]);
         }
         
