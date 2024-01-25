@@ -18,13 +18,16 @@ class PriceController extends Controller
 
         foreach ($request->prices as $price) {
             $reduction = isset($price['reduction']) && $price['reduction'] !== '' ? $price['reduction'] : 0;
-            Price::create([
-                'price' => $price['price'],
-                'reduction' => $reduction,
-                'start' => $price['start'],
-                'end' => $price['end'],
-                'hebergement_id' => $price['hebergement_id'],
-            ]);
+            if (!is_null($price['price']) && $price['price'] !== '') {
+                Price::create([
+                    'price' => $price['price'],
+                    'reduction' => $reduction,
+                    'start' => $price['start'],
+                    'end' => $price['end'],
+                    'hebergement_id' => $price['hebergement_id'],
+                ]);
+            }
+
         }
 
         if (isset($request->minimum) && !is_null($request->minimum) && $request->minimum !== '') {
@@ -76,10 +79,13 @@ class PriceController extends Controller
 
         foreach ($req->prices as $price) {
             $reduction = isset($price['reduction']) && $price['reduction'] !== '' ? $price['reduction'] : 0;
-            Price::where('id', $price['id'])->update([
-                'price' => $price['price'],
-                'reduction' => $reduction,
-            ]);
+            if (!is_null($price['price']) && $price['price'] !== '') {
+                Price::where('id', $price['id'])->update([
+                    'price' => $price['price'],
+                    'reduction' => $reduction,
+                ]);
+            }
+
         }
 
         if (isset($req->minimum) && !is_null($req->minimum) && $req->minimum !== '') {
