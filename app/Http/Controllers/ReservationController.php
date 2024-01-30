@@ -125,21 +125,35 @@ class ReservationController extends Controller
      */
     public function get_reservation($id)
     {
-        $reservation = Reservation::where('id', $id)->get();
+        $reservations = Reservation::where('id', $id)->get();
 
         return response()->json([
             'message' => 'OK',
-            'reservation' => $reservation,
+            'reservation' => $reservations,
         ], 200);
     }
 
     public function get_reservation_user($id)
     {
-        $reservation = Reservation::where('user_id', $id)->get();
+        $reservations = Reservation::where('user_id', $id)->get();
+
+        foreach ($reservations as $reservation) {
+            $destination = DB::table('destinations')
+            ->select(
+                'id',
+                'name',
+            )
+            ->where('id', $reservation->destination_id)
+            ->get();
+
+            foreach ($destination as $dest) {
+                $reservation->destination_name = $dest->name;
+            }
+        }
 
         return response()->json([
             'message' => 'OK',
-            'reservation' => $reservation,
+            'reservation' => $reservations,
         ], 200);
     }
 
