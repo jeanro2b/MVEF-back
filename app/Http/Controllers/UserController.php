@@ -325,7 +325,7 @@ class UserController extends Controller
     {
         $user = $request->user();
 
-        return response()->json(['id' => $user->id, 'role' => $user->role]);
+        return response()->json(['id' => $user->id, 'role' => $user->role, 'firstName' => $user->firstname, 'name' => $user->name]);
     }
 
     public function inscription_client(Request $request)
