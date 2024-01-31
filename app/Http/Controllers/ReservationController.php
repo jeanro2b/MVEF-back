@@ -142,12 +142,22 @@ class ReservationController extends Controller
             ->select(
                 'id',
                 'name',
+                'site'
             )
             ->where('id', $reservation->destination_id)
             ->get();
 
             foreach ($destination as $dest) {
                 $reservation->destination_name = $dest->name;
+
+                $formattedDateStart = Carbon::parse($reservation->start)->format('d/m/Y');
+                $formattedDateEnd = Carbon::parse($reservation->end)->format('d/m/Y');
+                $formattedAmount = number_format($reservation->amount, 0, '.', '') . ' €';
+        
+                $reservation->start = $formattedDateStart;
+                $reservation->end = $formattedDateEnd;
+                $reservation->amount = $formattedAmount;
+                $reservation->site = $dest->site;
             }
         }
 
