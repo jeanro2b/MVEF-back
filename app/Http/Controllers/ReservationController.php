@@ -51,8 +51,8 @@ class ReservationController extends Controller
         $startDate = $start->toDateTimeString();
         $endDate = $end->toDateTimeString();
         $yearStart = $start->year;
-        $monthStart = $start->month + 1;
-        $dayStart = $start->day + 1;
+        $monthStart = sprintf('%02d', $start->month);
+        $dayStart = sprintf('%02d', $start->day);
         $yearEnd = $end->year;
         $monthEnd = $end->month + 1;
         $dayEnd = $end->day + 1;
@@ -60,10 +60,10 @@ class ReservationController extends Controller
         $destination_id = $requete['destination_id'];
         $hebergement_id = $requete['hebergement_id'];
         $user_id = $requete['userId'];
-        $hebergementName = 'Nom';
 
         $users = User::where('id', $user_id)->get();
         $destinations = Destination::where('id', $destination_id)->get();
+        $hebergements = Hebergement::where('id', $hebergement_id)->get();
 
         foreach ($users as $user) {
             $user_email = $user->email;
@@ -71,6 +71,10 @@ class ReservationController extends Controller
 
         foreach ($destinations as $destination) {
             $ownerEmail = $destination->mail;
+        }
+
+        foreach ($hebergements as $hebergement) {
+            $hebergementName = $hebergement->name;
         }
 
 
@@ -108,7 +112,7 @@ class ReservationController extends Controller
 
             Mail::to($user_email)->send(new LocationDemandEmailUser($reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $amount));
 
-            Mail::to($ownerEmail)->send(new LocationDemandEmail($token, $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $name, $first_name));
+            Mail::to($ownerEmail)->send(new LocationDemandEmail($token, $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $name, $first_name, $user_id));
 
             return response()->json([
                 'message' => 'OK',

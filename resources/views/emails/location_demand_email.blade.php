@@ -55,7 +55,7 @@
         <div class='lien'>
         @php
             $escapedToken = e($token);
-            $escapedId = e($reservationId);
+            $escapedId = e($user_id);
             $acceptUrl = url("https://mesvacancesenfamille.com/reservation/accept/?tid={$escapedToken}&id={$escapedId}");
             $refuseUrl = url("https://mesvacancesenfamille.com/reservation/refuse?tid={$escapedToken}&id={$escapedId}");
         @endphp

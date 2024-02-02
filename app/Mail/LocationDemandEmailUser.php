@@ -48,7 +48,7 @@ class LocationDemandEmailUser extends Mailable
         $this->monthEnd = $monthEnd;
         $this->dayEnd = $dayEnd;
         $this->destination_id = $destination_id;
-        $this->$amount = $amount;
+        $this->amount = $amount;
     }
 
     /**
