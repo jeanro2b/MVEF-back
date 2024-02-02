@@ -165,7 +165,7 @@ class ReservationController extends Controller
                     'long_title',
                     'couchage'
                 )
-                ->where('destination_id', $dest->id)
+                ->where('id', $reservation->hebergement_id)
                 ->get();
 
                 foreach ($hebergement as $heb) {
