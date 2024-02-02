@@ -55,8 +55,8 @@ class ReservationController extends Controller
         $monthStart = sprintf('%02d', $start->month);
         $dayStart = sprintf('%02d', $start->day);
         $yearEnd = $end->year;
-        $monthEnd = $end->month + 1;
-        $dayEnd = $end->day + 1;
+        $monthEnd = sprintf('%02d', $end->month);
+        $dayEnd = sprintf('%02d', $end->day);
 
         $destination_id = $requete['destination_id'];
         $hebergement_id = $requete['hebergement_id'];
@@ -369,8 +369,8 @@ class ReservationController extends Controller
         
         foreach ($reservations as $reservation) {
             $payment_intent = $reservation->intent;
-            $start = $reservation->start;
-            $end = $reservation->end;
+            $start = Carbon::parse($reservation->start);
+            $end = Carbon::parse($reservation->end);
             $hebergement_id = $reservation->hebergement_id;
             $destination_id = $reservation->destination_id;
             $amount = $reservation->amount;
@@ -395,11 +395,11 @@ class ReservationController extends Controller
         }
 
         $yearStart = $start->year;
-        $monthStart = $start->month + 1;
-        $dayStart = $start->day + 1;
+        $monthStart = sprintf('%02d', $start->month);
+        $dayStart = sprintf('%02d', $start->day);
         $yearEnd = $end->year;
-        $monthEnd = $end->month + 1;
-        $dayEnd = $end->day + 1;
+        $monthEnd = sprintf('%02d', $end->month);
+        $dayEnd = sprintf('%02d', $end->day);
 
         if($reservation) {
             Mail::to($user_email)->send(new LocationRefusedEmailUser($destination_id, $destinationName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd));
