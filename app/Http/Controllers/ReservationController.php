@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use App\Models\Destination;
 use App\Models\Hebergement;
+use App\Models\Service;
 use App\Models\User;
 use App\Mail\LocationDemandEmail;
 use App\Mail\LocationDemandEmailUser;
