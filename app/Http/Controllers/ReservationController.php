@@ -293,7 +293,7 @@ class ReservationController extends Controller
     
             $services = Service::where('destination_id', $destination_id)->get();
     
-            $nomVoyageur = $req->name;
+            $nomVoyageur = $user_name;
             $libellePlanning = "Test";
             $nomClient = $user_name;
             $nomDestination = $destinationInfo->name;
