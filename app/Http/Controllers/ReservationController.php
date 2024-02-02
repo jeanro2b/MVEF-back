@@ -249,8 +249,8 @@ class ReservationController extends Controller
             $services = $reservation->services;
             $name = $reservation->name;
             $first_name = $reservation->first_name;
-            $reservationId->$reservation->id;
-            $phone->$reservation->phone;
+            $reservationId = $reservation->id;
+            $phone = $reservation->phone;
         }
         $destinations = Destination::where('id', $destination_id)->get();
         $hebergements = Hebergement::where('id', $hebergement_id)->get();
@@ -376,8 +376,8 @@ class ReservationController extends Controller
             $services = $reservation->services;
             $name = $reservation->name;
             $first_name = $reservation->first_name;
-            $reservationId->$reservation->id;
-            $phone->$reservation->phone;
+            $reservationId = $reservation->id;
+            $phone = $reservation->phone;
         }
         $destinations = Destination::where('id', $destination_id)->get();
         $hebergements = Hebergement::where('id', $hebergement_id)->get();
