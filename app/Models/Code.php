@@ -13,7 +13,8 @@ class Code extends Model
     protected $fillable = [
         'code',
         'user_id',
-        'end'
+        'end',
+        'reduction'
     ];
 
     public function user()

@@ -62,20 +62,15 @@ class ReservationController extends Controller
         $hebergement_id = $requete['hebergement_id'];
         $user_id = $requete['userId'];
 
-        $users = User::where('id', $user_id)->get();
         $destinations = Destination::where('id', $destination_id)->get();
         $hebergements = Hebergement::where('id', $hebergement_id)->get();
-
-        foreach ($users as $user) {
-            $user_email = $user->email;
-        }
 
         foreach ($destinations as $destination) {
             $ownerEmail = $destination->mail;
         }
 
         foreach ($hebergements as $hebergement) {
-            $hebergementName = $hebergement->name;
+            $hebergementName = $hebergement->long_title;
         }
 
 
@@ -111,7 +106,7 @@ class ReservationController extends Controller
 
             $reservationId = $reservation->id;
 
-            Mail::to($user_email)->send(new LocationDemandEmailUser($reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $amount));
+            Mail::to($mail)->send(new LocationDemandEmailUser($reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $amount));
 
             Mail::to($ownerEmail)->send(new LocationDemandEmail($token, $reservationId, $hebergementName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $name, $first_name, $user_id));
 
@@ -163,6 +158,20 @@ class ReservationController extends Controller
                 $reservation->end = $formattedDateEnd;
                 $reservation->amount = $formattedAmount;
                 $reservation->site = $dest->site;
+
+                $hebergement = DB::table('hebergements')
+                ->select(
+                    'id',
+                    'long_title',
+                    'couchage'
+                )
+                ->where('destination_id', $dest->id)
+                ->get();
+
+                foreach ($hebergement as $heb) {
+                    $reservation->hebergement_name = $heb->long_title;
+                    $reservation->couchage = $heb->couchage;
+                }
             }
         }
 
@@ -233,12 +242,6 @@ class ReservationController extends Controller
         $user_id = $requete['user'];
         $token = $requete['secret'];
 
-        $users = User::where('id', $user_id)->get();
-        foreach ($users as $user) {
-            $user_email = $user->email;
-            $user_name = $user->name;
-        }
-
         $reservations = Reservation::where('token', $token)->get();
         foreach ($reservations as $reservation) {
             $payment_intent = $reservation->intent;
@@ -252,6 +255,9 @@ class ReservationController extends Controller
             $first_name = $reservation->first_name;
             $reservationId = $reservation->id;
             $phone = $reservation->phone;
+            $user_email = $reservation->mail;
+            $user_name = $reservation->name;
+            $user_firstname = $reservation->first_name;
         }
         $destinations = Destination::where('id', $destination_id)->get();
         $hebergements = Hebergement::where('id', $hebergement_id)->get();
@@ -262,7 +268,7 @@ class ReservationController extends Controller
         }
 
         foreach ($hebergements as $hebergement) {
-            $hebergementName = $hebergement->name;
+            $hebergementName = $hebergement->long_title;
         }
 
         $yearStart = $start->year;
@@ -359,12 +365,6 @@ class ReservationController extends Controller
         $user_id = $requete['user'];
         $token = $requete['secret'];
 
-        $users = User::where('id', $user_id)->get();
-        foreach ($users as $user) {
-            $user_email = $user->email;
-            $user_name = $user->name;
-        }
-
         $reservation = Reservation::where('token', $token)->get();
         
         foreach ($reservations as $reservation) {
@@ -379,6 +379,9 @@ class ReservationController extends Controller
             $first_name = $reservation->first_name;
             $reservationId = $reservation->id;
             $phone = $reservation->phone;
+            $user_email = $reservation->mail;
+            $user_name = $reservation->name;
+            $user_firstname = $reservation->first_name;
         }
         $destinations = Destination::where('id', $destination_id)->get();
         $hebergements = Hebergement::where('id', $hebergement_id)->get();

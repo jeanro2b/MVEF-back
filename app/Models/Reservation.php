@@ -42,4 +42,17 @@ class Reservation extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::retrieved(function ($reservation) {
+            // Vérifier si la date 'end' est dans le passé
+            if (Carbon::parse($reservation->end)->isPast()) {
+                $reservation->status = 'Terminé'; // Modifier le statut de la réservation
+                $reservation->save(); // Sauvegarder les modifications
+            }
+        });
+    }
 }
