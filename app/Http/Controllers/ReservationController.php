@@ -238,6 +238,7 @@ class ReservationController extends Controller
 
     public function accept_reservation(Request $requete)
     {
+        Log::debug($requete);
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
         $user_id = $requete['user'];
         $token = $requete['secret'];
