@@ -56,7 +56,7 @@
         <h4>Date de départ</h4>
         <p>{{ $dayEnd }} / {{ $monthEnd }} / {{ $yearEnd }}</p>
         <h4>Réservation</h4>
-        <p>Numéro : {{ $reservaitonId }}</p>
+        <p>Numéro : {{ $reservationId }}</p>
         <p>Montant : {{ $amount }}€</p>
         <div class="content-text">
             <p>Vous trouverez ci-joint votre bon de séjour à présenter à votre arrivée.<br/>
