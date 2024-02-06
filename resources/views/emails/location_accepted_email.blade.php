@@ -53,7 +53,7 @@
         <p>Téléphone : {{ $phone }}</p>
         <h4>Réservation</h4>
         <p>Numéro : {{ $reservationId }}</p>
-        <p>Montant : {{ $amount }}€</p>
+        <p>Montant : {{ $amount }} €</p>
         <div class="text">
             <p>Pensez à intégrer cette réservation dans votre système de gestion et votre calendrier.<br/>
             Vous trouverez ci-joint un récapitulatif de la réservation.<br/>

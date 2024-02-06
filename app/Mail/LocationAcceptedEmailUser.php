@@ -41,7 +41,7 @@ class LocationAcceptedEmailUser extends Mailable
      * @param  string  $filename
      * @return void
      */
-    public function __construct( $reservationId, $destinationName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $amount, $output, $filename)
+    public function __construct($destination_id, $destinationName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $output, $filename)
     {
         $this->reservationId = $reservationId;
         $this->destinationName = $destinationName;
