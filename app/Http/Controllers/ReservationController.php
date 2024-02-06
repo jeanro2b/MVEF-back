@@ -303,6 +303,7 @@ class ReservationController extends Controller
             $heureArrive = $destinationInfo->arrival;
             $heureDepart = $destinationInfo->departure;
             $descriptionHebergement = $hebergementInfo->description;
+            $nomHebergement = $hebergementInfo->long_title;
             $dateArrive = $start->format('d/m/Y');
             $dateDepart = $end->format('d/m/Y');
             $addressBetter = str_replace("<br />", "", $destinationInfo->address);
@@ -336,7 +337,7 @@ class ReservationController extends Controller
     
             $dompdf = new Dompdf();
     
-            $html = View::make('pdf.bon_sejour', compact('services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination', 'caution', 'taxe', 'bslogoData', 'bslogotxtData'))->render();
+            $html = View::make('pdf.bon_sejour', compact('nomHebergement', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination', 'caution', 'taxe', 'bslogoData', 'bslogotxtData'))->render();
     
             // Chargement du contenu HTML dans Dompdf
             $dompdf->loadHtml($html);

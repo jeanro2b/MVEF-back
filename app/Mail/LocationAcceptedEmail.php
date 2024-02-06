@@ -71,7 +71,7 @@ class LocationDemandEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.location_accepet_email')
+        return $this->view('emails.location_accepted_email')
             ->subject('Réservation acceptée Mes Vacances En Famille')
             ->with([
                 'reservationId' => $this->reservationId,
@@ -86,8 +86,6 @@ class LocationDemandEmail extends Mailable
                 'first_name' => $this->first_name,
                 'phone' => $this->phone,
                 'amount' => $this->amount,
-                'output' => $this->output,
-                'filename' => $this->filename,
             ])
             ->attachData($this->output, $this->filename);
     }
