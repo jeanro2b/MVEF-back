@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Stripe\StripeClient;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Mail;
 
 
