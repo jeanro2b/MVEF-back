@@ -246,8 +246,8 @@ class ReservationController extends Controller
         $reservations = Reservation::where('token', $token)->get();
         foreach ($reservations as $reservation) {
             $payment_intent = $reservation->intent;
-            $start = Carbon::parse($reservation->start);
-            $end = Carbon::parse($reservation->end);
+            $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
+            $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
             $hebergement_id = $reservation->hebergement_id;
             $destination_id = $reservation->destination_id;
             $amount = $reservation->amount;
@@ -301,8 +301,8 @@ class ReservationController extends Controller
             $heureArrive = $destinationInfo->arrival;
             $heureDepart = $destinationInfo->departure;
             $descriptionHebergement = $hebergementInfo->description;
-            $dateArrive = Carbon::createFromFormat('Y-m-d', $start)->format('d/m/Y');
-            $dateDepart = Carbon::createFromFormat('Y-m-d', $end)->format('d/m/Y');
+            $dateArrive = $start->format('d/m/Y');
+            $dateDepart = $end->format('d/m/Y');
             $addressBetter = str_replace("<br />", "", $destinationInfo->address);
             $mail = $destinationInfo->mail;
             $phone = $destinationInfo->phone;
@@ -370,8 +370,8 @@ class ReservationController extends Controller
         
         foreach ($reservations as $reservation) {
             $payment_intent = $reservation->intent;
-            $start = Carbon::parse($reservation->start);
-            $end = Carbon::parse($reservation->end);
+            $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
+            $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
             $hebergement_id = $reservation->hebergement_id;
             $destination_id = $reservation->destination_id;
             $amount = $reservation->amount;
