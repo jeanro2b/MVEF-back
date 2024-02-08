@@ -142,13 +142,13 @@ class ReservationController extends Controller
 
         foreach ($reservations as $reservation) {
             $destination = DB::table('destinations')
-            ->select(
-                'id',
-                'name',
-                'site'
-            )
-            ->where('id', $reservation->destination_id)
-            ->get();
+                ->select(
+                    'id',
+                    'name',
+                    'site'
+                )
+                ->where('id', $reservation->destination_id)
+                ->get();
 
             foreach ($destination as $dest) {
                 $reservation->destination_name = $dest->name;
@@ -156,20 +156,20 @@ class ReservationController extends Controller
                 $formattedDateStart = Carbon::parse($reservation->start)->format('d/m/Y');
                 $formattedDateEnd = Carbon::parse($reservation->end)->format('d/m/Y');
                 $formattedAmount = number_format($reservation->amount, 0, '.', '') . ' €';
-        
+
                 $reservation->start = $formattedDateStart;
                 $reservation->end = $formattedDateEnd;
                 $reservation->amount = $formattedAmount;
                 $reservation->site = $dest->site;
 
                 $hebergement = DB::table('hebergements')
-                ->select(
-                    'id',
-                    'long_title',
-                    'couchage'
-                )
-                ->where('id', $reservation->hebergement_id)
-                ->get();
+                    ->select(
+                        'id',
+                        'long_title',
+                        'couchage'
+                    )
+                    ->where('id', $reservation->hebergement_id)
+                    ->get();
 
                 foreach ($hebergement as $heb) {
                     $reservation->hebergement_name = $heb->long_title;
@@ -187,26 +187,26 @@ class ReservationController extends Controller
     public function get_all_reservations()
     {
         $reservations = DB::table('reservations')
-        ->select(
-            'id',
-            'created_at',
-            'destination_id',
-            'start',
-            'end',
-            'status',
-            'amount',
-            'intent',
-            'name',
-            'first_name',
-            'phone',
-            'mail',
-            'voyageurs',
-            'hebergement_id',
-            'user_id'
-        )
-        ->get();
+            ->select(
+                'id',
+                'created_at',
+                'destination_id',
+                'start',
+                'end',
+                'status',
+                'amount',
+                'intent',
+                'name',
+                'first_name',
+                'phone',
+                'mail',
+                'voyageurs',
+                'hebergement_id',
+                'user_id'
+            )
+            ->get();
 
-        foreach($reservations as $reservation) {
+        foreach ($reservations as $reservation) {
             $destination = DB::table('destinations')
                 ->select(
                     'id',
@@ -280,22 +280,22 @@ class ReservationController extends Controller
         $yearEnd = $end->year;
         $monthEnd = sprintf('%02d', $end->month);
         $dayEnd = sprintf('%02d', $end->day);
-        
-        if($reservation) {
+
+        if ($reservation) {
 
             $stripe->paymentIntents->confirm(
                 $payment_intent,
                 [
-                'payment_method' => 'pm_card_visa',
-                'return_url' => 'https://www.mesvacancesenfamille.com'
+                    'payment_method' => 'pm_card_visa',
+                    'return_url' => 'https://www.mesvacancesenfamille.com'
                 ]
             );
 
             $hebergementInfo = Hebergement::find($hebergement_id);
             $destinationInfo = Destination::find($destination_id);
-    
+
             $services = Service::where('destination_id', $destination_id)->get();
-    
+
             $nomVoyageur = $user_name;
             $libellePlanning = "Test";
             $nomClient = $user_name;
@@ -315,36 +315,36 @@ class ReservationController extends Controller
             $villeDestination = $destinationInfo->city;
             $caution = $destinationInfo->caution;
             $taxe = $destinationInfo->taxe;
-    
+
             $logoPath = "https://mvef.s3.eu-west-3.amazonaws.com/base_logo_transparent_background.png";
             $logoData = base64_encode(file_get_contents($logoPath));
             $bslogoPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogo.png";
             $bslogoData = base64_encode(file_get_contents($bslogoPath));
             $bslogotxtPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogotxt.png";
             $bslogotxtData = base64_encode(file_get_contents($bslogotxtPath));
-    
+
             $destPath = "https://mvef.s3.eu-west-3.amazonaws.com/icone-de-localisation-noire.png";
             $destData = base64_encode(file_get_contents($destPath));
-    
+
             $calPath = "https://mvef.s3.eu-west-3.amazonaws.com/2370264.png";
             $calData = base64_encode(file_get_contents($calPath));
-    
+
             $hebPath = "https://mvef.s3.eu-west-3.amazonaws.com/588a6695d06f6719692a2d1c.png";
             $hebData = base64_encode(file_get_contents($hebPath));
-    
+
             $logoVacancesAuthPath = "https://mvef.s3.eu-west-3.amazonaws.com/LOGO-VACANCES+AUTHENTIQUES.jpg";
             $logoVacancesAuthData = base64_encode(file_get_contents($logoVacancesAuthPath));
-    
+
             $dompdf = new Dompdf();
-    
+
             $html = View::make('pdf.bon_sejour', compact('nomHebergement', 'services', 'libellePlanning', 'nomClient', 'nomDestination', 'heureArrive', 'heureDepart', 'descriptionHebergement', 'dateArrive', 'dateDepart', 'addressBetter', 'mail', 'phone', 'latitude', 'longitude', 'logoData', 'destData', 'calData', 'hebData', 'logoVacancesAuthData', 'nomVoyageur', 'renseignement', 'villeDestination', 'caution', 'taxe', 'bslogoData', 'bslogotxtData'))->render();
-    
+
             // Chargement du contenu HTML dans Dompdf
             $dompdf->loadHtml($html);
-    
+
             // Rendu du PDF
             $dompdf->render();
-    
+
             $output = $dompdf->output();
 
             $filename = "PDF_bon_sejour_$name.pdf";
@@ -369,8 +369,8 @@ class ReservationController extends Controller
         $user_id = $requete['user'];
         $token = $requete['secret'];
 
-        $reservation = Reservation::where('token', $token)->get();
-        
+        $reservations = Reservation::where('token', $token)->get();
+
         foreach ($reservations as $reservation) {
             $payment_intent = $reservation->intent;
             $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
@@ -405,7 +405,7 @@ class ReservationController extends Controller
         $monthEnd = sprintf('%02d', $end->month);
         $dayEnd = sprintf('%02d', $end->day);
 
-        if($reservation) {
+        if ($reservation) {
             $stripe->paymentIntents->cancel(
                 $payment_intent,
                 []
@@ -423,23 +423,27 @@ class ReservationController extends Controller
         }
     }
 
+    public function message_reservation(Request $requete)
+    {
+        $secret_id = $requete['secretId'];
+        $message = $requete['message'];
+
+        $reservation = Reservation::where('token', $secret_id)->update(
+            [
+                'comment' => $message,
+            ]
+        );
+
+        return response()->json([
+            'message' => 'OK',
+        ], 200);
+
+    }
+
     public function delete_reservation($id)
     {
 
         $reservation = Reservation::where('id', $id)->get();
-
-        foreach ($reservations as $reservation) {
-            $start = $reservation->start;
-            $end = $reservation->end;
-            $hebergement_id = $reservation->hebergement_id;
-            $destination_id = $reservation->destination_id;
-            $amount = $reservation->amount;
-            $services = $reservation->services;
-            $name = $reservation->name;
-            $first_name = $reservation->first_name;
-            $phone->$reservation->phone;
-        }
-
         // Add mails
 
         Reservation::where('id', $id)->delete();

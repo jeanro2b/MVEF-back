@@ -154,6 +154,10 @@ Route::post('/reservation-accept', [ReservationController::class, 'accept_reserv
 Route::post('/reservation-refuse', [ReservationController::class, 'refuse_reservation'])
     ->name('refuse_reservation');
 
+
+Route::put('/message-reservation', [ReservationController::class, 'message_reservation'])
+    ->name('message_reservation');
+
 // Puts
 
 Route::post('modify-destination', [DestinationController::class, 'modify_destination'])
