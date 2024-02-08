@@ -59,7 +59,7 @@ class LocationRefusedEmailUser extends Mailable
     public function build()
     {
         return $this->view('emails.location_refused_email_user')
-            ->subject('Réservation acceptée Mes Vacances En Famille')
+            ->subject('Réservation refusée Mes Vacances En Famille')
             ->with([
                 'reservationId' => $this->reservationId,
                 'destinationName' => $this->destinationName,
