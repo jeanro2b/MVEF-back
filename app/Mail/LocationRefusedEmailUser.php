@@ -37,7 +37,7 @@ class LocationRefusedEmailUser extends Mailable
      * @param  string  $amount
      * @return void
      */
-    public function __construct( $reservationId, $destinationName, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $destination_id, $amount)
+    public function __construct($destination_id, $destinationName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd)
     {
         $this->reservationId = $reservationId;
         $this->destinationName = $destinationName;

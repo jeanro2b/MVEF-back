@@ -406,6 +406,11 @@ class ReservationController extends Controller
         $dayEnd = sprintf('%02d', $end->day);
 
         if($reservation) {
+            $stripe->paymentIntents->cancel(
+                $payment_intent,
+                []
+            );
+
             Mail::to($user_email)->send(new LocationRefusedEmailUser($destination_id, $destinationName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd));
             // Mettre le statut en refusé
             return response()->json([
