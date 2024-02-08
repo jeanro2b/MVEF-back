@@ -55,7 +55,7 @@
         <h4>Date de départ</h4>
         <p>{{ $dayEnd }} / {{ $monthEnd }} / {{ $yearEnd }}</p>
         <h4>Réservation</h4>
-        <p>Numéro : {{ $reservaitonId }}</p>
+        <p>Numéro : {{ $reservationId }}</p>
         <p>Montant : {{ $amount }}€</p>
         <div class="content-text">
             <p>L’empreinte bancaire a été levée. Nous vous confirmons que vous ne serez pas débité du montant de la réservation.<br/>
