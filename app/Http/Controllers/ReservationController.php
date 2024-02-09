@@ -6,12 +6,14 @@ use App\Models\Reservation;
 use App\Models\Destination;
 use App\Models\Hebergement;
 use App\Models\Service;
-use App\Models\User;
 use App\Mail\LocationDemandEmail;
 use App\Mail\LocationDemandEmailUser;
 use App\Mail\LocationAcceptedEmailUser;
 use App\Mail\LocationAcceptedEmail;
 use App\Mail\LocationRefusedEmailUser;
+use App\Mail\LocationDeleteEmailUser;
+use App\Mail\LocationDeleteEmail;
+use App\Mail\LocationDeleteEmailAdmin;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +23,6 @@ use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Mail;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf as PdfDompdf;
 
 
 
@@ -276,10 +277,10 @@ class ReservationController extends Controller
 
         $yearStart = $start->year;
         $monthStart = sprintf('%02d', $start->month);
-        $dayStart = sprintf('%02d', $start->day);
+        $dayStart = sprintf('%02d', $start->day + 1);
         $yearEnd = $end->year;
         $monthEnd = sprintf('%02d', $end->month);
-        $dayEnd = sprintf('%02d', $end->day);
+        $dayEnd = sprintf('%02d', $end->day + 1);
 
         if ($reservation) {
 
@@ -400,10 +401,10 @@ class ReservationController extends Controller
 
         $yearStart = $start->year;
         $monthStart = sprintf('%02d', $start->month);
-        $dayStart = sprintf('%02d', $start->day);
+        $dayStart = sprintf('%02d', $start->day + 1);
         $yearEnd = $end->year;
         $monthEnd = sprintf('%02d', $end->month);
-        $dayEnd = sprintf('%02d', $end->day);
+        $dayEnd = sprintf('%02d', $end->day + 1);
 
         if ($reservation) {
             $stripe->paymentIntents->cancel(
@@ -443,10 +444,44 @@ class ReservationController extends Controller
     public function delete_reservation($id)
     {
 
-        $reservation = Reservation::where('id', $id)->get();
+        $reservations = Reservation::where('id', $id)->get();
         // Add mails
 
+        foreach ($reservations as $reservation) {
+            $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
+            $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
+            $hebergement_id = $reservation->hebergement_id;
+            $destination_id = $reservation->destination_id;
+            $name = $reservation->name;
+            $first_name = $reservation->first_name;
+            $reservationId = $reservation->id;
+            $user_email = $reservation->mail;
+        }
+
+        $destinations = Destination::where('id', $destination_id)->get();
+        $hebergements = Hebergement::where('id', $hebergement_id)->get();
+
+        foreach ($destinations as $destination) {
+            $destinationMail = $destination->mail;
+        }
+
+        foreach ($hebergements as $hebergement) {
+            $hebergementName = $hebergement->long_title;
+        }
+
+        $yearStart = $start->year;
+        $monthStart = sprintf('%02d', $start->month);
+        $dayStart = sprintf('%02d', $start->day + 1);
+        $yearEnd = $end->year;
+        $monthEnd = sprintf('%02d', $end->month);
+        $dayEnd = sprintf('%02d', $end->day + 1);
+        $admin_mail = 'admin@mesvacancesenfamille.com';
+
         Reservation::where('id', $id)->delete();
+
+        Mail::to($admin_mail)->send(new LocationDeleteEmailAdmin($hebergementName, $name, $first_name, $reservationId, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd));
+        Mail::to($destinationMail)->send(new LocationDeleteEmail($hebergementName, $name, $first_name, $reservationId, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd));
+        Mail::to($user_email)->send(new LocationDeleteEmailUser($reservationId));
 
         return response()->json([
             'message' => 'OK',
