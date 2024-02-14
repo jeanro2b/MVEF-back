@@ -48,6 +48,8 @@ class ReservationController extends Controller
         $amount = $requete['amount'];
         $services = $requete['services'];
         $voyageurs = $requete['voyageurs'];
+        $nights = $requete['nights'];
+        $amount_options = $amount - $nights;
 
         $start = Carbon::parse($requete['start']);
         $end = Carbon::parse($requete['end']);
@@ -106,6 +108,7 @@ class ReservationController extends Controller
                 'token' => $token,
                 'services' => json_encode($services),
                 'voyageurs' => $voyageurs,
+                'amount_options' => $amount_options,
             ]);
 
             $reservationId = $reservation->id;
@@ -486,6 +489,72 @@ class ReservationController extends Controller
         return response()->json([
             'message' => 'OK',
             'reservation' => $reservation
+        ], 200);
+    }
+
+    public function get_all_reservations_for_facturation()
+    {
+        $reservations = DB::table('reservations')
+            ->select(
+                'id',
+                'created_at',
+                'destination_id',
+                'start',
+                'end',
+                'status',
+                'amount',
+                'intent',
+                'name',
+                'first_name',
+                'phone',
+                'mail',
+                'voyageurs',
+                'hebergement_id',
+                'user_id',
+                'amount_options'
+            )
+            ->get();
+
+        foreach ($reservations as $reservation) {
+            $destination = DB::table('destinations')
+                ->select(
+                    'id',
+                    'name',
+                    'tva',
+                    'tva_options'
+                )
+                ->where('id', $reservation->destination_id)
+                ->get();
+
+            foreach ($destination as $dest) {
+                $reservation->destination_name = $dest->name;
+                $reservation->tva = ($dest->tva) / 100;
+                $reservation->tva_options = $dest->tva_options;
+            }
+
+            $hebergement = DB::table('hebergements')
+                ->select(
+                    'id',
+                    'name',
+                    'code'
+                )
+                ->where('id', $reservation->hebergement_id)
+                ->get();
+
+            foreach ($hebergement as $heb) {
+                $reservation->code = $heb->code;
+            }
+
+            $reservation->amountHT = $reservation->amount / (1 + $reservation->tva);
+            $reservation->amountTVA = $reservation->amount  - $reservation->amountHT;
+
+            $reservation->amountHTOptions = $reservation->amount_options / (1 + $reservation->tva_options);
+            $reservation->amountTVAOptions = $reservation->amount_options  - $reservation->amountHTOptions;
+        }
+
+        return response()->json([
+            'message' => 'OK',
+            'reservations' => $reservations,
         ], 200);
     }
 

@@ -37,6 +37,8 @@ class Destination extends Model
         'renseignement',
         'caution',
         'taxe',
+        'tva',
+        'tva_options'
     ];
 
     public function service()
@@ -46,7 +48,7 @@ class Destination extends Model
 
     public function servicespayant()
     {
-        return $this->belongsToMany(Servicespayants::class);
+        return $this->belongsToMany(Servicespayant::class);
     }
 
     public function reservation()

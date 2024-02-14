@@ -341,9 +341,6 @@ class DestinationController extends Controller
         $tImage3 = Storage::disk('s3')->put('images', $req->tImage3);
         $tImage4 = Storage::disk('s3')->put('images', $req->tImage4);
 
-        Log::debug($req->$pImage);
-        Log::debug($pImage);
-
         $requete = json_decode($req->destination);
 
         $destination = Destination::create([
@@ -373,7 +370,9 @@ class DestinationController extends Controller
             'favorite' => $requete->favorite,
             'location' => $requete->location,
             'site' => $requete->site,
-            'renseignement' => str_replace("\n", '<br />', $requete->renseignement)
+            'renseignement' => str_replace("\n", '<br />', $requete->renseignement),
+            'tva' => $requete->tva,
+            'tva_options' => $requete->tva_options,
         ]);
 
 
