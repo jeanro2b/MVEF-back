@@ -105,8 +105,6 @@ Route::get('/reservations-user/{id}', [ReservationController::class, 'get_reserv
 Route::get('/reservations-all-facturation', [ReservationController::class, 'get_all_reservations_for_facturation'])
     ->name('get_all_reservations_for_facturation');
 
-
-    
 Route::post('download-bon', [PeriodController::class, 'download_pdf'])
     ->name('download_pdf');
 
