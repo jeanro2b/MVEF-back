@@ -109,7 +109,7 @@ Route::post('download-bon', [PeriodController::class, 'download_pdf'])
     ->name('download_pdf');
 
 
-Route::post('download-facture-reservation/{$id}', [ReservationController::class, 'download_facturation_reservation'])
+Route::post('/download-facture-reservation/{$id}', [ReservationController::class, 'download_facturation_reservation'])
     ->name('download_facturation_reservation');
 
 // Posts
