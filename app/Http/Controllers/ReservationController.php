@@ -21,6 +21,7 @@ use Stripe\StripeClient;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Mail;
 
@@ -546,16 +547,128 @@ class ReservationController extends Controller
             }
 
             $reservation->amountHT = $reservation->amount / (1 + $reservation->tva);
-            $reservation->amountTVA = $reservation->amount  - $reservation->amountHT;
+            $reservation->amountTVA = $reservation->amount - $reservation->amountHT;
 
             $reservation->amountHTOptions = $reservation->amount_options / (1 + $reservation->tva_options);
-            $reservation->amountTVAOptions = $reservation->amount_options  - $reservation->amountHTOptions;
+            $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
         }
 
         return response()->json([
             'message' => 'OK',
             'reservations' => $reservations,
         ], 200);
+    }
+
+    public function download_facturation_reservation($id)
+    {
+        $reservations = DB::table('reservations')
+            ->select(
+                'id',
+                'created_at',
+                'destination_id',
+                'start',
+                'end',
+                'status',
+                'amount',
+                'intent',
+                'name',
+                'first_name',
+                'phone',
+                'mail',
+                'voyageurs',
+                'hebergement_id',
+                'user_id',
+                'amount_options'
+            )
+            ->where('id', $id)
+            ->get();
+
+        foreach ($reservations as $reservation) {
+            $destination = DB::table('destinations')
+                ->select(
+                    'id',
+                    'name',
+                    'tva',
+                    'tva_options'
+                )
+                ->where('id', $reservation->destination_id)
+                ->get();
+
+            foreach ($destination as $dest) {
+                $reservation->destination_name = $dest->name;
+                $reservation->tva = ($dest->tva) / 100;
+                $reservation->tva_options = $dest->tva_options;
+
+                $reservationTVA = $reservation->tva;
+                $reservationTVAOptions = $reservation->tva_options;
+            }
+
+            $hebergement = DB::table('hebergements')
+                ->select(
+                    'id',
+                    'name',
+                    'code',
+                    'long_title'
+                )
+                ->where('id', $reservation->hebergement_id)
+                ->get();
+
+            foreach ($hebergement as $heb) {
+                $reservation->code = $heb->code;
+
+                $reservationHebergementTitle = $heb->long_title;
+            }
+
+            $reservation->amountHT = $reservation->amount / (1 + $reservation->tva);
+            $reservation->amountTVA = $reservation->amount - $reservation->amountHT;
+
+            $reservation->amountHTOptions = $reservation->amount_options / (1 + $reservation->tva_options);
+            $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
+
+
+            $reservationId = $reservation->id;
+            $reservationAmount = $reservation->amount;
+            $reservationAmountOptions = $reservation->amount_options;
+            $reservationAmountExclOptions = $reservationAmount - $reservationAmountOptions;
+            $userId = $reservation->user_id;
+            $reservationClientName = $reservation->name;
+            $reservationClientFirstName = $reservation->first_name;
+            $reservationClientPhone = $reservation->phone;
+            $reservationClientMail = $reservation->mail;
+            $reservationOptionsData = $reservation->services;
+            $reservationNumberOfNights = $reservation->end - $reservation->start;
+            $reservationIntent = $reservation->intent;
+        }
+
+        $bslogoPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogo.png";
+        $bslogoData = base64_encode(file_get_contents($bslogoPath));
+
+        $date = Carbon::now()->format('d/m/Y');
+
+        $dompdf = new Dompdf();
+
+        $reservationClientPhone = $reservation->phone;
+        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData'))->render();
+
+        // Chargement du contenu HTML dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Rendu du PDF
+        $dompdf->render();
+
+        $output = $dompdf->output();
+
+        $filename = "facture_$reservationId.pdf";
+
+        $contentType = 'application/pdf';
+
+        // Création de la réponse HTTP avec le contenu du PDF
+        $response = new Response($output, 200, [
+            'Content-Type' => $contentType,
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+
+        return $response;
     }
 
 
