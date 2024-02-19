@@ -578,7 +578,8 @@ class ReservationController extends Controller
                 'voyageurs',
                 'hebergement_id',
                 'user_id',
-                'amount_options'
+                'amount_options',
+                'services'
             )
             ->where('id', $id)
             ->get();
