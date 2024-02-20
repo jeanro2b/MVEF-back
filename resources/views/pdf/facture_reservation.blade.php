@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Invoice</title>
+    <title>Facture</title>
     <style>
         body {
             font-family: 'Helvetica', 'Arial', sans-serif;
@@ -92,13 +92,6 @@
                 <p>{{ $reservationClientMail }}</p>
                 <p>{{ $reservationClientPhone }}</p>
             </section>
-            <!-- <section>
-                <div class="bold">SUBSCRIPTION</div>
-                <p>ID: {{ $invoice->subscription->id }}</p>
-                <p>Billing Period: {{ $invoice->subscription->start_date }} to {{ $invoice->subscription->end_date }}
-                </p>
-                <p>Next Billing Date: {{ $invoice->subscription->next_billing_date }}</p>
-            </section> -->
             <table>
                 <thead>
                     <tr>
