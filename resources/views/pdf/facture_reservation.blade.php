@@ -91,7 +91,7 @@
             <h1>FACTURE</h1>
             <p>Facture # {{ $reservationId }}</p>
             <p>Date de génération: {{ $date }}</p>
-            <p>Montant: {{ number_format($reservationAmount, 2) }}€</p>
+            <p>Montant: {{ number_format($reservationAmount, 2, ',', '') }}€</p>
             <p>Client ID: {{ $userId }}</p>
         </div>
         <div class="invoice-body">
@@ -117,22 +117,23 @@
                     <tr>
                         <td>{{ $reservationNumberOfNights }} Nuit(s) {{ $reservationHebergementTitle }}</td>
                         <td>1</td>
-                        <td>{{ $reservationAmountExclOptions }}€</td>
+                        <td>{{ number_format($reservationAmountExclOptions, 2, ',', '') }}€</td>
                         <td>{{ $reservationTVA }}</td>
-                        <td>{{ $reservationAmountExclOptions }}€</td>
-                        <td>{{ $reservationAmountExclOptions + ($reservationAmountExclOptions * $reservationTVA /
-                            100)}}€
+                        <td>{{ number_format($reservationAmountExclOptions, 2, ',', '') }}€</td>
+                        <td>{{ number_format($reservationAmountExclOptions + ($reservationAmountExclOptions *
+                            $reservationTVA /
+                            100), 2, ',', '')}}€
                         </td>
                     </tr>
                     @foreach ($reservationOptionsData as $option)
                     <tr>
                         <td>{{ $option['label'] }}</td>
                         <td>{{ $option['count'] }}</td>
-                        <td>{{ number_format($option['amount'], 2) }}€</td>
+                        <td>{{ number_format($option['amount'], 2, ',', '') }}€</td>
                         <td>{{ $reservationTVAOptions }}</td>
-                        <td>{{ number_format($option['amount'] * $option['count'], 2) }}€</td>
+                        <td>{{ number_format($option['amount'] * $option['count'], 2, ',', '') }}€</td>
                         <td>{{ number_format($option['amount'] * $option['count'] + ($option['amount'] *
-                            $option['count'] * $reservationTVAOptions / 100), 2) }}€</td>
+                            $option['count'] * $reservationTVAOptions / 100), 2, ',', '') }}€</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -151,9 +152,9 @@
                 $totalInclVAT = $totalExclVAT + $totalVAT; // Total TTC
                 @endphp
 
-                <p>Total excl. TVA: {{ number_format($totalExclVAT, 2) }}€</p>
-                <p>TVA @ {{ $reservationTVA }}%: {{ number_format($totalVAT, 2) }}€</p>
-                <p>Total incl. TVA: {{ number_format($totalInclVAT, 2) }}€</p>
+                <p>Total excl. TVA: {{ number_format($totalExclVAT, 2, ',', '') }}€</p>
+                <p>TVA @ {{ $reservationTVA }}%: {{ number_format($totalVAT, 2, ',', '') }}€</p>
+                <p>Total incl. TVA: {{ number_format($totalInclVAT, 2, ',', '') }}€</p>
             </div>
         </div>
         @if (!empty($reservationIntent))
