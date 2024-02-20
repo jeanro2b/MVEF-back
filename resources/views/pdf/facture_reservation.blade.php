@@ -22,6 +22,15 @@
             padding: 20px;
         }
 
+        .header-2 {
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+            text-align: center;
+        }
+
         .invoice-header {
             text-align: right;
             margin-top: 20px;
@@ -74,8 +83,9 @@
 
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header-2">
             <img class="logo" src="data:image/png;base64,{{ $bslogoData }}" alt="img" width="215px">
+            <img class="logo-2" src="data:image/png;base64,{{ $bslogotxtData }}" alt="img" width="250px">
         </div>
         <div class="invoice-header">
             <h1>FACTURE</h1>
@@ -107,9 +117,9 @@
                     <tr>
                         <td>{{ $reservationNumberOfNights }} Nuit(s) {{ $reservationHebergementTitle }}</td>
                         <td>1</td>
-                        <td>{{ $reservationAmountExclOptions }}</td>€
+                        <td>{{ $reservationAmountExclOptions }}€</td>
                         <td>{{ $reservationTVA }}</td>
-                        <td>{{ $reservationAmountExclOptions }}</td>€
+                        <td>{{ $reservationAmountExclOptions }}€</td>
                         <td>{{ $reservationAmountExclOptions + ($reservationAmountExclOptions * $reservationTVA /
                             100)}}€
                         </td>
@@ -141,7 +151,7 @@
                 $totalInclVAT = $totalExclVAT + $totalVAT; // Total TTC
                 @endphp
 
-                <p>Total excl. TVA: €{{ number_format($totalExclVAT, 2) }}</p>
+                <p>Total excl. TVA: {{ number_format($totalExclVAT, 2) }}€</p>
                 <p>TVA @ {{ $reservationTVA }}%: {{ number_format($totalVAT, 2) }}€</p>
                 <p>Total incl. TVA: {{ number_format($totalInclVAT, 2) }}€</p>
             </div>

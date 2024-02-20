@@ -645,13 +645,15 @@ class ReservationController extends Controller
 
         $bslogoPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogo.png";
         $bslogoData = base64_encode(file_get_contents($bslogoPath));
+        $bslogotxtPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogotxt.png";
+        $bslogotxtData = base64_encode(file_get_contents($bslogotxtPath));
 
         $date = Carbon::now()->format('d/m/Y');
 
         $dompdf = new Dompdf();
 
         $reservationClientPhone = $reservation->phone;
-        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'reservationAmountExclOptions'))->render();
+        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions'))->render();
 
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
