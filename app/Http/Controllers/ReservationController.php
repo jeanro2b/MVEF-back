@@ -636,7 +636,7 @@ class ReservationController extends Controller
             $reservationClientFirstName = $reservation->first_name;
             $reservationClientPhone = $reservation->phone;
             $reservationClientMail = $reservation->mail;
-            $reservationOptionsData = $reservation->services;
+            $reservationOptionsData = json_decode($reservation->services, true);
             $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
             $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
             $reservationNumberOfNights = $start->diffInDays($end);
