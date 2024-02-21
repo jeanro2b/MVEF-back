@@ -162,8 +162,8 @@
                 $totalExclVAT = number_format($totalExclVAT, 2, ',', ''); // Total TTC
                 @endphp
 
-                <p>Total excl. TVA: {{ number_format($totalExclVAT / 100, 2, ',', '') }} €</p>
-                <p>Total incl. TVA: {{ number_format($totalInclVAT / 100, 2, ',', '') }} €</p>
+                <p>Total excl. TVA: {{ $totalExclVAT  }} €</p>
+                <p>Total incl. TVA: {{ $totalInclVAT }} €</p>
             </div>
         </div>
         @if (!empty($reservationIntent))
