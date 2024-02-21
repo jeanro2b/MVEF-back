@@ -547,8 +547,9 @@ class ReservationController extends Controller
             }
 
             $tvaRate = $reservation->tva / 100;
-            $reservation->amountHT = $reservation->amount / (1 + $tvaRate);
-            $reservation->amountTVA = $reservation->amount - $reservation->amountHT;
+            $reservationAmountHebergement = $reservation->amount - $reservation->amount_options;
+            $reservation->amountHT = $reservationAmountHebergement / (1 + $tvaRate);
+            $reservation->amountTVA = $reservationAmountHebergement - $reservation->amountHT;
 
             $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
             $reservation->amountHTOptions = $reservation->amount_options / (1 + $tvaOptionsRate);
@@ -659,6 +660,7 @@ class ReservationController extends Controller
         $reservationClientPhone = $reservation->phone;
         $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions'))->render();
 
+        // <p>TVA @ {{ $reservationTVA }}%: {{ number_format($totalVAT / 100, 2, ',', '') }} €</p>
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
 
