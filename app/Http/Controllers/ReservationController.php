@@ -110,6 +110,7 @@ class ReservationController extends Controller
                 'services' => json_encode($services),
                 'voyageurs' => $voyageurs,
                 'amount_options' => $amount_options,
+                'amount_nights' => $nights,
             ]);
 
             $reservationId = $reservation->id;
@@ -258,6 +259,7 @@ class ReservationController extends Controller
             $hebergement_id = $reservation->hebergement_id;
             $destination_id = $reservation->destination_id;
             $amount = $reservation->amount;
+            $amountNights = $reservation->amount_nights;
             $services = $reservation->services;
             $name = $reservation->name;
             $first_name = $reservation->first_name;
@@ -512,7 +514,8 @@ class ReservationController extends Controller
                 'voyageurs',
                 'hebergement_id',
                 'user_id',
-                'amount_options'
+                'amount_options',
+                'amount_nights',
             )
             ->get();
 
@@ -547,7 +550,7 @@ class ReservationController extends Controller
             }
 
             $tvaRate = $reservation->tva / 100;
-            $reservationAmountHebergement = $reservation->amount - $reservation->amount_options;
+            $reservationAmountHebergement = $reservation->amount_nights;
             $reservation->amountHT = $reservationAmountHebergement / (1 + $tvaRate);
             $reservation->amountTVA = $reservationAmountHebergement - $reservation->amountHT;
 
@@ -624,8 +627,9 @@ class ReservationController extends Controller
             }
 
             $tvaRate = $reservation->tva / 100;
-            $reservation->amountHT = $reservation->amount / (1 + $tvaRate);
-            $reservation->amountTVA = $reservation->amount - $reservation->amountHT;
+            $reservationAmountHebergement = $reservation->amount_nights;
+            $reservation->amountHT = $reservationAmountHebergement / (1 + $tvaRate);
+            $reservation->amountTVA = $reservationAmountHebergement - $reservation->amountHT;
 
             $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
             $reservation->amountHTOptions = $reservation->amount_options / (1 + $tvaOptionsRate);
@@ -635,7 +639,8 @@ class ReservationController extends Controller
             $reservationId = $reservation->id;
             $reservationAmount = $reservation->amount;
             $reservationAmountOptions = $reservation->amount_options;
-            $reservationAmountExclOptions = $reservationAmount - $reservationAmountOptions;
+            $reservationAmountExclOptions = $reservation->amount_nights;
+            $reservationAmountExclOptionsHT = $reservation->amountHT;
             $userId = $reservation->user_id;
             $reservationClientName = $reservation->name;
             $reservationClientFirstName = $reservation->first_name;
@@ -658,7 +663,7 @@ class ReservationController extends Controller
         $dompdf = new Dompdf();
 
         $reservationClientPhone = $reservation->phone;
-        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions'))->render();
+        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions', 'reservationAmountExclOptionsHT'))->render();
 
         // <p>TVA @ {{ $reservationTVA }}%: {{ number_format($totalVAT / 100, 2, ',', '') }} €</p>
         // Chargement du contenu HTML dans Dompdf

@@ -28,7 +28,8 @@ class Reservation extends Model
         'token',
         'services',
         'comment',
-        'amount_options'
+        'amount_options',
+        'amount_nights'
     ];
 
     public function destination()

@@ -126,40 +126,40 @@
                     <tr>
                         <td>{{ $reservationNumberOfNights }} Nuit(s) {{ $reservationHebergementTitle }}</td>
                         <td>1</td>
-                        <td>{{ number_format($reservationAmountExclOptions / 100, 2, ',', '') }} €</td>
+                        <td>{{ number_format($reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
                         <td>{{ $reservationTVA }}</td>
-                        <td>{{ number_format($reservationAmountExclOptions / 100, 2, ',', '') }} €</td>
-                        <td>{{ number_format(($reservationAmountExclOptions / 100 ) + (($reservationAmountExclOptions /
-                            100) *
-                            $reservationTVA /
-                            100), 2, ',', '')}} €
+                        <td>{{ number_format($reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
+                        <td>{{ number_format(($reservationAmountExclOptions / 100 ), 2, ',', '')}} €
                         </td>
                     </tr>
                     @foreach ($reservationOptionsData as $option)
                     <tr>
                         <td>{{ $option['label'] }}</td>
                         <td>{{ $option['count'] }}</td>
-                        <td>{{ number_format($option['amount'], 2, ',', '') }} €</td>
+                        <td>{{ number_format($option['amount'] * (1 - ($reservationTVAOptions / 100)), 2, ',', '') }} €
+                        </td>
                         <td>{{ $reservationTVAOptions }}</td>
+                        <td>{{ number_format($option['amount'] * (1 - ($reservationTVAOptions / 100)) *
+                            $option['count'], 2, ',', '') }} €</td>
                         <td>{{ number_format($option['amount'] * $option['count'], 2, ',', '') }} €</td>
-                        <td>{{ number_format($option['amount'] * $option['count'] + ($option['amount'] *
-                            $option['count'] * $reservationTVAOptions / 100), 2, ',', '') }} €</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
             <div class="total">
                 @php
-                $totalExclVAT = $reservationAmountExclOptions / 100; // Montant initial pour l'hébergement hors options
-                $totalVAT = $totalExclVAT * $reservationTVA / 100; // TVA pour l'hébergement
+                $totalExclVAT = $reservationAmountExclOptionsHT / 100; // Montant initial pour l'hébergement hors
+                $totalInclVAT = $reservationAmountExclOptions / 100;
 
                 // Ajoutez les montants des options HT et calculez la TVA pour chaque option
                 foreach ($reservationOptionsData as $option) {
-                $totalExclVAT += $option['amount'] * $option['count']; // Ajouter le montant HT de l'option au total HT
-                $totalVAT += $option['amount'] * $option['count'] * $reservationTVAOptions / 100;
+                $totalInclVAT += $option['amount'] * $option['count']; // Ajouter le montant HT de l'option au total HT
+                $totalExclVAT += $option['amount'] * (1 - ($reservationTVAOptions / 100)) *
+                $option['count']; // Ajouter le montant HT de l'option au total HT
                 }
 
-                $totalInclVAT = $totalExclVAT + $totalVAT; // Total TTC
+                $totalInclVAT = number_format($totalInclVAT, 2, ',', ''); // Total TTC
+                $totalExclVAT = number_format($totalExclVAT, 2, ',', ''); // Total TTC
                 @endphp
 
                 <p>Total excl. TVA: {{ number_format($totalExclVAT / 100, 2, ',', '') }} €</p>
