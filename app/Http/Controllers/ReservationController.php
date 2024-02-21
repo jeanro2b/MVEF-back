@@ -529,7 +529,7 @@ class ReservationController extends Controller
 
             foreach ($destination as $dest) {
                 $reservation->destination_name = $dest->name;
-                $reservation->tva = ($dest->tva) / 100;
+                $reservation->tva = $dest->tva;
                 $reservation->tva_options = $dest->tva_options;
             }
 
