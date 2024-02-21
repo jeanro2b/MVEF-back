@@ -677,6 +677,123 @@ class ReservationController extends Controller
     }
 
 
+    public function download_facturation_hebergeur($id)
+    {
+        $reservations = DB::table('reservations')
+            ->select(
+                'id',
+                'created_at',
+                'destination_id',
+                'start',
+                'end',
+                'status',
+                'amount',
+                'intent',
+                'name',
+                'first_name',
+                'phone',
+                'mail',
+                'voyageurs',
+                'hebergement_id',
+                'user_id',
+                'amount_options',
+                'services'
+            )
+            ->where('id', $id)
+            ->get();
+
+        foreach ($reservations as $reservation) {
+            $destination = DB::table('destinations')
+                ->select(
+                    'id',
+                    'name',
+                    'tva',
+                    'tva_options'
+                )
+                ->where('id', $reservation->destination_id)
+                ->get();
+
+            foreach ($destination as $dest) {
+                $reservation->destination_name = $dest->name;
+                $reservation->tva = ($dest->tva) / 100;
+                $reservation->tva_options = $dest->tva_options;
+
+                $reservationTVA = $reservation->tva;
+                $reservationTVAOptions = $reservation->tva_options;
+            }
+
+            $hebergement = DB::table('hebergements')
+                ->select(
+                    'id',
+                    'name',
+                    'code',
+                    'long_title'
+                )
+                ->where('id', $reservation->hebergement_id)
+                ->get();
+
+            foreach ($hebergement as $heb) {
+                $reservation->code = $heb->code;
+
+                $reservationHebergementTitle = $heb->long_title;
+            }
+
+            $reservation->amountHT = $reservation->amount / (1 + $reservation->tva);
+            $reservation->amountTVA = $reservation->amount - $reservation->amountHT;
+
+            $reservation->amountHTOptions = $reservation->amount_options / (1 + $reservation->tva_options);
+            $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
+
+
+            $reservationId = $reservation->id;
+            $reservationAmount = $reservation->amount;
+            $reservationAmountOptions = $reservation->amount_options;
+            $reservationAmountExclOptions = $reservationAmount - $reservationAmountOptions;
+            $userId = $reservation->user_id;
+            $reservationClientName = $reservation->name;
+            $reservationClientFirstName = $reservation->first_name;
+            $reservationClientPhone = $reservation->phone;
+            $reservationClientMail = $reservation->mail;
+            $reservationOptionsData = json_decode($reservation->services, true);
+            $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
+            $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
+            $reservationNumberOfNights = $start->diffInDays($end);
+            $reservationIntent = $reservation->intent;
+        }
+
+        $bslogoPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogo.png";
+        $bslogoData = base64_encode(file_get_contents($bslogoPath));
+        $bslogotxtPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogotxt.png";
+        $bslogotxtData = base64_encode(file_get_contents($bslogotxtPath));
+
+        $date = Carbon::now()->format('d/m/Y');
+
+        $dompdf = new Dompdf();
+
+        $reservationClientPhone = $reservation->phone;
+        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions'))->render();
+
+        // Chargement du contenu HTML dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // Rendu du PDF
+        $dompdf->render();
+
+        $output = $dompdf->output();
+
+        $filename = "facture_$reservationId.pdf";
+
+        $contentType = 'application/pdf';
+
+        // Création de la réponse HTTP avec le contenu du PDF
+        $response = new Response($output, 200, [
+            'Content-Type' => $contentType,
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+
+        return $response;
+    }
+
     /**
      * Display the specified resource.
      */

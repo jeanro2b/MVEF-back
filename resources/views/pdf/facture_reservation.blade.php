@@ -102,6 +102,15 @@
                 <p>{{ $reservationClientMail }}</p>
                 <p>{{ $reservationClientPhone }}</p>
             </section>
+            <section>
+                <div class="bold">MVEF</div>
+                <p>Mes Vacances en Famille</p>
+                <p>SAS 8000€ RCS BASTIA - APE 5520Z - Siret 50513668900047</p>
+                <p>Siège social : Hameau de Lutina, 20237, Poggio-Marinaccio</p>
+                <p>Secrétariat : 145 route de Millery - 69700 MONTAGNY</p>
+                <p> <a href="www.mesvacancesenfamille.com">www.mesvacancesenfamille.com</a> / <a
+                        href="info@mesvacancesenfamille.com">info@mesvacancesenfamille.com</a></p>
+            </section>
             <table>
                 <thead>
                     <tr>
