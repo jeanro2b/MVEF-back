@@ -546,10 +546,12 @@ class ReservationController extends Controller
                 $reservation->code = $heb->code;
             }
 
-            $reservation->amountHT = $reservation->amount / (1 + $reservation->tva);
+            $tvaRate = $reservation->tva / 100;
+            $reservation->amountHT = $reservation->amount / (1 + $tvaRate);
             $reservation->amountTVA = $reservation->amount - $reservation->amountHT;
 
-            $reservation->amountHTOptions = $reservation->amount_options / (1 + $reservation->tva_options);
+            $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
+            $reservation->amountHTOptions = $reservation->amount_options / (1 + $tvaOptionsRate);
             $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
         }
 
@@ -597,7 +599,7 @@ class ReservationController extends Controller
 
             foreach ($destination as $dest) {
                 $reservation->destination_name = $dest->name;
-                $reservation->tva = ($dest->tva) / 100;
+                $reservation->tva = $dest->tva;
                 $reservation->tva_options = $dest->tva_options;
 
                 $reservationTVA = $reservation->tva;
@@ -620,10 +622,12 @@ class ReservationController extends Controller
                 $reservationHebergementTitle = $heb->long_title;
             }
 
-            $reservation->amountHT = $reservation->amount / (1 + $reservation->tva);
+            $tvaRate = $reservation->tva / 100;
+            $reservation->amountHT = $reservation->amount / (1 + $tvaRate);
             $reservation->amountTVA = $reservation->amount - $reservation->amountHT;
 
-            $reservation->amountHTOptions = $reservation->amount_options / (1 + $reservation->tva_options);
+            $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
+            $reservation->amountHTOptions = $reservation->amount_options / (1 + $tvaOptionsRate);
             $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
 
 

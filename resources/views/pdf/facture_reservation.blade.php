@@ -126,9 +126,9 @@
                     <tr>
                         <td>{{ $reservationNumberOfNights }} Nuit(s) {{ $reservationHebergementTitle }}</td>
                         <td>1</td>
-                        <td>{{ number_format($reservationAmountExclOptions, 2, ',', '') }}€</td>
+                        <td>{{ number_format($reservationAmountExclOptions / 100, 2, ',', '') }}€</td>
                         <td>{{ $reservationTVA }}</td>
-                        <td>{{ number_format($reservationAmountExclOptions, 2, ',', '') }}€</td>
+                        <td>{{ number_format($reservationAmountExclOptions / 100, 2, ',', '') }}€</td>
                         <td>{{ number_format($reservationAmountExclOptions + ($reservationAmountExclOptions *
                             $reservationTVA /
                             100), 2, ',', '')}}€
