@@ -689,7 +689,7 @@ class ReservationController extends Controller
     }
 
 
-    public function download_facturation_hebergeur($id)
+    public function download_facturation_hebergeur($req)
     {
         $reservations = DB::table('reservations')
             ->select(
@@ -709,31 +709,39 @@ class ReservationController extends Controller
                 'hebergement_id',
                 'user_id',
                 'amount_options',
+                'amount_nights',
                 'services'
             )
-            ->where('id', $id)
+            ->where('destination_id', $req->destination_id)
+            ->whereRaw('MONTH(`end`) = ?', $req->month)
             ->get();
 
+        $destination = DB::table('destinations')
+            ->select(
+                'id',
+                'name',
+                'tva',
+                'tva_options',
+                'address',
+                'phone',
+                'city',
+                'mail'
+            )
+            ->where('id', $req->destination_id)
+            ->get();
+
+        foreach ($destination as $dest) {
+            $destinationName = $dest->name;
+            $destinationId = $dest->id;
+            $destinationPhone = $dest->phone;
+            $destinationAddress = $dest->address;
+            $destinationCity = $dest->city;
+            $destinationMail = $dest->mail;
+            $destinationTVA = $dest->tva;
+            $destinationTVAOptions = $dest->tva_options;
+        }
+
         foreach ($reservations as $reservation) {
-            $destination = DB::table('destinations')
-                ->select(
-                    'id',
-                    'name',
-                    'tva',
-                    'tva_options'
-                )
-                ->where('id', $reservation->destination_id)
-                ->get();
-
-            foreach ($destination as $dest) {
-                $reservation->destination_name = $dest->name;
-                $reservation->tva = ($dest->tva) / 100;
-                $reservation->tva_options = $dest->tva_options;
-
-                $reservationTVA = $reservation->tva;
-                $reservationTVAOptions = $reservation->tva_options;
-            }
-
             $hebergement = DB::table('hebergements')
                 ->select(
                     'id',
@@ -747,30 +755,27 @@ class ReservationController extends Controller
             foreach ($hebergement as $heb) {
                 $reservation->code = $heb->code;
 
-                $reservationHebergementTitle = $heb->long_title;
+                $reservation->reservationHebergementTitle = $heb->long_title;
             }
 
-            $reservation->amountHT = $reservation->amount / (1 + $reservation->tva);
-            $reservation->amountTVA = $reservation->amount - $reservation->amountHT;
+            $tvaRate = $reservation->tva / 100;
+            $reservationAmountHebergement = $reservation->amount_nights;
+            $reservation->amountHT = $reservationAmountHebergement / (1 + $tvaRate);
+            $reservation->amountTVA = $reservationAmountHebergement - $reservation->amountHT;
 
-            $reservation->amountHTOptions = $reservation->amount_options / (1 + $reservation->tva_options);
+            $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
+            $reservation->amountHTOptions = $reservation->amount_options / (1 + $tvaOptionsRate);
             $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
 
-
-            $reservationId = $reservation->id;
-            $reservationAmount = $reservation->amount;
-            $reservationAmountOptions = $reservation->amount_options;
-            $reservationAmountExclOptions = $reservationAmount - $reservationAmountOptions;
-            $userId = $reservation->user_id;
-            $reservationClientName = $reservation->name;
-            $reservationClientFirstName = $reservation->first_name;
-            $reservationClientPhone = $reservation->phone;
-            $reservationClientMail = $reservation->mail;
-            $reservationOptionsData = json_decode($reservation->services, true);
+            $reservation->reservationAmount = $reservation->amount;
+            $reservation->reservationAmountOptions = $reservation->amount_options;
+            $reservation->reservationAmountExclOptions = $reservation->amount_nights;
+            $reservation->reservationAmountExclOptionsHT = $reservation->amountHT;
+            $reservation->reservationOptionsData = json_decode($reservation->services, true);
             $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
             $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
-            $reservationNumberOfNights = $start->diffInDays($end);
-            $reservationIntent = $reservation->intent;
+            $reservation->reservationNumberOfNights = $start->diffInDays($end);
+            $reservation->reservationIntent = $reservation->intent;
         }
 
         $bslogoPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogo.png";
@@ -783,8 +788,9 @@ class ReservationController extends Controller
         $dompdf = new Dompdf();
 
         $reservationClientPhone = $reservation->phone;
-        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions'))->render();
+        $html = View::make('pdf.facture_hebergeur', compact('destinationId', 'destinationName', 'destinationPhone', 'destinationAddress', 'destinationCity', 'destinationMail', 'date', 'destinationTVA', 'destinationTVAOptions', 'bslogoData', 'bslogotxtData', 'reservations'))->render();
 
+        // <p>TVA @ {{ $reservationTVA }}%: {{ number_format($totalVAT / 100, 2, ',', '') }} €</p>
         // Chargement du contenu HTML dans Dompdf
         $dompdf->loadHtml($html);
 
@@ -793,7 +799,7 @@ class ReservationController extends Controller
 
         $output = $dompdf->output();
 
-        $filename = "facture_$reservationId.pdf";
+        $filename = "facture_$destinationId.pdf";
 
         $contentType = 'application/pdf';
 
