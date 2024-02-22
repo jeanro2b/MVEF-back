@@ -759,12 +759,12 @@ class ReservationController extends Controller
                 $reservation->reservationHebergementTitle = $heb->long_title;
             }
 
-            $tvaRate = $reservation->tva / 100;
+            $tvaRate = $destinationTVA / 100;
             $reservationAmountHebergement = $reservation->amount_nights;
             $reservation->amountHT = $reservationAmountHebergement / (1 + $tvaRate);
             $reservation->amountTVA = $reservationAmountHebergement - $reservation->amountHT;
 
-            $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
+            $tvaOptionsRate = $destinationTVAOptions / 100; // Ajoutez cette ligne si votre taux est en pourcentage
             $reservation->amountHTOptions = $reservation->amount_options / (1 + $tvaOptionsRate);
             $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
 
