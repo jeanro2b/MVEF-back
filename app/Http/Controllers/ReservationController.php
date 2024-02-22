@@ -713,7 +713,8 @@ class ReservationController extends Controller
                 'services'
             )
             ->where('destination_id', $req->destination_id)
-            ->whereRaw('MONTH(`end`) = ?', $req->month)
+            ->whereRaw('MONTH(`end`) = ?', [$req->month])
+            ->whereRaw('YEAR(`end`) = ?', [$req->year])
             ->get();
 
         $destination = DB::table('destinations')
