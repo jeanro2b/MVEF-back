@@ -689,7 +689,7 @@ class ReservationController extends Controller
     }
 
 
-    public function download_facturation_hebergeur($req)
+    public function download_facturation_hebergeur(Request $req)
     {
         $reservations = DB::table('reservations')
             ->select(
