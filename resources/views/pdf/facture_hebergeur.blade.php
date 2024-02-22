@@ -129,7 +129,7 @@
                             $reservation->reservationHebergementTitle }}</td>
                         <td>1</td>
                         <td>{{ number_format($reservation->reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
-                        <td>{{ $reservationTVA }}</td>
+                        <td>{{ $destinationTVA }}</td>
                         <td>{{ number_format($reservation->reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
                         <td>{{ number_format(($reservation->reservationAmountExclOptions / 100 ), 2, ',', '')}} €
                         </td>
@@ -138,10 +138,10 @@
                     <tr>
                         <td>{{ $option['label'] }}</td>
                         <td>{{ $option['count'] }}</td>
-                        <td>{{ number_format($option['amount'] * (1 - ($reservationTVAOptions / 100)), 2, ',', '') }} €
+                        <td>{{ number_format($option['amount'] * (1 - ($destinationTVAOptions / 100)), 2, ',', '') }} €
                         </td>
-                        <td>{{ $reservationTVAOptions }}</td>
-                        <td>{{ number_format($option['amount'] * (1 - ($reservationTVAOptions / 100)) *
+                        <td>{{ $destinationTVAOptions }}</td>
+                        <td>{{ number_format($option['amount'] * (1 - ($destinationTVAOptions / 100)) *
                             $option['count'], 2, ',', '') }} €</td>
                         <td>{{ number_format($option['amount'] * $option['count'], 2, ',', '') }} €</td>
                     </tr>
@@ -162,7 +162,7 @@
 
                 foreach ($reservation->reservationOptionsData as $option) {
                 $totalInclVAT += $option['amount'] * $option['count']; // Ajouter le montant HT de l'option au total HT
-                $totalExclVAT += $option['amount'] * (1 - ($reservationTVAOptions / 100)) *
+                $totalExclVAT += $option['amount'] * (1 - ($destinationTVAOptions / 100)) *
                 $option['count']; // Ajouter le montant HT de l'option au total HT
                 }
                 }
