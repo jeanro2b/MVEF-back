@@ -44,6 +44,7 @@ class ReservationExport implements FromCollection, WithHeadings
             ->whereBetween('end', [$this->start, $this->end])
             ->get();
 
+        Log::debug(''. $this->start .''. $this->end);
         Log::debug($reservations);
 
         foreach ($reservations as $reservation) {
