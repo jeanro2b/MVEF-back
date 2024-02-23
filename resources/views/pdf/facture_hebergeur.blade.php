@@ -98,7 +98,7 @@
                 <div class="bold">HEBERGEUR</div>
                 <p>{{ $destinationName}}</p>
                 <p>{{ $destinationPhone }}</p>
-                <p>{{ $destinationAddress }}</p>
+                <p>{!! $destinationAddress !!}</p>
                 <p>{{ $destinationCity }}</p>
                 <p>{{ $destinationMail }}</p>
             </section>
@@ -109,7 +109,7 @@
                 <p>Siège social : Hameau de Lutina, 20237, Poggio-Marinaccio</p>
                 <p>Secrétariat : 145 route de Millery - 69700 MONTAGNY</p>
                 <p> <a href="www.mesvacancesenfamille.com">www.mesvacancesenfamille.com</a> / <a
-                        href="info@mesvacancesenfamille.com">info@mesvacancesenfamille.com</a></p>
+                        href="mailto:info@mesvacancesenfamille.com">info@mesvacancesenfamille.com</a></p>
             </section>
             <table>
                 <thead>
