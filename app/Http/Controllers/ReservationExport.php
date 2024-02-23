@@ -76,7 +76,7 @@ class ReservationExport implements FromCollection, WithHeadings
 
             $reservation->amount = number_format($reservation->amount / 100, 2, ',', '') . ' €';
             $reservationAmountOptions = $reservation->amount_options;
-            $reservation->amount_options = number_format($reservation->amount_options / 100, 2, ',', '') . ' €';
+            $reservation->amount_options = number_format($reservation->amount_options, 2, ',', '') . ' €';
             $tvaRate = $reservation->tva / 100;
             $reservationAmountHebergement = $reservation->amount_nights;
             $reservationAmountHebergementHT = $reservationAmountHebergement / (1 + $tvaRate);
