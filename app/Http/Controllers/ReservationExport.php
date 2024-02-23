@@ -44,7 +44,7 @@ class ReservationExport implements FromCollection, WithHeadings
             ->whereBetween('end', [$this->start, $this->end])
             ->get();
 
-        Log::debug(''. $this->start .''. $this->end);
+        Log::debug('' . $this->start . '' . $this->end);
         Log::debug($reservations);
 
         foreach ($reservations as $reservation) {
@@ -77,14 +77,17 @@ class ReservationExport implements FromCollection, WithHeadings
                 $reservation->code = $heb->code;
             }
 
+            $reservation->amount = number_format($reservation->amount / 100, 2, ',', '') . ' €';
+            $reservation->amount_options = number_format($reservation->amount_options / 100, 2, ',', '') . ' €';
             $tvaRate = $reservation->tva / 100;
             $reservationAmountHebergement = $reservation->amount_nights;
-            $reservation->amountHT = $reservationAmountHebergement / (1 + $tvaRate);
-            $reservation->amountTVA = $reservationAmountHebergement - $reservation->amountHT;
+            $reservation->amount_nights = number_format($reservation->amount_nights / 100, 2, ',', '') . ' €';
+            $reservation->amountHT = number_format($reservationAmountHebergement / (1 + $tvaRate), 2, ',', '') . ' €';
+            $reservation->amountTVA = number_format($reservationAmountHebergement - $reservation->amountHT, 2, ',', '') . ' €';
 
             $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
-            $reservation->amountHTOptions = $reservation->amount_options / (1 + $tvaOptionsRate);
-            $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
+            $reservation->amountHTOptions = number_format($reservation->amount_options / (1 + $tvaOptionsRate), 2, ',', '') . ' €';
+            $reservation->amountTVAOptions = number_format($reservation->amount_options - $reservation->amountHTOptions, 2, ',', '') . ' €';
         }
 
         Log::debug($reservations);
@@ -94,10 +97,31 @@ class ReservationExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'ID', 'Créé le', 'ID Destination', 'Début', 'Fin', 'Statut', 'Montant', 'Intent',
-            'Nom', 'Prénom', 'Téléphone', 'Email', 'Voyageurs', 'ID Hébergement', 'ID Utilisateur',
-            'Montant Options', 'Nuits', 'Nom Destination', 'TVA', 'TVA Options', 'Code Hébergement',
-            'Montant HT Hébergement', 'TVA Hébergement', 'Montant HT Options', 'TVA Options'
+            'ID',
+            'Créé le',
+            'ID Destination',
+            'Début',
+            'Fin',
+            'Statut',
+            'Montant',
+            'Intent',
+            'Nom',
+            'Prénom',
+            'Téléphone',
+            'Email',
+            'Voyageurs',
+            'ID Hébergement',
+            'ID Utilisateur',
+            'Montant Options',
+            'Montant TTC Hébergement',
+            'Nom Destination',
+            'TVA',
+            'TVA Options',
+            'Code Hébergement',
+            'Montant HT Hébergement',
+            'TVA Hébergement',
+            'Montant HT Options',
+            'TVA Options'
         ];
     }
 }
