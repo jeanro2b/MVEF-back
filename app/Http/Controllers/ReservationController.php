@@ -565,6 +565,15 @@ class ReservationController extends Controller
         ], 200);
     }
 
+
+    public function export_reservations(Request $requete)
+    {
+        $start = $requete->month;
+        $end = $requete->year;
+
+        return \Maatwebsite\Excel\Facades\Excel::download(new ReservationExport($start, $end), 'reservations.xlsx');
+    }
+
     public function download_facturation_reservation($id)
     {
         $reservations = DB::table('reservations')

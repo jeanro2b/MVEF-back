@@ -115,6 +115,7 @@ Route::get('/download-facture-reservation/{id}', [ReservationController::class, 
 Route::post('/download-facture-hebergement', [ReservationController::class, 'download_facturation_hebergeur'])
     ->name('download_facturation_hebergeur');
 
+Route::post('/export-reservations-excel', [ReservationController::class, 'export_reservations'])->name('export_reservations');
 
 // Posts
 
