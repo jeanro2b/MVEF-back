@@ -568,8 +568,8 @@ class ReservationController extends Controller
 
     public function export_reservations(Request $requete)
     {
-        $start = $requete->month;
-        $end = $requete->year;
+        $start = $requete->start;
+        $end = $requete->end;
 
         return \Maatwebsite\Excel\Facades\Excel::download(new ReservationExport($start, $end), 'reservations.xlsx');
     }
