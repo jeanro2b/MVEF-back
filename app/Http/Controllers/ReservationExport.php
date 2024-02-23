@@ -44,9 +44,6 @@ class ReservationExport implements FromCollection, WithHeadings
             ->whereBetween('end', [$this->start, $this->end])
             ->get();
 
-        Log::debug('' . $this->start . '' . $this->end);
-        Log::debug($reservations);
-
         foreach ($reservations as $reservation) {
             $destination = DB::table('destinations')
                 ->select(
@@ -90,7 +87,6 @@ class ReservationExport implements FromCollection, WithHeadings
             $reservation->amountTVAOptions = number_format($reservation->amount_options - $reservation->amountHTOptions, 2, ',', '') . ' €';
         }
 
-        Log::debug($reservations);
         return collect($reservations);
     }
 
