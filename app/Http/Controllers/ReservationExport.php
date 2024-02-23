@@ -75,10 +75,10 @@ class ReservationExport implements FromCollection, WithHeadings
             }
 
             $reservation->amount = number_format($reservation->amount / 100, 2, ',', '') . ' €';
-            $reservationAmountOptions = $reservation->amount_options;
-            $reservation->amount_options = number_format($reservation->amount_options, 2, ',', '') . ' €';
+            $reservationAmountOptions = $reservation->amount_options / 100;
+            $reservation->amount_options = number_format($reservation->amount_options / 100, 2, ',', '') . ' €';
             $tvaRate = $reservation->tva / 100;
-            $reservationAmountHebergement = $reservation->amount_nights;
+            $reservationAmountHebergement = $reservation->amount_nights / 100;
             $reservationAmountHebergementHT = $reservationAmountHebergement / (1 + $tvaRate);
             $reservation->amount_nights = number_format($reservation->amount_nights / 100, 2, ',', '') . ' €';
             $reservation->amountHT = number_format($reservationAmountHebergement / (1 + $tvaRate), 2, ',', '') . ' €';
