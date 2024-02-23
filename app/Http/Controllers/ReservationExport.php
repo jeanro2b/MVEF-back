@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -43,6 +44,8 @@ class ReservationExport implements FromCollection, WithHeadings
             ->whereBetween('end', [$this->start, $this->end])
             ->get();
 
+        Log::debug($reservations);
+
         foreach ($reservations as $reservation) {
             $destination = DB::table('destinations')
                 ->select(
@@ -83,6 +86,7 @@ class ReservationExport implements FromCollection, WithHeadings
             $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
         }
 
+        Log::debug($reservations);
         return collect($reservations);
     }
 
