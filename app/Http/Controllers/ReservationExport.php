@@ -75,16 +75,19 @@ class ReservationExport implements FromCollection, WithHeadings
             }
 
             $reservation->amount = number_format($reservation->amount / 100, 2, ',', '') . ' €';
+            $reservationAmountOptions = $reservation->amountOptions;
             $reservation->amount_options = number_format($reservation->amount_options / 100, 2, ',', '') . ' €';
             $tvaRate = $reservation->tva / 100;
             $reservationAmountHebergement = $reservation->amount_nights;
+            $reservationAmountHebergementHT = $reservation->amountHT;
             $reservation->amount_nights = number_format($reservation->amount_nights / 100, 2, ',', '') . ' €';
             $reservation->amountHT = number_format($reservationAmountHebergement / (1 + $tvaRate), 2, ',', '') . ' €';
-            $reservation->amountTVA = number_format($reservationAmountHebergement - $reservation->amountHT, 2, ',', '') . ' €';
+            $reservation->amountTVA = number_format($reservationAmountHebergement - $reservationAmountHebergementHT, 2, ',', '') . ' €';
 
             $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
-            $reservation->amountHTOptions = number_format($reservation->amount_options / (1 + $tvaOptionsRate), 2, ',', '') . ' €';
-            $reservation->amountTVAOptions = number_format($reservation->amount_options - $reservation->amountHTOptions, 2, ',', '') . ' €';
+            $reservationAmountHTOptions = $reservationAmountOptions / (1 + $tvaOptionsRate);
+            $reservation->amountHTOptions = number_format($reservationAmountOptions / (1 + $tvaOptionsRate), 2, ',', '') . ' €';
+            $reservation->amountTVAOptions = number_format($reservationAmountOptions - $reservationAmountHTOptions, 2, ',', '') . ' €';
         }
 
         return collect($reservations);
