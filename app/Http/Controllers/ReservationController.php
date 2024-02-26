@@ -111,6 +111,7 @@ class ReservationController extends Controller
                 'voyageurs' => $voyageurs,
                 'amount_options' => $amount_options,
                 'amount_nights' => $nights,
+                'is_checked' => false,
             ]);
 
             $reservationId = $reservation->id;
@@ -253,6 +254,12 @@ class ReservationController extends Controller
 
         $reservations = Reservation::where('token', $token)->get();
         foreach ($reservations as $reservation) {
+            if ($reservation->is_checked === true) {
+                return response()->json([
+                    'message' => 'Reservation déjà acceptée',
+                ], 400);
+            }
+
             $payment_intent = $reservation->intent;
             $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
             $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
@@ -269,6 +276,11 @@ class ReservationController extends Controller
             $user_name = $reservation->name;
             $user_firstname = $reservation->first_name;
         }
+        Reservation::where('token', $token)->update(
+            [
+                'is_checked' => true,
+            ]
+        );
         $destinations = Destination::where('id', $destination_id)->get();
         $hebergements = Hebergement::where('id', $hebergement_id)->get();
 
@@ -379,6 +391,11 @@ class ReservationController extends Controller
         $reservations = Reservation::where('token', $token)->get();
 
         foreach ($reservations as $reservation) {
+            if ($reservation->is_checked === true) {
+                return response()->json([
+                    'message' => 'Reservation déjà acceptée',
+                ], 400);
+            }
             $payment_intent = $reservation->intent;
             $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
             $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
@@ -394,6 +411,11 @@ class ReservationController extends Controller
             $user_name = $reservation->name;
             $user_firstname = $reservation->first_name;
         }
+        Reservation::where('token', $token)->update(
+            [
+                'is_checked' => true,
+            ]
+        );
         $destinations = Destination::where('id', $destination_id)->get();
         $hebergements = Hebergement::where('id', $hebergement_id)->get();
 

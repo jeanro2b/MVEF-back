@@ -29,7 +29,8 @@ class Reservation extends Model
         'services',
         'comment',
         'amount_options',
-        'amount_nights'
+        'amount_nights',
+        'is_checked',
     ];
 
     public function destination()
