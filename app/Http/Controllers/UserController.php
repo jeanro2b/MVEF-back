@@ -354,6 +354,8 @@ class UserController extends Controller
 
         Auth::login($user);
 
-        return response()->noContent();
+        return response()->json([
+            'user' => $user,
+        ], 200);
     }
 }
