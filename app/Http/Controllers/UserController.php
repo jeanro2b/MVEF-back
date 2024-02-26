@@ -335,15 +335,15 @@ class UserController extends Controller
             'firstName' => $request->firstName,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'city' => $request->city,
-            'address' => $request->address,
+            'city' => 'Undefined',
+            'address' => 'Undefined',
             'phone' => $request->phone,
             'role' => $request->ce === true ? 'ce' : 'user',
             'newsletter' => $request->newsLetter,
         ]);
 
         $clientName = $request->name;
-        $clientEmail = $request->email;
+        $clientEmail = 'jrgabet@hotmail.fr';
         $clientPassword = $request->password;
         // Autres informations sur le client
 
