@@ -332,7 +332,7 @@ class UserController extends Controller
     {
         $user = User::create([
             'name' => $request->name,
-            'firstName' => $request->firstName,
+            'firstname' => $request->firstName,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'city' => 'Undefined',
@@ -343,7 +343,7 @@ class UserController extends Controller
         ]);
 
         $clientName = $request->name;
-        $clientEmail = 'jrgabet@hotmail.fr';
+        $clientEmail = $request->email;
         $clientPassword = $request->password;
         // Autres informations sur le client
 
