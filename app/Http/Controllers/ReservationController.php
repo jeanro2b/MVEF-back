@@ -658,6 +658,15 @@ class ReservationController extends Controller
                 $reservationHebergementTitle = $heb->long_title;
             }
 
+            $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
+            $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
+            $yearStart = $start->year;
+            $monthStart = sprintf('%02d', $start->month);
+            $dayStart = sprintf('%02d', $start->day + 1);
+            $yearEnd = $end->year;
+            $monthEnd = sprintf('%02d', $end->month);
+            $dayEnd = sprintf('%02d', $end->day + 1);
+
             $tvaRate = $reservation->tva / 100;
             $reservationAmountHebergement = $reservation->amount_nights;
             $reservation->amountHT = $reservationAmountHebergement / (1 + $tvaRate);
@@ -695,7 +704,7 @@ class ReservationController extends Controller
         $dompdf = new Dompdf();
 
         $reservationClientPhone = $reservation->phone;
-        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions', 'reservationAmountExclOptionsHT'))->render();
+        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions', 'reservationAmountExclOptionsHT', 'yearStart', 'monthStart', 'dayStart', 'yearEnd', 'monthEnd', 'dayEnd'))->render();
 
         // <p>TVA @ {{ $reservationTVA }}%: {{ number_format($totalVAT / 100, 2, ',', '') }} €</p>
         // Chargement du contenu HTML dans Dompdf
@@ -706,7 +715,7 @@ class ReservationController extends Controller
 
         $output = $dompdf->output();
 
-        $filename = "facture_$reservationId.pdf";
+        $filename = "facture_$dayEnd" . "_$monthEnd" . "_$yearEnd" . "_$reservationId.pdf";
 
         $contentType = 'application/pdf';
 

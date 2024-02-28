@@ -91,7 +91,7 @@
             <h1>FACTURE</h1>
             <p>Facture # {{ $reservationId }}</p>
             <p>Date de génération: {{ $date }}</p>
-            <p>Montant: {{ number_format($reservationAmount, 2, ',', '') }}€</p>
+            <p>Montant: {{ number_format($reservationAmount / 100, 2, ',', '') }}€</p>
             <p>Client ID: {{ $userId }}</p>
         </div>
         <div class="invoice-body">
@@ -103,7 +103,7 @@
                 <p>{{ $reservationClientPhone }}</p>
             </section>
             <section>
-                <div class="bold">MVEF</div>
+                <div class="bold">Mes Vacances En Famille</div>
                 <p>Mes Vacances en Famille</p>
                 <p>SAS 8000€ RCS BASTIA - APE 5520Z - Siret 50513668900047</p>
                 <p>Siège social : Hameau de Lutina, 20237, Poggio-Marinaccio</p>
@@ -115,10 +115,12 @@
                 <thead>
                     <tr>
                         <th>DESCRIPTION</th>
-                        <th>QUANTITÉ</th>
+                        <th>QTTÉ</th>
+                        <th>DÉBUT</th>
+                        <th>FIN</th>
                         <th>PRIX UNITAIRE</th>
                         <th>TVA %</th>
-                        <th>MONTANT (EUR)</th>
+                        <th>MONTANT</th>
                         <th>MONTANT TTC</th>
                     </tr>
                 </thead>
@@ -126,6 +128,8 @@
                     <tr>
                         <td>{{ $reservationNumberOfNights }} Nuit(s) {{ $reservationHebergementTitle }}</td>
                         <td>1</td>
+                        <td>{{$dayStart}}/{{$monthStart}}/{{$yearStart}}</td>
+                        <td>{{$dayEnd}}/{{$monthEnd}}/{{$yearEnd}}</td>
                         <td>{{ number_format($reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
                         <td>{{ $reservationTVA }}</td>
                         <td>{{ number_format($reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
@@ -136,6 +140,8 @@
                     <tr>
                         <td>{{ $option['label'] }}</td>
                         <td>{{ $option['count'] }}</td>
+                        <td>{{$dayStart}}/{{$monthStart}}/{{$yearStart}}</td>
+                        <td>{{$dayEnd}}/{{$monthEnd}}/{{$yearEnd}}</td>
                         <td>{{ number_format($option['amount'] * (1 - ($reservationTVAOptions / 100)), 2, ',', '') }} €
                         </td>
                         <td>{{ $reservationTVAOptions }}</td>
@@ -162,7 +168,7 @@
                 $totalExclVAT = number_format($totalExclVAT, 2, ',', ''); // Total TTC
                 @endphp
 
-                <p>Total excl. TVA: {{ $totalExclVAT  }} €</p>
+                <p>Total excl. TVA: {{ $totalExclVAT }} €</p>
                 <p>Total incl. TVA: {{ $totalInclVAT }} €</p>
             </div>
         </div>
