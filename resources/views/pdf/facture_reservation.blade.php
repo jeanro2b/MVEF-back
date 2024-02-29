@@ -168,7 +168,7 @@
                 $totalExclVAT = number_format($totalExclVAT, 2, ',', ''); // Total TTC
 
                 $comission = $reservationAmountExclOptions * ($reduction / 100);
-                $montantVerse = $reservationAmountExclOptions - $reductionAmount;
+                $montantVerse = $reservationAmountExclOptions - $comission;
                 @endphp
 
                 <p>Comission MVEF: {{ $comission }}</p>

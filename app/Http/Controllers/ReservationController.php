@@ -540,6 +540,7 @@ class ReservationController extends Controller
                 'user_id',
                 'amount_options',
                 'amount_nights',
+                'reduction'
             )
             ->get();
 
@@ -581,6 +582,10 @@ class ReservationController extends Controller
             $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
             $reservation->amountHTOptions = $reservation->amount_options / (1 + $tvaOptionsRate);
             $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
+
+            $reduction = $reservation->reduction;
+            $reservation->comission = $reservationAmountHebergement * ($reduction / 100);
+            $reservation->montantVerse = $reservationAmountHebergement - $reservation->comission;
         }
 
         return response()->json([
