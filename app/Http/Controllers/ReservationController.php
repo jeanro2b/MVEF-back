@@ -853,7 +853,6 @@ class ReservationController extends Controller
 
         $dompdf = new Dompdf();
 
-        $reservationClientPhone = $reservation->phone;
         $html = View::make('pdf.facture_hebergeur', compact('destinationId', 'destinationName', 'destinationPhone', 'destinationAddress', 'destinationCity', 'destinationMail', 'date', 'destinationTVA', 'destinationTVAOptions', 'bslogoData', 'bslogotxtData', 'reservations'))->render();
 
         // <p>TVA @ {{ $reservationTVA }}%: {{ number_format($totalVAT / 100, 2, ',', '') }} €</p>
