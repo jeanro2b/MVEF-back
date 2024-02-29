@@ -50,6 +50,7 @@ class ReservationController extends Controller
         $services = $requete['services'];
         $voyageurs = $requete['voyageurs'];
         $nights = $requete['nights'];
+        $reduction = $requete['reduction'];
         $amount_options = $amount - $nights;
 
         $start = Carbon::parse($requete['start']);
@@ -112,6 +113,7 @@ class ReservationController extends Controller
                 'amount_options' => $amount_options,
                 'amount_nights' => $nights,
                 'is_checked' => false,
+                'reduction' => $reduction,
             ]);
 
             $reservationId = $reservation->id;

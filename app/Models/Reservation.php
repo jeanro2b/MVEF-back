@@ -31,6 +31,7 @@ class Reservation extends Model
         'amount_options',
         'amount_nights',
         'is_checked',
+        'reduction'
     ];
 
     public function destination()
