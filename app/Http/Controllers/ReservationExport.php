@@ -59,12 +59,12 @@ class ReservationExport implements FromCollection, WithHeadings
             $tvaRate = $reservation->tva / 100;
             $tvaOptionsRate = $reservation->tva_options / 100;
             $reservationAmountHebergementHT = (floatval($reservation->amount_nights) / (1 + floatval($tvaRate))) / 100;
-            $reservationAmountOptionsHT = ($reservation->amount_options / (1 + $tvaOptionsRate)) / 100;
+            $reservationAmountOptionsHT = (floatval($reservation->amount_options) / (1 + floatval($tvaOptionsRate))) / 100;
     
             $reservation->amountHTHebergement = number_format($reservationAmountHebergementHT, 2, ',', '') . ' €';
-            $reservation->tvaHebergement = number_format(($reservation->amount_nights / 100) - $reservationAmountHebergementHT, 2, ',', '') . ' €';
+            $reservation->tvaHebergement = number_format((floatval($reservation->amount_nights) / 100) - $reservationAmountHebergementHT, 2, ',', '') . ' €';
             $reservation->amountHTOptions = number_format($reservationAmountOptionsHT, 2, ',', '') . ' €';
-            $reservation->amountTVAOptions = number_format(($reservation->amount_options / 100) - $reservationAmountOptionsHT, 2, ',', '') . ' €';
+            $reservation->amountTVAOptions = number_format((floatval($reservation->amount_options) / 100) - $reservationAmountOptionsHT, 2, ',', '') . ' €';
 
         }
 
