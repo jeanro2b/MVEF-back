@@ -22,71 +22,49 @@ class ReservationExport implements FromCollection, WithHeadings
     public function collection()
     {
         $reservations = DB::table('reservations')
-            ->select(
-                'id',
-                'created_at',
-                'destination_id',
-                'start',
-                'end',
-                'status',
-                'amount',
-                'name',
-                'first_name',
-                'phone',
-                'mail',
-                'voyageurs',
-                'hebergement_id',
-                'user_id',
-                'amount_options',
-                'amount_nights',
-            )
-            ->whereBetween('end', [$this->start, $this->end])
-            ->get();
+        ->leftJoin('destinations', 'reservations.destination_id', '=', 'destinations.id')
+        ->leftJoin('hebergements', 'reservations.hebergement_id', '=', 'hebergements.id')
+        ->select(
+            'reservations.id',
+            'reservations.created_at',
+            'destinations.code as codeDestination',
+            'destinations.name as nomDestination',
+            'hebergements.code as codeHebergement',
+            'reservations.start',
+            'reservations.end',
+            'reservations.status',
+            'reservations.amount',
+            'reservations.name',
+            'reservations.first_name',
+            'reservations.phone',
+            'reservations.mail',
+            'reservations.voyageurs',
+            // Ajoutez d'autres champs ici si nécessaire
+            'reservations.amount_nights',
+            'destinations.tva',
+            'reservations.amount_options',
+            'destinations.tva_options',
+            'reservations.hebergement_id',
+            'reservations.user_id'
+        )
+        ->whereBetween('reservations.end', [$this->start, $this->end])
+        ->get();
 
         foreach ($reservations as $reservation) {
-            $destination = DB::table('destinations')
-                ->select(
-                    'id',
-                    'name',
-                    'tva',
-                    'tva_options'
-                )
-                ->where('id', $reservation->destination_id)
-                ->get();
-
-            foreach ($destination as $dest) {
-                $reservation->destination_name = $dest->name;
-                $reservation->tva = $dest->tva;
-                $reservation->tva_options = $dest->tva_options;
-            }
-
-            $hebergement = DB::table('hebergements')
-                ->select(
-                    'id',
-                    'name',
-                    'code'
-                )
-                ->where('id', $reservation->hebergement_id)
-                ->get();
-
-            foreach ($hebergement as $heb) {
-                $reservation->code = $heb->code;
-            }
-
             $reservation->amount = number_format($reservation->amount / 100, 2, ',', '') . ' €';
-            $reservationAmountOptions = $reservation->amount_options / 100;
             $reservation->amount_options = number_format($reservation->amount_options / 100, 2, ',', '') . ' €';
-            $tvaRate = $reservation->tva / 100;
-            $reservationAmountHebergement = $reservation->amount_nights / 100;
-            $reservationAmountHebergementHT = $reservationAmountHebergement / (1 + $tvaRate);
             $reservation->amount_nights = number_format($reservation->amount_nights / 100, 2, ',', '') . ' €';
-            $reservation->amountHT = number_format($reservationAmountHebergement / (1 + $tvaRate), 2, ',', '') . ' €';
-            $reservation->amountTVA = number_format($reservationAmountHebergement - $reservationAmountHebergementHT, 2, ',', '') . ' €';
 
-            $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
-            $reservationAmountHTOptions = $reservationAmountOptions / (1 + $tvaOptionsRate);
-            $reservation->amountHTOptions = number_format($reservationAmountOptions / (1 + $tvaOptionsRate), 2, ',', '') . ' €';
-            $reservation->amountTVAOptions = number_format($reservationAmountOptions - $reservationAmountHTOptions, 2, ',', '') . ' €';
+            $tvaRate = $reservation->tva / 100;
+            $tvaOptionsRate = $reservation->tva_options / 100;
+            $reservationAmountHebergementHT = ($reservation->amount_nights / (1 + $tvaRate)) / 100;
+            $reservationAmountOptionsHT = ($reservation->amount_options / (1 + $tvaOptionsRate)) / 100;
+    
+            $reservation->amountHTHebergement = number_format($reservationAmountHebergementHT, 2, ',', '') . ' €';
+            $reservation->tvaHebergement = number_format(($reservation->amount_nights / 100) - $reservationAmountHebergementHT, 2, ',', '') . ' €';
+            $reservation->amountHTOptions = number_format($reservationAmountOptionsHT, 2, ',', '') . ' €';
+            $reservation->amountTVAOptions = number_format(($reservation->amount_options / 100) - $reservationAmountOptionsHT, 2, ',', '') . ' €';
+            
         }
 
         return collect($reservations);
@@ -97,7 +75,9 @@ class ReservationExport implements FromCollection, WithHeadings
         return [
             'ID',
             'Créé le',
-            'ID Destination',
+            'Code Destination',
+            'Nom Destination',
+            'Code Hébergement',
             'Début',
             'Fin',
             'Statut',
@@ -107,18 +87,16 @@ class ReservationExport implements FromCollection, WithHeadings
             'Téléphone',
             'Email',
             'Voyageurs',
-            'ID Hébergement',
-            'ID Utilisateur',
-            'Montant Options',
             'Montant TTC Hébergement',
-            'Nom Destination',
             'TVA',
-            'TVA Options',
-            'Code Hébergement',
             'Montant HT Hébergement',
             'TVA Hébergement',
+            'Montant Options',
+            'TVA Options',
             'Montant HT Options',
-            'TVA Options'
+            'Montant TVA options',
+            'ID Hébergement',
+            'ID Utilisateur',
         ];
     }
 }
