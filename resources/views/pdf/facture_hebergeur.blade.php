@@ -141,7 +141,7 @@
                         </td>
                         <td>{{ number_format($reservation->reservationAmountExclOptions * ($reservation->reduction /
                             100) / 100, 2, ',', '') }} €</td>
-                        <td>{{ number_format($eservation->reservationAmountExclOptions -
+                        <td>{{ number_format($reservation->reservationAmountExclOptions -
                             ($reservation->reservationAmountExclOptions
                             * ($reservation->reduction /
                             100)) / 100, 2, ',', '') }} €</td>
