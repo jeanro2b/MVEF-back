@@ -115,11 +115,15 @@
                 <thead>
                     <tr>
                         <th>DESCRIPTION</th>
-                        <th>QUANTITÉ</th>
+                        <th>QTTÉ</th>
+                        <th>DÉBUT</th>
+                        <th>FIN</th>
                         <th>PRIX UNITAIRE</th>
                         <th>TVA %</th>
-                        <th>MONTANT (EUR)</th>
+                        <th>MONTANT</th>
                         <th>MONTANT TTC</th>
+                        <th>COMISSION</th>
+                        <th>MONTANT REVERSÉ</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,11 +132,19 @@
                         <td>{{ $reservation->reservationNumberOfNights }} Nuit(s) {{
                             $reservation->reservationHebergementTitle }}</td>
                         <td>1</td>
+                        <td>{{$reservation->dayStart}}/{{$reservation->monthStart}}/{{$reservation->yearStart}}</td>
+                        <td>{{$reservation->dayEnd}}/{{$reservation->monthEnd}}/{{$reservation->yearEnd}}</td>
                         <td>{{ number_format($reservation->reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
                         <td>{{ $destinationTVA }}</td>
                         <td>{{ number_format($reservation->reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
                         <td>{{ number_format(($reservation->reservationAmountExclOptions / 100 ), 2, ',', '')}} €
                         </td>
+                        <td>{{ number_format($reservation->reservationAmountExclOptions * ($reservation->reduction /
+                            100) / 100, 2, ',', '') }} €</td>
+                        <td>{{ number_format($eservation->reservationAmountExclOptions -
+                            ($reservation->reservationAmountExclOptions
+                            * ($reservation->reduction /
+                            100)) / 100, 2, ',', '') }} €</td>
                     </tr>
                     @foreach ($reservation->reservationOptionsData as $option)
                     <tr>
@@ -144,6 +156,8 @@
                         <td>{{ number_format($option['amount'] * (1 - ($destinationTVAOptions / 100)) *
                             $option['count'], 2, ',', '') }} €</td>
                         <td>{{ number_format($option['amount'] * $option['count'], 2, ',', '') }} €</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     @endforeach
                     @endforeach
@@ -155,10 +169,16 @@
                 @php
                 $totalExclVAT = 0;
                 $totalInclVAT = 0;
+                $totalComission = 0;
+                $totalMontantVerse = 0;
 
                 foreach($reservations as $reservation) {
                 $totalExclVAT += $reservation->reservationAmountExclOptionsHT / 100;
                 $totalInclVAT += $reservation->reservationAmountExclOptions / 100;
+
+                $totalComission += $reservation->reservationAmountExclOptions * ($reservation->reduction / 100);
+                $totalMontantVerse += $reservation->reservationAmountExclOptions -
+                ($reservation->reservationAmountExclOptions * ($reservation->reduction / 100));
 
                 foreach ($reservation->reservationOptionsData as $option) {
                 $totalInclVAT += $option['amount'] * $option['count']; // Ajouter le montant HT de l'option au total HT
@@ -172,8 +192,12 @@
 
                 $totalInclVAT = number_format($totalInclVAT, 2, ',', ''); // Total TTC
                 $totalExclVAT = number_format($totalExclVAT, 2, ',', ''); // Total TTC
+                $totalComission = number_format($totalComission / 100, 2, ',', '');
+                $totalMontantVerse = number_format($totalMontantVerse / 100, 2, ',', '');
                 @endphp
 
+                <p>Total Comission MVEF: {{ $totalComission }} €</p>
+                <p>Montant Total versé à l'hébergeur: {{ $totalMontantVerse }} €</p>
                 <p>Total excl. TVA: {{ $totalExclVAT }} €</p>
                 <p>Total incl. TVA: {{ $totalInclVAT }} €</p>
             </div>

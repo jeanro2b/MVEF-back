@@ -792,6 +792,12 @@ class ReservationController extends Controller
         }
 
         foreach ($reservations as $reservation) {
+            if ($reservation === null) {
+                return response()->json([
+                    'message' => 'Aucune réservation pour cette période',
+                ], 404);
+            }
+
             $hebergement = DB::table('hebergements')
                 ->select(
                     'id',
@@ -807,6 +813,15 @@ class ReservationController extends Controller
 
                 $reservation->reservationHebergementTitle = $heb->long_title;
             }
+
+            $start = Carbon::createFromFormat('Y-m-d', $reservation->start);
+            $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
+            $reservation->yearStart = $start->year;
+            $reservation->monthStart = sprintf('%02d', $start->month);
+            $reservation->dayStart = sprintf('%02d', $start->day + 1);
+            $reservation->yearEnd = $end->year;
+            $reservation->monthEnd = sprintf('%02d', $end->month);
+            $reservation->dayEnd = sprintf('%02d', $end->day + 1);
 
             $tvaRate = $destinationTVA / 100;
             $reservationAmountHebergement = $reservation->amount_nights;
@@ -826,6 +841,7 @@ class ReservationController extends Controller
             $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
             $reservation->reservationNumberOfNights = $start->diffInDays($end);
             $reservation->reservationIntent = $reservation->intent;
+            $reduction = $reservation->reduction;
         }
 
         $bslogoPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogo.png";
