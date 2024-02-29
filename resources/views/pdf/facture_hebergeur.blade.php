@@ -69,7 +69,7 @@
 
         .total {
             margin-top: 20px;
-            font-size: 12px;
+            font-size: 13px;
             text-align: right;
         }
 

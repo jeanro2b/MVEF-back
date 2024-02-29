@@ -55,10 +55,8 @@ class ReservationController extends Controller
 
         $start = Carbon::parse($requete['start']);
         $end = Carbon::parse($requete['end']);
-        // $start = Carbon::createFromFormat('D M d Y H:i:s eO', $requete['start']);
-        // $end = Carbon::createFromFormat('D M d Y H:i:s eO', $requete['end']);
-        $startDate = $start->toDateTimeString();
-        $endDate = $end->toDateTimeString();
+        $startDate = $start->addDay()->toDateTimeString();
+        $endDate = $end->addDay()->toDateTimeString();
         $yearStart = $start->year;
         $monthStart = sprintf('%02d', $start->month);
         $dayStart = sprintf('%02d', $start->day);
@@ -297,10 +295,10 @@ class ReservationController extends Controller
 
         $yearStart = $start->year;
         $monthStart = sprintf('%02d', $start->month);
-        $dayStart = sprintf('%02d', $start->day + 1);
+        $dayStart = sprintf('%02d', $start->day);
         $yearEnd = $end->year;
         $monthEnd = sprintf('%02d', $end->month);
-        $dayEnd = sprintf('%02d', $end->day + 1);
+        $dayEnd = sprintf('%02d', $end->day);
 
         if ($reservation) {
 
@@ -431,10 +429,10 @@ class ReservationController extends Controller
 
         $yearStart = $start->year;
         $monthStart = sprintf('%02d', $start->month);
-        $dayStart = sprintf('%02d', $start->day + 1);
+        $dayStart = sprintf('%02d', $start->day);
         $yearEnd = $end->year;
         $monthEnd = sprintf('%02d', $end->month);
-        $dayEnd = sprintf('%02d', $end->day + 1);
+        $dayEnd = sprintf('%02d', $end->day);
 
         if ($reservation) {
             $stripe->paymentIntents->cancel(
@@ -501,10 +499,10 @@ class ReservationController extends Controller
 
         $yearStart = $start->year;
         $monthStart = sprintf('%02d', $start->month);
-        $dayStart = sprintf('%02d', $start->day + 1);
+        $dayStart = sprintf('%02d', $start->day);
         $yearEnd = $end->year;
         $monthEnd = sprintf('%02d', $end->month);
-        $dayEnd = sprintf('%02d', $end->day + 1);
+        $dayEnd = sprintf('%02d', $end->day);
         $admin_mail = 'admin@mesvacancesenfamille.com';
 
         Reservation::where('id', $id)->delete();
@@ -670,10 +668,10 @@ class ReservationController extends Controller
             $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
             $yearStart = $start->year;
             $monthStart = sprintf('%02d', $start->month);
-            $dayStart = sprintf('%02d', $start->day + 1);
+            $dayStart = sprintf('%02d', $start->day);
             $yearEnd = $end->year;
             $monthEnd = sprintf('%02d', $end->month);
-            $dayEnd = sprintf('%02d', $end->day + 1);
+            $dayEnd = sprintf('%02d', $end->day);
 
             $tvaRate = $reservation->tva / 100;
             $reservationAmountHebergement = $reservation->amount_nights;
@@ -819,10 +817,10 @@ class ReservationController extends Controller
             $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
             $reservation->yearStart = $start->year;
             $reservation->monthStart = sprintf('%02d', $start->month);
-            $reservation->dayStart = sprintf('%02d', $start->day + 1);
+            $reservation->dayStart = sprintf('%02d', $start->day);
             $reservation->yearEnd = $end->year;
             $reservation->monthEnd = sprintf('%02d', $end->month);
-            $reservation->dayEnd = sprintf('%02d', $end->day + 1);
+            $reservation->dayEnd = sprintf('%02d', $end->day);
 
             $tvaRate = $destinationTVA / 100;
             $reservationAmountHebergement = $reservation->amount_nights;

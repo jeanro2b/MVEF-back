@@ -69,12 +69,12 @@
 
         .total {
             margin-top: 20px;
-            font-size: 10px;
+            font-size: 13px;
             text-align: right;
         }
 
         .total p {
-            font-size: 10px;
+            font-size: 13px;
         }
 
         .footer {
