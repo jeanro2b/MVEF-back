@@ -759,7 +759,8 @@ class ReservationController extends Controller
                 'user_id',
                 'amount_options',
                 'amount_nights',
-                'services'
+                'services',
+                'reduction'
             )
             ->where('destination_id', $req->destination_id)
             ->whereRaw('MONTH(`end`) = ?', [$req->month])
@@ -791,13 +792,13 @@ class ReservationController extends Controller
             $destinationTVAOptions = $dest->tva_options;
         }
 
-        foreach ($reservations as $reservation) {
-            if ($reservation === null) {
-                return response()->json([
-                    'message' => 'Aucune réservation pour cette période',
-                ], 404);
-            }
+        if ($reservations->isEmpty()) {
+            return response()->json([
+                'message' => 'Aucune réservation pour cette période',
+            ], 404);
+        }
 
+        foreach ($reservations as $reservation) {
             $hebergement = DB::table('hebergements')
                 ->select(
                     'id',
