@@ -141,7 +141,7 @@
                         </td>
                         <td>{{ number_format($reservation->reservationAmountExclOptions * ($reservation->reduction /
                             100) / 100, 2, ',', '') }} €</td>
-                        <td>{{ number_format($reservation->reservationAmountExclOptions -
+                        <td>{{ number_format(($reservation->reservationAmountExclOptions / 100) -
                             ($reservation->reservationAmountExclOptions
                             * ($reservation->reduction /
                             100)) / 100, 2, ',', '') }} €</td>
@@ -150,6 +150,8 @@
                     <tr>
                         <td>{{ $option['label'] }}</td>
                         <td>{{ $option['count'] }}</td>
+                        <td></td>
+                        <td></td>
                         <td>{{ number_format($option['amount'] * (1 - ($destinationTVAOptions / 100)), 2, ',', '') }} €
                         </td>
                         <td>{{ $destinationTVAOptions }}</td>
