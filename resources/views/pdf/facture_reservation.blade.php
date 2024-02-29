@@ -69,8 +69,12 @@
 
         .total {
             margin-top: 20px;
-            font-size: 18px;
+            font-size: 26px;
             text-align: right;
+        }
+
+        .total p {
+            font-size: 26px;
         }
 
         .footer {
@@ -171,8 +175,8 @@
                 $montantVerse = $reservationAmountExclOptions - $comission;
                 @endphp
 
-                <p>Comission MVEF: {{ $comission }}</p>
-                <p>Montant versé à l'hébergeur: {{ $montantVerse }}</p>
+                <p>Comission MVEF: {{ number_format($comission / 100, 2, ',', '') }} €</p>
+                <p>Montant versé à l'hébergeur: {{ number_format($montantVerse / 100, 2, ',', '') }} €</p>
                 <p>Total excl. TVA: {{ $totalExclVAT }} €</p>
                 <p>Total incl. TVA: {{ $totalInclVAT }} €</p>
             </div>

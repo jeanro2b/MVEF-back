@@ -37,11 +37,6 @@ class DocumentController extends Controller
         // Récupérer les données du client depuis la requête
         $clientName = $client->name;
         $clientEmail = $client->email;
-        // Autres informations sur le client
-
-        Log::debug($client);
-
-        Log::debug($clientEmail);
 
         // Envoyer l'e-mail
         Mail::to($clientEmail)->send(new FileEmail($clientName));

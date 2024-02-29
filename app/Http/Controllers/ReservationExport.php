@@ -27,7 +27,7 @@ class ReservationExport implements FromCollection, WithHeadings
         ->select(
             'reservations.id',
             'reservations.created_at',
-            'destinations.code as codeDestination',
+            'hebergements.code as codeDestination',
             'destinations.name as nomDestination',
             'hebergements.code as codeHebergement',
             'reservations.start',
@@ -51,6 +51,7 @@ class ReservationExport implements FromCollection, WithHeadings
         ->get();
 
         foreach ($reservations as $reservation) {
+            $reservation->codeDestination = substr($reservation->codeHebergement, 0, 4);
             $reservation->amount = number_format($reservation->amount / 100, 2, ',', '') . ' €';
             $reservation->amount_options = number_format($reservation->amount_options / 100, 2, ',', '') . ' €';
             $reservation->amount_nights = number_format($reservation->amount_nights / 100, 2, ',', '') . ' €';
@@ -64,7 +65,7 @@ class ReservationExport implements FromCollection, WithHeadings
             $reservation->tvaHebergement = number_format(($reservation->amount_nights / 100) - $reservationAmountHebergementHT, 2, ',', '') . ' €';
             $reservation->amountHTOptions = number_format($reservationAmountOptionsHT, 2, ',', '') . ' €';
             $reservation->amountTVAOptions = number_format(($reservation->amount_options / 100) - $reservationAmountOptionsHT, 2, ',', '') . ' €';
-            
+
         }
 
         return collect($reservations);
