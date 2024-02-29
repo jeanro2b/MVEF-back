@@ -50,6 +50,8 @@ class ReservationExport implements FromCollection, WithHeadings
         ->whereBetween('reservations.end', [$this->start, $this->end])
         ->get();
 
+        $formattedReservations = [];
+
         foreach ($reservations as $reservation) {
             $reservation->codeDestination = substr($reservation->codeHebergement, 0, 4);
             $reservation->amount = number_format($reservation->amount / 100, 2, ',', '') . ' €';
@@ -58,17 +60,45 @@ class ReservationExport implements FromCollection, WithHeadings
 
             $tvaRate = $reservation->tva / 100;
             $tvaOptionsRate = $reservation->tva_options / 100;
-            $reservationAmountHebergementHT = (floatval($reservation->amount_nights) / (1 + floatval($tvaRate))) / 100;
-            $reservationAmountOptionsHT = (floatval($reservation->amount_options) / (1 + floatval($tvaOptionsRate))) / 100;
+            $reservationAmountHebergementHT = (floatval($reservation->amount_nights) / (1 + floatval($tvaRate)));
+            $reservationAmountOptionsHT = (floatval($reservation->amount_options) / (1 + floatval($tvaOptionsRate)));
     
             $reservation->amountHTHebergement = number_format($reservationAmountHebergementHT, 2, ',', '') . ' €';
-            $reservation->tvaHebergement = number_format((floatval($reservation->amount_nights) / 100) - $reservationAmountHebergementHT, 2, ',', '') . ' €';
+            $reservation->tvaHebergement = number_format((floatval($reservation->amount_nights)) - $reservationAmountHebergementHT, 2, ',', '') . ' €';
             $reservation->amountHTOptions = number_format($reservationAmountOptionsHT, 2, ',', '') . ' €';
-            $reservation->amountTVAOptions = number_format((floatval($reservation->amount_options) / 100) - $reservationAmountOptionsHT, 2, ',', '') . ' €';
+            $reservation->amountTVAOptions = number_format((floatval($reservation->amount_options)) - $reservationAmountOptionsHT, 2, ',', '') . ' €';
 
+            $formattedReservation = (object)[
+                'id' => $reservation->id,
+                'created_at' => $reservation->created_at,
+                'codeDestination' => substr($reservation->codeHebergement, 0, 4),
+                'nomDestination' => $reservation->nomDestination,
+                'codeHebergement' => $reservation->codeHebergement,
+                'start' => $reservation->start,
+                'end' => $reservation->end,
+                'status' => $reservation->status,
+                'amount' => $reservation->amount,
+                'name' => $reservation->name,
+                'first_name' => $reservation->first_name,
+                'phone' => $reservation->phone,
+                'mail' => $reservation->mail,
+                'voyageurs' => $reservation->voyageurs,
+                'amount_nights' => $reservation->amount_nights,
+                'tva' => $reservation->tva . ' %',
+                'amountHTHebergement' => $reservation->amountHTHebergement,
+                'tvaHebergement' => $reservation->tvaHebergement,
+                'amount_options' => $reservation->amount_options,
+                'tva_options' => $reservation->tva_options . ' %',
+                'amountHTOptions' => $reservation->amountHTOptions,
+                'amountTVAOptions' => $reservation->amountTVAOptions,
+                'hebergement_id' => $reservation->hebergement_id,
+                'user_id' => $reservation->user_id,
+            ];
+    
+            array_push($formattedReservations, $formattedReservation);
         }
 
-        return collect($reservations);
+        return collect($formattedReservations);
     }
 
     public function headings(): array
@@ -91,11 +121,11 @@ class ReservationExport implements FromCollection, WithHeadings
             'Montant TTC Hébergement',
             'TVA',
             'Montant HT Hébergement',
-            'TVA Hébergement',
+            'Montant TVA Hébergement',
             'Montant Options',
             'TVA Options',
             'Montant HT Options',
-            'Montant TVA options',
+            'Montant TVA Options',
             'ID Hébergement',
             'ID Utilisateur',
         ];
