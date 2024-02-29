@@ -62,14 +62,14 @@
 
         table th,
         table td {
-            padding: 10px;
+            padding: 5px;
             border: 1px solid #ddd;
             text-align: left;
         }
 
         .total {
             margin-top: 20px;
-            font-size: 18px;
+            font-size: 12px;
             text-align: right;
         }
 
@@ -122,7 +122,7 @@
                         <th>TVA %</th>
                         <th>MONTANT</th>
                         <th>MONTANT TTC</th>
-                        <th>COMISSION</th>
+                        <th>COM</th>
                         <th>MONTANT REVERSÉ</th>
                     </tr>
                 </thead>
