@@ -619,7 +619,8 @@ class ReservationController extends Controller
                 'user_id',
                 'amount_options',
                 'amount_nights',
-                'services'
+                'services',
+                'reduction'
             )
             ->where('id', $id)
             ->get();
@@ -694,6 +695,7 @@ class ReservationController extends Controller
             $end = Carbon::createFromFormat('Y-m-d', $reservation->end);
             $reservationNumberOfNights = $start->diffInDays($end);
             $reservationIntent = $reservation->intent;
+            $reduction = $reservation->reduction;
         }
 
         $bslogoPath = "https://mvef.s3.eu-west-3.amazonaws.com/bslogo.png";
@@ -706,7 +708,7 @@ class ReservationController extends Controller
         $dompdf = new Dompdf();
 
         $reservationClientPhone = $reservation->phone;
-        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions', 'reservationAmountExclOptionsHT', 'yearStart', 'monthStart', 'dayStart', 'yearEnd', 'monthEnd', 'dayEnd'))->render();
+        $html = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions', 'reservationAmountExclOptionsHT', 'yearStart', 'monthStart', 'dayStart', 'yearEnd', 'monthEnd', 'dayEnd', 'reduction'))->render();
 
         // <p>TVA @ {{ $reservationTVA }}%: {{ number_format($totalVAT / 100, 2, ',', '') }} €</p>
         // Chargement du contenu HTML dans Dompdf
