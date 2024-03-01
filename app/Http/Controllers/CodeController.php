@@ -99,7 +99,8 @@ class CodeController extends Controller
                 'id',
                 'code',
                 'user_id',
-                'end'
+                'end',
+                'reduction',
             )
             ->where('id', $id)
             ->get();
