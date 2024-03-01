@@ -56,6 +56,20 @@ class CodeController extends Controller
         ], 200);
     }
 
+    public function check_code($code)
+    {
+        $codes = Code::all()->where('code', $code);
+
+        foreach ($codes as $code) {
+            $code->validity = Carbon::parse($code->end)->isFuture();
+        }
+
+        return response()->json([
+            'message' => 'OK',
+            'codes' => $codes
+        ], 200);
+    }
+
     public function modify_code(Request $req)
     {
 
