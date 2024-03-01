@@ -14,6 +14,7 @@ class Minimum extends Model
         'minimum',
         'hebergement_id',
         'month',
+        'year'
     ];
 
     public function hebergement()

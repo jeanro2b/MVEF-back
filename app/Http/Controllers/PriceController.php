@@ -63,6 +63,7 @@ class PriceController extends Controller
             'hebergement_id',
             'minimum',
             'month',
+            'year'
         )
         ->where('hebergement_id', $id)
         ->get();
