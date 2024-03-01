@@ -11,14 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('codes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('code');
-            $table->date('end');
-
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+        Schema::table('codes', function (Blueprint $table) {
+            $table->integer('reduction');
         });
     }
 
@@ -27,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('codes');
+        Schema::table('codes', function (Blueprint $table) {
+            $table->dropColumn('reduction');
+        });
     }
 };

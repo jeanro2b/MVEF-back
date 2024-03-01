@@ -18,6 +18,7 @@ class CodeController extends Controller
             'code' => $request->code,
             'end' => $request->end,
             'user_id' => $request->user,
+            'reduction' => $request->reduction,
         ]);
 
         return response()->json([
@@ -63,6 +64,7 @@ class CodeController extends Controller
                 'code' => $req->code,
                 'end' => $req->end,
                 'user_id' => $req->user,
+                'reduction' => $req->reduction,
             ]
         );
         
