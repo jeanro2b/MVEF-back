@@ -51,6 +51,7 @@ class ReservationController extends Controller
         $voyageurs = $requete['voyageurs'];
         $nights = $requete['nights'];
         $reduction = $requete['reduction'];
+        $code = $requete['code'];
         $amount_options = $amount - $nights;
 
         $start = Carbon::parse($requete['start']);
@@ -112,6 +113,7 @@ class ReservationController extends Controller
                 'amount_nights' => $nights,
                 'is_checked' => false,
                 'reduction' => $reduction,
+                'code' => $code,
             ]);
 
             $reservationId = $reservation->id;
@@ -538,7 +540,8 @@ class ReservationController extends Controller
                 'user_id',
                 'amount_options',
                 'amount_nights',
-                'reduction'
+                'reduction',
+                'code'
             )
             ->get();
 
@@ -569,7 +572,7 @@ class ReservationController extends Controller
                 ->get();
 
             foreach ($hebergement as $heb) {
-                $reservation->code = $heb->code;
+                $reservation->codeHebergement = $heb->code;
             }
 
             $tvaRate = $reservation->tva / 100;

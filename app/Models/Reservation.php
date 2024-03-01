@@ -32,7 +32,8 @@ class Reservation extends Model
         'amount_nights',
         'is_checked',
         'reduction',
-        'voyageurs'
+        'voyageurs',
+        'code'
     ];
 
     public function destination()
