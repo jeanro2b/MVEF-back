@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Dotenv\Exception\ValidationException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\UserInfoEmail;
-use App\Mail\AdminContactEmail;
 use App\Mail\AdminContactCEEmail;
-
+use App\Mail\AdminContactEmail;
+use App\Mail\UserInfoEmail;
+use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -97,7 +97,7 @@ class UserController extends Controller
     public function modify_client(Request $req)
     {
 
-        if($req->password != "") {
+        if ($req->password != "") {
             $user = User::where('id', $req->id)->update(
                 [
                     'name' => $req->name,
@@ -121,7 +121,7 @@ class UserController extends Controller
                 ]
             );
         }
-        
+
 
         return response()->json([
             'message' => 'OK',
@@ -132,7 +132,7 @@ class UserController extends Controller
     public function modify_user(Request $req)
     {
 
-        if($req->password != "") {
+        if ($req->password != "") {
             $user = User::where('id', $req->id)->update(
                 [
                     'name' => $req->name,
@@ -150,7 +150,7 @@ class UserController extends Controller
                 ]
             );
         }
-        
+
 
         return response()->json([
             'message' => 'OK',
@@ -158,7 +158,8 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function send_client_info(Request $req) {
+    public function send_client_info(Request $req)
+    {
         $clientName = $req->name;
         $clientEmail = $req->email;
         $clientPassword = $req->password;
@@ -167,7 +168,7 @@ class UserController extends Controller
         // Envoyer l'e-mail
         Mail::to($clientEmail)->send(new UserInfoEmail($clientName, $clientEmail, $clientPassword));
 
-        if($clientPassword != "") {
+        if ($clientPassword != "") {
             $user = User::where('id', $req->id)->update(
                 [
                     'name' => $req->name,
@@ -198,7 +199,8 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function send_admin_form(Request $req) {
+    public function send_admin_form(Request $req)
+    {
         $clientName = $req->name;
         $clientEmail = $req->mail;
         $clientMessage = $req->message;
@@ -218,7 +220,8 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function send_admin_ce_form(Request $req) {
+    public function send_admin_ce_form(Request $req)
+    {
         $clientName = $req->name;
         $clientEmail = $req->mail;
         $clientMessage = $req->message;
@@ -357,5 +360,48 @@ class UserController extends Controller
         return response()->json([
             'user' => $user,
         ], 200);
+    }
+
+    public function sendPasswordResetLink(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return response()->json(['message' => __($status)]);
+        }
+
+        return response()->json(['email' => __($status)], 400);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return response()->json(['message' => __($status)]);
+        }
+
+        return response()->json(['email' => __($status)], 400);
     }
 }

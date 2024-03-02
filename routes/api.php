@@ -261,5 +261,6 @@ Route::post('/login', [UserController::class, 'login']);
 
 
 // Passwords 
-Route::post('/reset-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::post('/reset', [PasswordResetController::class, 'reset'])->name('password.reset');
+Route::post('/forgot-password', [UserController::class, 'sendPasswordResetLink']);
+// Réinitialisation du mot de passe
+Route::post('/reset-password', [UserController::class, 'resetPassword']);
