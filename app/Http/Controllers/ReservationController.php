@@ -281,6 +281,7 @@ class ReservationController extends Controller
         Reservation::where('token', $token)->update(
             [
                 'is_checked' => true,
+                'acceptation' => 'accepted'
             ]
         );
         $destinations = Destination::where('id', $destination_id)->get();
@@ -416,6 +417,7 @@ class ReservationController extends Controller
         Reservation::where('token', $token)->update(
             [
                 'is_checked' => true,
+                'acceptation' => 'refused',
             ]
         );
         $destinations = Destination::where('id', $destination_id)->get();
@@ -541,8 +543,10 @@ class ReservationController extends Controller
                 'amount_options',
                 'amount_nights',
                 'reduction',
-                'code'
+                'code',
+                'acceptation',
             )
+            ->where('acceptation', 'accepted')
             ->get();
 
         foreach ($reservations as $reservation) {
@@ -626,9 +630,11 @@ class ReservationController extends Controller
                 'amount_options',
                 'amount_nights',
                 'services',
-                'reduction'
+                'reduction',
+                'acceptation',
             )
             ->where('id', $id)
+            ->where('acceptation', 'accepted')
             ->get();
 
         foreach ($reservations as $reservation) {
@@ -761,9 +767,11 @@ class ReservationController extends Controller
                 'amount_options',
                 'amount_nights',
                 'services',
-                'reduction'
+                'reduction',
+                'acceptation',
             )
             ->where('destination_id', $req->destination_id)
+            ->where('acceptation', 'accepted')
             ->whereRaw('MONTH(`end`) = ?', [$req->month])
             ->whereRaw('YEAR(`end`) = ?', [$req->year])
             ->get();

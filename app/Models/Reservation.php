@@ -33,7 +33,8 @@ class Reservation extends Model
         'is_checked',
         'reduction',
         'voyageurs',
-        'code'
+        'code',
+        'acceptation',
     ];
 
     public function destination()
