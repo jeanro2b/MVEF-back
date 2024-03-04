@@ -69,11 +69,11 @@ class ReservationExport implements FromCollection, WithHeadings
             $reservation->amountHTOptions = number_format($reservationAmountOptionsHT, 2, ',', '') . ' €';
             $reservation->amountTVAOptions = number_format((floatval($reservation->amount_options)) - $reservationAmountOptionsHT, 2, ',', '') . ' €';
 
-            $reservation->com = number_format($reservation->amount_nights * ($reservation->reduction /
+            $reservation->com = number_format(floatval($reservation->amount_nights) * (floatval($reservation->reduction) /
                 100) / 100, 2, ',', '') . ' €';
-            $reservation->montantVerse = number_format(($reservation->amount_nights / 100) -
-                ($reservation->amount_nights
-                    * ($reservation->reduction /
+            $reservation->montantVerse = number_format((floatval($reservation->amount_nights) / 100) -
+                (floatval($reservation->amount_nights)
+                    * (floatval($reservation->reduction) /
                         100)) / 100, 2, ',', '') . ' €';
 
             $formattedReservation = (object) [
