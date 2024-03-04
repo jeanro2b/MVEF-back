@@ -108,7 +108,6 @@
             </section>
             <section>
                 <div class="bold">Mes Vacances En Famille</div>
-                <p>Mes Vacances en Famille</p>
                 <p>SAS 8000€ RCS BASTIA - APE 5520Z - Siret 50513668900047</p>
                 <p>Siège social : Hameau de Lutina, 20237, Poggio-Marinaccio</p>
                 <p>Secrétariat : 145 route de Millery - 69700 MONTAGNY</p>
@@ -175,8 +174,8 @@
                 $montantVerse = $reservationAmountExclOptions - $comission;
                 @endphp
 
-                <p>Comission MVEF: {{ number_format($comission / 100, 2, ',', '') }} €</p>
-                <p>Montant versé à l'hébergeur: {{ number_format($montantVerse / 100, 2, ',', '') }} €</p>
+                <!-- <p>Comission MVEF: {{ number_format($comission / 100, 2, ',', '') }} €</p>
+                <p>Montant versé à l'hébergeur: {{ number_format($montantVerse / 100, 2, ',', '') }} €</p> -->
                 <p>Total excl. TVA: {{ $totalExclVAT }} €</p>
                 <p>Total incl. TVA: {{ $totalInclVAT }} €</p>
             </div>

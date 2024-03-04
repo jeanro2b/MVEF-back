@@ -22,33 +22,34 @@ class ReservationExport implements FromCollection, WithHeadings
     public function collection()
     {
         $reservations = DB::table('reservations')
-        ->leftJoin('destinations', 'reservations.destination_id', '=', 'destinations.id')
-        ->leftJoin('hebergements', 'reservations.hebergement_id', '=', 'hebergements.id')
-        ->select(
-            'reservations.id',
-            'reservations.created_at',
-            'hebergements.code as codeDestination',
-            'destinations.name as nomDestination',
-            'hebergements.code as codeHebergement',
-            'reservations.start',
-            'reservations.end',
-            'reservations.status',
-            'reservations.amount',
-            'reservations.name',
-            'reservations.first_name',
-            'reservations.phone',
-            'reservations.mail',
-            'reservations.voyageurs',
-            // Ajoutez d'autres champs ici si nécessaire
-            'reservations.amount_nights',
-            'destinations.tva',
-            'reservations.amount_options',
-            'destinations.tva_options',
-            'reservations.hebergement_id',
-            'reservations.user_id'
-        )
-        ->whereBetween('reservations.end', [$this->start, $this->end])
-        ->get();
+            ->leftJoin('destinations', 'reservations.destination_id', '=', 'destinations.id')
+            ->leftJoin('hebergements', 'reservations.hebergement_id', '=', 'hebergements.id')
+            ->select(
+                'reservations.id',
+                'reservations.created_at',
+                'hebergements.code as codeDestination',
+                'destinations.name as nomDestination',
+                'hebergements.code as codeHebergement',
+                'reservations.start',
+                'reservations.end',
+                'reservations.status',
+                'reservations.amount',
+                'reservations.name',
+                'reservations.first_name',
+                'reservations.phone',
+                'reservations.mail',
+                'reservations.voyageurs',
+                // Ajoutez d'autres champs ici si nécessaire
+                'reservations.amount_nights',
+                'destinations.tva',
+                'reservations.amount_options',
+                'destinations.tva_options',
+                'reservations.hebergement_id',
+                'reservations.user_id',
+                'reservations.reduction',
+            )
+            ->whereBetween('reservations.end', [$this->start, $this->end])
+            ->get();
 
         $formattedReservations = [];
 
@@ -62,13 +63,20 @@ class ReservationExport implements FromCollection, WithHeadings
             $tvaOptionsRate = $reservation->tva_options / 100;
             $reservationAmountHebergementHT = (floatval($reservation->amount_nights) / (1 + floatval($tvaRate)));
             $reservationAmountOptionsHT = (floatval($reservation->amount_options) / (1 + floatval($tvaOptionsRate)));
-    
+
             $reservation->amountHTHebergement = number_format($reservationAmountHebergementHT, 2, ',', '') . ' €';
             $reservation->tvaHebergement = number_format((floatval($reservation->amount_nights)) - $reservationAmountHebergementHT, 2, ',', '') . ' €';
             $reservation->amountHTOptions = number_format($reservationAmountOptionsHT, 2, ',', '') . ' €';
             $reservation->amountTVAOptions = number_format((floatval($reservation->amount_options)) - $reservationAmountOptionsHT, 2, ',', '') . ' €';
 
-            $formattedReservation = (object)[
+            $reservation->com = number_format($reservation->amount_nights * ($reservation->reduction /
+                100) / 100, 2, ',', '') . ' €';
+            $reservation->montantVerse = number_format(($reservation->amount_nights / 100) -
+                ($reservation->amount_nights
+                    * ($reservation->reduction /
+                        100)) / 100, 2, ',', '') . ' €';
+
+            $formattedReservation = (object) [
                 'id' => $reservation->id,
                 'created_at' => $reservation->created_at,
                 'codeDestination' => substr($reservation->codeHebergement, 0, 4),
@@ -93,8 +101,10 @@ class ReservationExport implements FromCollection, WithHeadings
                 'amountTVAOptions' => $reservation->amountTVAOptions,
                 'hebergement_id' => $reservation->hebergement_id,
                 'user_id' => $reservation->user_id,
+                'commission' => $reservation->com,
+                'montantVerse' => $reservation->montantVerse,
             ];
-    
+
             array_push($formattedReservations, $formattedReservation);
         }
 
@@ -128,6 +138,8 @@ class ReservationExport implements FromCollection, WithHeadings
             'Montant TVA Options',
             'ID Hébergement',
             'ID Utilisateur',
+            'Commission MVEF',
+            "Montant versé à l'hébergeur",
         ];
     }
 }
