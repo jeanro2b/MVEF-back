@@ -46,6 +46,7 @@ class DestinationController extends Controller
                 'description',
                 'pImage',
                 'location',
+                'is_available',
             )
             ->get();
 
@@ -268,7 +269,8 @@ class DestinationController extends Controller
             if (!empty($dest->tImage4)) {
                 $t4_Image = Storage::disk('s3')->url($dest->tImage4);
             }
-        
+
+            $is_available = $dest->is_available;
         }
 
         if (isset($p_Image) && isset($s_Image) && isset($t1_Image) && isset($t2_Image) && isset($t3_Image) && isset($t4_Image)) {
@@ -285,6 +287,7 @@ class DestinationController extends Controller
                 'tImage2' => isset($t2_Image) ? $t2_Image : '',
                 'tImage3' => isset($t3_Image) ? $t3_Image : '',
                 'tImage4' => isset($t4_Image) ? $t4_Image : '',
+                'is_available' => $is_available,
             ], 200);
         } else {
             return response()->json([
@@ -300,6 +303,7 @@ class DestinationController extends Controller
                 'tImage2' => isset($t2_Image) ? $t2_Image : '',
                 'tImage3' => isset($t3_Image) ? $t3_Image : '',
                 'tImage4' => isset($t4_Image) ? $t4_Image : '',
+                'is_available' => $is_available,
             ], 200);
         }
     }
