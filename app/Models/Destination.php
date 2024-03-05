@@ -38,7 +38,8 @@ class Destination extends Model
         'caution',
         'taxe',
         'tva',
-        'tva_options'
+        'tva_options',
+        'is_available',
     ];
 
     public function service()

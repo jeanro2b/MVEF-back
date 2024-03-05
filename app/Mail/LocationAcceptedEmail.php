@@ -23,8 +23,6 @@ class LocationAcceptedEmail extends Mailable
     public $first_name;
     public $phone;
     public $amount;
-    public $output;
-    public $filename;
 
     /**
      * Create a new message instance.
@@ -42,11 +40,9 @@ class LocationAcceptedEmail extends Mailable
      * @param  string  $first_name
      * @param  string  $phone
      * @param  string  $amount
-     * @param  string  $output
-     * @param  string  $filename
      * @return void
      */
-    public function __construct($hebergementName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $name, $first_name, $phone, $output, $filename)
+    public function __construct($hebergementName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $name, $first_name, $phone)
     {
         $this->reservationId = $reservationId;
         $this->hebergementName = $hebergementName;
@@ -60,8 +56,6 @@ class LocationAcceptedEmail extends Mailable
         $this->first_name = $first_name;
         $this->phone = $phone;
         $this->amount = $amount;
-        $this->output = $output;
-        $this->filename = $filename;
     }
 
     /**
@@ -86,7 +80,6 @@ class LocationAcceptedEmail extends Mailable
                 'first_name' => $this->first_name,
                 'phone' => $this->phone,
                 'amount' => $this->amount,
-            ])
-            ->attachData($this->output, $this->filename);
+            ]);
     }
 }

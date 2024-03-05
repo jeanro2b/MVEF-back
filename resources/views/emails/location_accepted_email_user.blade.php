@@ -57,7 +57,7 @@
         <p>{{ $dayEnd }} / {{ $monthEnd }} / {{ $yearEnd }}</p>
         <h4>Réservation</h4>
         <p>Numéro : {{ $reservationId }}</p>
-        <p>Montant : {{ $amount }} €</p>
+        <p>Montant : {{ number_format(($amount / 100), 2, ',', '') }}€</p>
         <div class="content-text">
             <p>Vous trouverez ci-joint votre bon de séjour à présenter à votre arrivée.<br/>
             L’équipe de Mes Vacances en Famille vous remercie pour votre confiance !

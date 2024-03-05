@@ -45,8 +45,8 @@
             Rappel de votre demande :
         </p>
         @php
-            $destinationId = e($destination_id);
-            $url = url("https://www.mesvacancesenfamille.com/destinations/{$destinationId}");
+$destinationId = e($destination_id);
+$url = url("https://www.mesvacancesenfamille.com/destinations/{$destinationId}");
         @endphp
         <a href="{{ $url }}">Cliquez ici pour aller sur la page de la destination</a>
         
@@ -56,7 +56,7 @@
         <p>{{ $dayEnd }} / {{ $monthEnd }} / {{ $yearEnd }}</p>
         <h4>Réservation</h4>
         <p>Numéro : {{ $reservationId }}</p>
-        <p>Montant : {{ $amount }}€</p>
+        <p>Montant : {{ number_format(($amount / 100), 2, ',', '') }}€</p>
         <div class="content-text">
             <p>L’empreinte bancaire a été levée. Nous vous confirmons que vous ne serez pas débité du montant de la réservation.<br/>
             Si vous avez utilisé un code de réduction, celui-ci est encore valable.<br/>

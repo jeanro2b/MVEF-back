@@ -57,7 +57,7 @@
         <h4>Date de départ</h4>
         <p>{{ $dayEnd }} / {{ $monthEnd }} / {{ $yearEnd }}</p>
         <h4>Montant de la réservation</h4>
-        <p>{{ $amount }} €</p>
+        <p>{{ number_format(($amount / 100), 2, ',', '') }} €</p>
         <div class="content-text">
             <p>Votre demande est transmise à notre partenaire pour approbation ! Vous recevrez un mail dans les prochaines 24h vous indiquant si votre réservation est confirmée.<br/>
             Votre carte bancaire sera débitée uniquement lorsque notre partenaire aura confirmé votre réservation.<br/>

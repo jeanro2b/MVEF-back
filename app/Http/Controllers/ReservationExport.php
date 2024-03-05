@@ -47,6 +47,7 @@ class ReservationExport implements FromCollection, WithHeadings
                 'reservations.hebergement_id',
                 'reservations.user_id',
                 'reservations.reduction',
+                'reservations.code',
             )
             ->whereBetween('reservations.end', [$this->start, $this->end])
             ->get();
@@ -103,6 +104,7 @@ class ReservationExport implements FromCollection, WithHeadings
                 'user_id' => $reservation->user_id,
                 'commission' => $reservation->com,
                 'montantVerse' => $reservation->montantVerse,
+                'code' => $reservation->code,
             ];
 
             array_push($formattedReservations, $formattedReservation);
@@ -140,6 +142,7 @@ class ReservationExport implements FromCollection, WithHeadings
             'ID Utilisateur',
             'Commission MVEF',
             "Montant versé à l'hébergeur",
+            "Code de réduction utilisé"
         ];
     }
 }

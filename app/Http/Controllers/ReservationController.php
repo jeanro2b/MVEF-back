@@ -164,7 +164,7 @@ class ReservationController extends Controller
 
                 $formattedDateStart = Carbon::parse($reservation->start)->format('d/m/Y');
                 $formattedDateEnd = Carbon::parse($reservation->end)->format('d/m/Y');
-                $formattedAmount = number_format($reservation->amount, 0, '.', '') . ' €';
+                $formattedAmount = number_format($reservation->amount / 100, 2, ',', '') . ' €';
 
                 $reservation->start = $formattedDateStart;
                 $reservation->end = $formattedDateEnd;
@@ -211,7 +211,9 @@ class ReservationController extends Controller
                 'mail',
                 'voyageurs',
                 'hebergement_id',
-                'user_id'
+                'user_id',
+                'amount_nights',
+                'reduction',
             )
             ->get();
 
@@ -240,6 +242,10 @@ class ReservationController extends Controller
             foreach ($hebergement as $heb) {
                 $reservation->code = $heb->code;
             }
+
+            $reservationAmountHebergement = $reservation->amount_nights / 100;
+            $reduction = $reservation->reduction;
+            $reservation->comission = $reservationAmountHebergement * ($reduction / 100);
         }
 
         return response()->json([
@@ -372,7 +378,7 @@ class ReservationController extends Controller
             $filename = "PDF_bon_sejour_$name.pdf";
 
             Mail::to($user_email)->send(new LocationAcceptedEmailUser($destination_id, $destinationName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $output, $filename));
-            Mail::to($ownerEmail)->send(new LocationAcceptedEmail($hebergementName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $name, $first_name, $phone, $output, $filename));
+            Mail::to($ownerEmail)->send(new LocationAcceptedEmail($hebergementName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $name, $first_name, $phone));
 
 
             return response()->json([
