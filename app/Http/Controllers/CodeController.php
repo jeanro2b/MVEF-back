@@ -73,12 +73,14 @@ class CodeController extends Controller
         ], 200);
     }
 
-    public function check_code($code)
+    public function check_code($code, $destination)
     {
         $codes = Code::all()->where('code', $code);
 
         foreach ($codes as $code) {
-            $code->validity = Carbon::parse($code->end)->isFuture();
+            $dateIsValid = Carbon::parse($code->end)->isFuture();
+            $destinationIsValid = $code->destination_id == $destination || $code->destination_id == null;
+            $code->validity = $dateIsValid && $destinationIsValid;
         }
 
         return response()->json([

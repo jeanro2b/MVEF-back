@@ -84,7 +84,7 @@ Route::get('planning-periods/{id}', [PeriodController::class, 'get_planning_peri
 Route::get('planning-periods-all', [PeriodController::class, 'get_planning_periods_all'])
     ->name('get_planning_periods_all');
 
-Route::get('check-code/{code}', [CodeController::class, 'check_code'])
+Route::get('check-code/{code}/{destination}', [CodeController::class, 'check_code'])
     ->name('check_code');
 
 Route::get('files-client/{id}', [DocumentController::class, 'get_files_client'])
