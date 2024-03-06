@@ -18,7 +18,7 @@ class CodeController extends Controller
             'end' => $request->end,
             'user_id' => $request->user,
             'reduction' => $request->reduction,
-            'destination_id' => $request->destination,
+            'destination_id' => $request->destination == 0 ? null : $request->destination,
         ]);
 
         return response()->json([
@@ -56,9 +56,14 @@ class CodeController extends Controller
                 )
                 ->where('id', $code->destination_id)
                 ->get();
-            
+
             foreach ($destination as $dest) {
-                $code->destination_name = $dest->name;
+                if ($dest && $dest->name) {
+                    $code->destination_name = $dest->name;
+                } else {
+                    $code->destination_name = 'Toutes destinations';
+                }
+
             }
         }
 
@@ -91,7 +96,7 @@ class CodeController extends Controller
                 'end' => $req->end,
                 'user_id' => $req->user,
                 'reduction' => $req->reduction,
-                'destination_id' => $req->destination,
+                'destination_id' => $req->destination == 0 ? null : $req->destination,
             ]
         );
 
@@ -149,6 +154,10 @@ class CodeController extends Controller
                 if ($user->id == $code->user_id) {
                     $code->user_name = $user->name;
                 }
+            }
+
+            if ($code->destination_id == null) {
+                $code->destination_id = 0;
             }
         }
 
