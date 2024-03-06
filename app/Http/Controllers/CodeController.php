@@ -37,7 +37,6 @@ class CodeController extends Controller
                 'name',
                 'city',
                 'role',
-                'destination_id',
             )
             ->get();
 
