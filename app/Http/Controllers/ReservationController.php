@@ -316,6 +316,9 @@ class ReservationController extends Controller
             $reservationNumberOfNights = $start->diffInDays($end);
             $reservationIntent = $reservation->intent;
             $reduction = $reservation->reduction;
+
+            $reservationTVA = $reservation->tva;
+            $reservationTVAOptions = $reservation->tva_options;
         }
         Reservation::where('token', $token)->update(
             [
