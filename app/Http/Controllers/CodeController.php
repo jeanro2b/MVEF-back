@@ -7,6 +7,7 @@ use App\Models\Code;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CodeController extends Controller
 {
@@ -80,7 +81,9 @@ class CodeController extends Controller
         foreach ($codes as $code) {
             $dateIsValid = Carbon::parse($code->end)->isFuture();
             $destinationIsValid = $code->destination_id == $destination || $code->destination_id == null;
+            Log::debug($destinationIsValid);
             $code->validity = $dateIsValid && $destinationIsValid;
+            Log::debug($code->validity);
         }
 
         return response()->json([
