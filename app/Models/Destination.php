@@ -67,5 +67,10 @@ class Destination extends Model
         return $this->hasMany(Hebergement::class);
     }
 
+    public function code()
+    {
+        return $this->hasMany(Code::class);
+    }
+
     
 }

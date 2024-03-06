@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Code;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class CodeController extends Controller
@@ -19,6 +18,7 @@ class CodeController extends Controller
             'end' => $request->end,
             'user_id' => $request->user,
             'reduction' => $request->reduction,
+            'destination_id' => $request->destination,
         ]);
 
         return response()->json([
@@ -32,13 +32,14 @@ class CodeController extends Controller
         $codes = Code::all();
 
         $users = DB::table('users')
-        ->select(
-            'id',
-            'name',
-            'city',
-            'role'
-        )
-        ->get();
+            ->select(
+                'id',
+                'name',
+                'city',
+                'role',
+                'destination_id',
+            )
+            ->get();
 
         foreach ($codes as $code) {
             $formattedDateEnd = Carbon::parse($code->end)->format('d/m/Y');
@@ -47,6 +48,18 @@ class CodeController extends Controller
                 if ($user->id == $code->user_id) {
                     $code->user_name = $user->name;
                 }
+            }
+
+            $destination = DB::table('destinations')
+                ->select(
+                    'id',
+                    'name',
+                )
+                ->where('id', $code->destination_id)
+                ->get();
+            
+            foreach ($destination as $dest) {
+                $code->destination_name = $dest->name;
             }
         }
 
@@ -79,9 +92,10 @@ class CodeController extends Controller
                 'end' => $req->end,
                 'user_id' => $req->user,
                 'reduction' => $req->reduction,
+                'destination_id' => $req->destination,
             ]
         );
-        
+
 
         return response()->json([
             'message' => 'OK',
@@ -115,6 +129,7 @@ class CodeController extends Controller
                 'user_id',
                 'end',
                 'reduction',
+                'destination_id',
             )
             ->where('id', $id)
             ->get();
@@ -133,7 +148,7 @@ class CodeController extends Controller
             $code->end = $formattedDateEnd;
             foreach ($users as $user) {
                 if ($user->id == $code->user_id) {
-                   $code->user_name = $user->name;
+                    $code->user_name = $user->name;
                 }
             }
         }
@@ -156,38 +171,6 @@ class CodeController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Equipements $equipements)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Equipements $equipements)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Equipements $equipements)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Equipements $equipements)
     {
         //
     }

@@ -14,12 +14,18 @@ class Code extends Model
         'code',
         'user_id',
         'end',
-        'reduction'
+        'reduction',
+        'destination_id',
     ];
 
     public function user()
     {
         return $this->hasOne(User::class);
+    }
+
+    public function destination()
+    {
+        return $this->hasOne(Destination::class);
     }
 
     protected static function boot()
