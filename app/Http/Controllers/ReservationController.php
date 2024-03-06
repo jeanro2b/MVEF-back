@@ -105,7 +105,7 @@ class ReservationController extends Controller
                 'start' => $startDate,
                 'end' => $endDate,
                 'intent' => $intent->id,
-                'status' => 'A venir',
+                'status' => 'En attente de confirmation',
                 'token' => $token,
                 'services' => json_encode($services),
                 'voyageurs' => $voyageurs,
@@ -283,11 +283,45 @@ class ReservationController extends Controller
             $user_email = $reservation->mail;
             $user_name = $reservation->name;
             $user_firstname = $reservation->first_name;
+
+
+            $yearStart = $start->year;
+            $monthStart = sprintf('%02d', $start->month);
+            $dayStart = sprintf('%02d', $start->day);
+            $yearEnd = $end->year;
+            $monthEnd = sprintf('%02d', $end->month);
+            $dayEnd = sprintf('%02d', $end->day);
+
+            $tvaRate = $reservation->tva / 100;
+            $reservationAmountHebergement = $reservation->amount_nights;
+            $reservation->amountHT = $reservationAmountHebergement / (1 + $tvaRate);
+            $reservation->amountTVA = $reservationAmountHebergement - $reservation->amountHT;
+
+            $tvaOptionsRate = $reservation->tva_options / 100; // Ajoutez cette ligne si votre taux est en pourcentage
+            $reservation->amountHTOptions = $reservation->amount_options / (1 + $tvaOptionsRate);
+            $reservation->amountTVAOptions = $reservation->amount_options - $reservation->amountHTOptions;
+
+
+            $reservationAmount = $reservation->amount;
+            $reservationAmountOptions = $reservation->amount_options;
+            $reservationAmountExclOptions = $reservation->amount_nights;
+            $reservationAmountExclOptionsHT = $reservation->amountHT;
+            $userId = $reservation->user_id;
+            $reservationClientName = $reservation->name;
+            $reservationClientFirstName = $reservation->first_name;
+            $reservationClientPhone = $reservation->phone;
+            $reservationClientMail = $reservation->mail;
+            $reservationOptionsData = json_decode($reservation->services, true);
+
+            $reservationNumberOfNights = $start->diffInDays($end);
+            $reservationIntent = $reservation->intent;
+            $reduction = $reservation->reduction;
         }
         Reservation::where('token', $token)->update(
             [
                 'is_checked' => true,
-                'acceptation' => 'accepted'
+                'acceptation' => 'accepted',
+                'status' => 'A venir',
             ]
         );
         $destinations = Destination::where('id', $destination_id)->get();
@@ -300,6 +334,7 @@ class ReservationController extends Controller
 
         foreach ($hebergements as $hebergement) {
             $hebergementName = $hebergement->long_title;
+            $reservationHebergementTitle = $hebergement->long_title;
         }
 
         $yearStart = $start->year;
@@ -377,7 +412,26 @@ class ReservationController extends Controller
 
             $filename = "PDF_bon_sejour_$name.pdf";
 
-            Mail::to($user_email)->send(new LocationAcceptedEmailUser($destination_id, $destinationName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $output, $filename));
+
+
+            $date = Carbon::now()->format('d/m/Y');
+
+            $dompdf_facture = new Dompdf();
+    
+            $reservationClientPhone = $reservation->phone;
+            $html_facture = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions', 'reservationAmountExclOptionsHT', 'yearStart', 'monthStart', 'dayStart', 'yearEnd', 'monthEnd', 'dayEnd', 'reduction'))->render();
+    
+            $dompdf_facture->loadHtml($html_facture);
+    
+            // Rendu du PDF
+            $dompdf_facture->render();
+    
+            $output_facture = $dompdf_facture->output();
+    
+            $filename_facture = "facture_$dayEnd" . "_$monthEnd" . "_$yearEnd" . "_$reservationId.pdf";
+
+
+            Mail::to($user_email)->send(new LocationAcceptedEmailUser($destination_id, $destinationName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $output, $filename, $output_facture, $filename_facture));
             Mail::to($ownerEmail)->send(new LocationAcceptedEmail($hebergementName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $name, $first_name, $phone));
 
 
@@ -424,6 +478,7 @@ class ReservationController extends Controller
             [
                 'is_checked' => true,
                 'acceptation' => 'refused',
+                'statut' => 'Refusée',
             ]
         );
         $destinations = Destination::where('id', $destination_id)->get();
