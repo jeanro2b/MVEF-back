@@ -482,6 +482,8 @@ class DestinationController extends Controller
                 'favorite' => $requete->favorite,
                 'location' => $requete->location,
                 'site' => $requete->site,
+                'tva' => $requete->tva,
+                'tva_options' => $requete->tvaOptions,
                 'renseignement' => str_replace("\n", '<br />', $requete->renseignement)
             ]
         );
