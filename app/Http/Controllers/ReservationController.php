@@ -434,7 +434,7 @@ class ReservationController extends Controller
             $filename_facture = "facture_$dayEnd" . "_$monthEnd" . "_$yearEnd" . "_$reservationId.pdf";
 
 
-            Mail::to($user_email)->send(new LocationAcceptedEmailUser($destination_id, $destinationName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $output, $filename, $output_facture, $filename_facture));
+            Mail::to($user_email)->send(new LocationAcceptedEmailUser($destination_id, $destinationName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $output_facture, $filename_facture));
             Mail::to($ownerEmail)->send(new LocationAcceptedEmail($hebergementName, $reservationId, $amount, $yearStart, $monthStart, $dayStart, $yearEnd, $monthEnd, $dayEnd, $name, $first_name, $phone));
 
 
