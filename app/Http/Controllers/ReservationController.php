@@ -259,6 +259,7 @@ class ReservationController extends Controller
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
         $user_id = $requete['user'];
         $token = $requete['secret'];
+        $payment_method = $requete['payment_method'];
 
         $destination_id = null;
         $hebergement_id = null;
@@ -363,7 +364,7 @@ class ReservationController extends Controller
             $stripe->paymentIntents->confirm(
                 $payment_intent,
                 [
-                    'payment_method' => 'pm_card_visa',
+                    'payment_method' => `pm_$payment_method`,
                     'return_url' => 'https://www.mesvacancesenfamille.com'
                 ]
             );
