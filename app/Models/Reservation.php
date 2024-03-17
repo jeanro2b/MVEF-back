@@ -35,6 +35,7 @@ class Reservation extends Model
         'voyageurs',
         'code',
         'acceptation',
+        'payment_method',
     ];
 
     public function destination()

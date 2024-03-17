@@ -52,6 +52,7 @@ class ReservationController extends Controller
         $nights = $requete['nights'];
         $reduction = $requete['reduction'];
         $code = $requete['code'];
+        $payment_method = $requete['payment_method'];
         $amount_options = $amount - $nights;
 
         $start = Carbon::parse($requete['start']);
@@ -114,6 +115,7 @@ class ReservationController extends Controller
                 'is_checked' => false,
                 'reduction' => $reduction,
                 'code' => $code,
+                'payment_method' => $payment_method,
             ]);
 
             $reservationId = $reservation->id;
@@ -259,7 +261,7 @@ class ReservationController extends Controller
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
         $user_id = $requete['user'];
         $token = $requete['secret'];
-        $payment_method = $requete['payment_method'];
+        $payment_method = null;
 
         $destination_id = null;
         $hebergement_id = null;
@@ -331,6 +333,8 @@ class ReservationController extends Controller
 
             $reservationTVA = $reservation->tva;
             $reservationTVAOptions = $reservation->tva_options;
+
+            $payment_method = $reservation->payment_method;
         }
         Reservation::where('token', $token)->update(
             [
@@ -364,7 +368,7 @@ class ReservationController extends Controller
             $stripe->paymentIntents->confirm(
                 $payment_intent,
                 [
-                    'payment_method' => `pm_$payment_method`,
+                    'payment_method' => $payment_method,
                     'return_url' => 'https://www.mesvacancesenfamille.com'
                 ]
             );
