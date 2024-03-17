@@ -260,6 +260,9 @@ class ReservationController extends Controller
         $user_id = $requete['user'];
         $token = $requete['secret'];
 
+        $destination_id = null; // Déclaration en dehors de la boucle
+        $hebergement_id = null; // Déclaration en dehors de la boucle pour une utilisation similaire
+
         $reservations = Reservation::where('token', $token)->get();
         foreach ($reservations as $reservation) {
             if ($reservation->is_checked === true) {
