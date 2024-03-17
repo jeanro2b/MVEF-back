@@ -260,8 +260,16 @@ class ReservationController extends Controller
         $user_id = $requete['user'];
         $token = $requete['secret'];
 
-        $destination_id = null; // Déclaration en dehors de la boucle
-        $hebergement_id = null; // Déclaration en dehors de la boucle pour une utilisation similaire
+        $destination_id = null;
+        $hebergement_id = null;
+        $start = null;
+        $end = null;
+        $payment_intent = null;
+        $user_email = null;
+        $name = null;
+        $first_name = null;
+        $phone = null;
+
 
         $reservations = Reservation::where('token', $token)->get();
         foreach ($reservations as $reservation) {
@@ -423,17 +431,17 @@ class ReservationController extends Controller
             $date = Carbon::now()->format('d/m/Y');
 
             $dompdf_facture = new Dompdf();
-    
+
             $reservationClientPhone = $reservation->phone;
             $html_facture = View::make('pdf.facture_reservation', compact('reservationHebergementTitle', 'reservationId', 'reservationAmount', 'userId', 'reservationClientName', 'reservationClientFirstName', 'reservationClientPhone', 'reservationClientMail', 'reservationOptionsData', 'reservationNumberOfNights', 'date', 'reservationAmountOptions', 'reservationTVA', 'reservationTVAOptions', 'reservationIntent', 'bslogoData', 'bslogotxtData', 'reservationAmountExclOptions', 'reservationAmountExclOptionsHT', 'yearStart', 'monthStart', 'dayStart', 'yearEnd', 'monthEnd', 'dayEnd', 'reduction'))->render();
-    
+
             $dompdf_facture->loadHtml($html_facture);
-    
+
             // Rendu du PDF
             $dompdf_facture->render();
-    
+
             $output_facture = $dompdf_facture->output();
-    
+
             $filename_facture = "facture_$dayEnd" . "_$monthEnd" . "_$yearEnd" . "_$reservationId.pdf";
 
 
@@ -456,6 +464,13 @@ class ReservationController extends Controller
         $stripe = new StripeClient(env('STRIPE_SECRET_KEY'));
         $user_id = $requete['user'];
         $token = $requete['secret'];
+
+        $destination_id = null;
+        $hebergement_id = null;
+        $start = null;
+        $end = null;
+        $payment_intent = null;
+        $user_email = null;
 
         $reservations = Reservation::where('token', $token)->get();
 
