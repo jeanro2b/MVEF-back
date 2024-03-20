@@ -33,7 +33,8 @@ class HebergementController extends Controller
                 'sImage',
                 'tImage',
                 'price',
-                'couchage'
+                'couchage',
+                'is_display',
             )
             ->get();
 
@@ -102,6 +103,7 @@ class HebergementController extends Controller
                 'long_title',
                 'destination_id',
                 'type_id',
+                'is_display',
             )
             ->where('destination_id', $destination_id)
             ->get();
@@ -177,7 +179,8 @@ class HebergementController extends Controller
                 'sImage',
                 'tImage',
                 'price',
-                'couchage'
+                'couchage',
+                'is_display',
             )
             ->where('id', $id)
             ->get();
@@ -287,7 +290,8 @@ class HebergementController extends Controller
             'code' => $requete->code,
             'destination_id' => $requete->destination_id,
             'price' => $int_price,
-            'couchage' => $requete->couchage
+            'couchage' => $requete->couchage,
+            'is_display' => $requete->is_display,
         ]);
 
         foreach ($requete->equipements as $equipement) {
@@ -386,6 +390,7 @@ class HebergementController extends Controller
                 'pImage' => $pImageTemp,
                 'sImage' => $sImageTemp,
                 'tImage' => $tImageTemp,
+                'is_display' => $requete->is_display,
             ]
         );
 

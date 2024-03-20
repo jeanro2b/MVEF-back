@@ -167,6 +167,7 @@ class DestinationController extends Controller
                 'description',
                 'couchage',
                 'long_title',
+                'is_display',
             )
             ->where('destination_id', $id)
             ->get();

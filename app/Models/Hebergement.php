@@ -21,7 +21,8 @@ class Hebergement extends Model
         'destination_id',
         'type_id',
         'price',
-        'couchage'
+        'couchage',
+        'is_display',
     ];
 
     public function type()
