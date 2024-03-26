@@ -90,8 +90,8 @@
         <div class="invoice-header">
             <h1>FACTURE</h1>
             <p>Facture # {{ $destinationId }}</p>
-            <p>Date de génération: {{ $date }}</p>
-            <p>Client ID: {{ $destinationId }}</p>
+            <p>Date d'émission : {{ $date }}</p>
+            <p>Hébergeur ID: {{ $destinationId }}</p>
         </div>
         <div class="invoice-body">
             <section>
@@ -105,6 +105,7 @@
             <section>
                 <div class="bold">Mes Vacances en Famille</div>
                 <p>SAS 8000€ RCS BASTIA - APE 5520Z - Siret 50513668900047</p>
+                <p>Numéro individuel d'identification à la TVA : F R 3 1 5 0 5 1 3 6 6 8 9 0 0 0 4 7</p>
                 <p>Siège social : Hameau de Lutina, 20237, Poggio-Marinaccio</p>
                 <p>Secrétariat : 145 route de Millery - 69700 MONTAGNY</p>
                 <p> <a href="www.mesvacancesenfamille.com">www.mesvacancesenfamille.com</a> / <a
@@ -203,11 +204,10 @@
                 <p>Total incl. TVA: {{ $totalInclVAT }} €</p>
             </div>
         </div>
-        @if (!empty($reservationIntent))
         <div class="footer">
             <p>Paiement : le paiement sera effectué par Mes Vacances en Famille par virement avant le 30/31 du mois</p>
+            <p>En matière de TVA l 'agence Mes Vacances en Famille bénéfice du régime spécifique des agences de voyage : article 266 du CGI et BOI-TVA-DECLA-30-20-20-10- TVA sur Marge sur la partie transport et hébergement.</p>
         </div>
-        @endif
     </div>
 
 </body>

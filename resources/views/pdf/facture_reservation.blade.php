@@ -94,7 +94,7 @@
         <div class="invoice-header">
             <h1>FACTURE</h1>
             <p>Facture # {{ $reservationId }}</p>
-            <p>Date de génération: {{ $date }}</p>
+            <p>Date d'émission : {{ $date }}</p>
             <p>Montant: {{ number_format($reservationAmount / 100, 2, ',', '') }}€</p>
             <p>Client ID: {{ $userId }}</p>
         </div>
@@ -109,6 +109,7 @@
             <section>
                 <div class="bold">Mes Vacances En Famille</div>
                 <p>SAS 8000€ RCS BASTIA - APE 5520Z - Siret 50513668900047</p>
+                <p>Numéro individuel d'identification à la TVA : F R 3 1 5 0 5 1 3 6 6 8 9 0 0 0 4 7</p>
                 <p>Siège social : Hameau de Lutina, 20237, Poggio-Marinaccio</p>
                 <p>Secrétariat : 145 route de Millery - 69700 MONTAGNY</p>
                 <p> <a href="www.mesvacancesenfamille.com">www.mesvacancesenfamille.com</a> / <a
@@ -136,7 +137,7 @@
                         <td>{{ number_format($reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
                         <td>{{ $reservationTVA }}</td>
                         <td>{{ number_format($reservationAmountExclOptionsHT / 100, 2, ',', '') }} €</td>
-                        <td>{{ number_format(($reservationAmountExclOptions / 100 ), 2, ',', '')}} €
+                        <td>{{ number_format(($reservationAmountExclOptions / 100), 2, ',', '')}} €
                         </td>
                     </tr>
                     @foreach ($reservationOptionsData as $option)
@@ -149,7 +150,7 @@
                         </td>
                         <td>{{ $reservationTVAOptions }}</td>
                         <td>{{ number_format($option['amount'] * (1 - ($reservationTVAOptions / 100)) *
-                            $option['count'], 2, ',', '') }} €</td>
+        $option['count'], 2, ',', '') }} €</td>
                         <td>{{ number_format($option['amount'] * $option['count'], 2, ',', '') }} €</td>
                     </tr>
                     @endforeach
@@ -157,21 +158,21 @@
             </table>
             <div class="total">
                 @php
-                $totalExclVAT = $reservationAmountExclOptionsHT / 100; // Montant initial pour l'hébergement hors
-                $totalInclVAT = $reservationAmountExclOptions / 100;
+$totalExclVAT = $reservationAmountExclOptionsHT / 100; // Montant initial pour l'hébergement hors
+$totalInclVAT = $reservationAmountExclOptions / 100;
 
-                // Ajoutez les montants des options HT et calculez la TVA pour chaque option
-                foreach ($reservationOptionsData as $option) {
-                $totalInclVAT += $option['amount'] * $option['count']; // Ajouter le montant HT de l'option au total HT
-                $totalExclVAT += $option['amount'] * (1 - ($reservationTVAOptions / 100)) *
-                $option['count']; // Ajouter le montant HT de l'option au total HT
-                }
+// Ajoutez les montants des options HT et calculez la TVA pour chaque option
+foreach ($reservationOptionsData as $option) {
+    $totalInclVAT += $option['amount'] * $option['count']; // Ajouter le montant HT de l'option au total HT
+    $totalExclVAT += $option['amount'] * (1 - ($reservationTVAOptions / 100)) *
+        $option['count']; // Ajouter le montant HT de l'option au total HT
+}
 
-                $totalInclVAT = number_format($totalInclVAT, 2, ',', ''); // Total TTC
-                $totalExclVAT = number_format($totalExclVAT, 2, ',', ''); // Total TTC
+$totalInclVAT = number_format($totalInclVAT, 2, ',', ''); // Total TTC
+$totalExclVAT = number_format($totalExclVAT, 2, ',', ''); // Total TTC
 
-                $comission = $reservationAmountExclOptions * ($reduction / 100);
-                $montantVerse = $reservationAmountExclOptions - $comission;
+$comission = $reservationAmountExclOptions * ($reduction / 100);
+$montantVerse = $reservationAmountExclOptions - $comission;
                 @endphp
 
                 <!-- <p>Comission MVEF: {{ number_format($comission / 100, 2, ',', '') }} €</p>
@@ -183,6 +184,11 @@
         @if (!empty($reservationIntent))
         <div class="footer">
             <p>Paiement effectué par stripe</p>
+            <p>En matière de TVA l 'agence Mes Vacances en Famille bénéfice du régime spécifique des agences de voyage : article 266 du CGI et BOI-TVA-DECLA-30-20-20-10- TVA sur Marge sur la partie transport et hébergement.</p>
+        </div>
+        @else
+        <div class="footer">
+            <p>En matière de TVA l 'agence Mes Vacances en Famille bénéfice du régime spécifique des agences de voyage : article 266 du CGI et BOI-TVA-DECLA-30-20-20-10- TVA sur Marge sur la partie transport et hébergement.</p>
         </div>
         @endif
     </div>
